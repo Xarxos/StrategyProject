@@ -7,7 +7,7 @@ public:
 
 	virtual void handleInput() = 0;
 	virtual void update( float delta ) = 0;
-	virtual void draw( float delta ) = 0;
+	virtual void draw() = 0;
 
 	virtual void pause() {}
 	virtual void resume() {}

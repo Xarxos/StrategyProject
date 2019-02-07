@@ -12,7 +12,7 @@ Game::Game(int windowWidth, int windowHeight, std::string title)
 
 void Game::run()
 {
-	float newTime, frameTime, interpolation;
+	float newTime, frameTime;
 
 	float currentTime = _clock.getElapsedTime().asSeconds();
 
@@ -26,11 +26,6 @@ void Game::run()
 
 		frameTime = newTime - currentTime;
 
-		if (frameTime > 0.25f)
-		{
-			frameTime = 0.25f;
-		}
-
 		currentTime = newTime;
 		accumulator += frameTime;
 
@@ -41,8 +36,6 @@ void Game::run()
 
 			accumulator -= Config::FRAME_RATE;
 		}
-
-		interpolation = accumulator / Config::FRAME_RATE;
-		_data->machine.getActiveState()->draw(interpolation);
+		_data->machine.getActiveState()->draw();
 	}
 }
