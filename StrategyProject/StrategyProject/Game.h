@@ -20,10 +20,9 @@ typedef std::shared_ptr<GameData> GameDataRef;
 class Game
 {
 private:
-	const float delta = 1.0f / 60.0f;
 	sf::Clock _clock;
-
 	GameDataRef _data = std::make_shared<GameData>();
+
 public:
 	Game(int windowWidth, int windowHeight, std::string title);
 

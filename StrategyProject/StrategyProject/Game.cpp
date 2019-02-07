@@ -1,12 +1,11 @@
 #include "stdafx.h"
 #include "Game.h"
 #include <SFML\Graphics.hpp>
-#include "SplashState.h"
+#include "Config.h"
 
 Game::Game(int windowWidth, int windowHeight, std::string title)
 {
 	_data->window.create(sf::VideoMode(windowWidth, windowHeight), title, sf::Style::Close | sf::Style::Titlebar);
-	_data->machine.addState(stateRef(new SplashState(_data)));
 
 	run();
 }
@@ -35,15 +34,15 @@ void Game::run()
 		currentTime = newTime;
 		accumulator += frameTime;
 
-		while (accumulator >= delta)
+		while (accumulator >= Config::FRAME_RATE)
 		{
 			_data->machine.getActiveState()->handleInput();
-			_data->machine.getActiveState()->update(delta);
+			_data->machine.getActiveState()->update(Config::FRAME_RATE);
 
-			accumulator -= delta;
+			accumulator -= Config::FRAME_RATE;
 		}
 
-		interpolation = accumulator / delta;
+		interpolation = accumulator / Config::FRAME_RATE;
 		_data->machine.getActiveState()->draw(interpolation);
 	}
 }

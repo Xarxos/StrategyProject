@@ -48,6 +48,9 @@
     <ClInclude Include="StateMachine.h">
       <Filter>Engine\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Config.h">
+      <Filter>Engine\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

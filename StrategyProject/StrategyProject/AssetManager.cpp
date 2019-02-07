@@ -7,7 +7,7 @@ void AssetManager::loadTexture(const std::string &name, const std::string &fileN
 {
 	if (!_textures[name].loadFromFile(fileName))
 	{
-		// TODO: Throw and exception or something.
+		// TODO: Throw an exception or something.
 		std::cout << "Failed to load a texture.\n";
 	}
 }
@@ -21,7 +21,7 @@ void AssetManager::loadFont(const std::string &name, const std::string &fileName
 {
 	if (!_fonts[name].loadFromFile(fileName))
 	{
-		// TODO: Throw and exception or something.
+		// TODO: Throw an exception or something.
 		std::cout << "Failed to load a font.\n";
 	}
 }
