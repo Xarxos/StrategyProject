@@ -2,10 +2,13 @@
 //
 
 #include "stdafx.h"
-
+#include "Defines.h"
+#include "Game.h"
 
 int main()
 {
+	Game(Define::SCREEN_WIDTH, Define::SCREEN_HEIGHT, Define::GAME_TITLE);
+
     return 0;
 }
 
