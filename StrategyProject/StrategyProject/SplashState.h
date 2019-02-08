@@ -8,6 +8,7 @@ class SplashState : public State
 {
 private:
 	GameDataRef _data;
+	sf::Clock _clock;
 
 	sf::Sprite _background;
 	sf::Sprite _logo;

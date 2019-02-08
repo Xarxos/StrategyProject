@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "SplashState.h"
 #include "Defines.h"
+#include "MainMenuState.h"
 
 void SplashState::init()
 {
@@ -16,12 +17,23 @@ void SplashState::init()
 
 void SplashState::handleInput()
 {
+	sf::Event event;
 
+	while (_data->window.pollEvent(event))
+	{
+		if (event.type == sf::Event::Closed)
+		{
+			_data->window.close();
+		}
+	}
 }
 
 void SplashState::update(float delta)
 {
-	//TODO: Implement state change, to LoadState probably.
+	if (_clock.getElapsedTime().asSeconds() >= Define::SPLASH_STATE_DURATION)
+	{
+		_data->machine.addState(stateRef(new MainMenuState(_data)), true);
+	}
 }
 
 void SplashState::draw()

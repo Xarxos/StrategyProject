@@ -17,14 +17,6 @@
     <Filter Include="Game">
       <UniqueIdentifier>{b558e4e5-b7fb-4503-aaba-941abf71ddc1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Game\Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
     <Filter Include="Game\States">
       <UniqueIdentifier>{5dc56eac-3211-4b3a-b742-bbb62027f139}</UniqueIdentifier>
     </Filter>
@@ -34,16 +26,36 @@
     <Filter Include="Game\States\Source">
       <UniqueIdentifier>{5f3d9e9a-5a2c-44fe-b4e5-905c84ac0d9a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Main Files">
+      <UniqueIdentifier>{670f5ae9-a05d-4ca8-aef4-aa13ab07dd53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Main Files\Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Game\Main Files\Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Game\Misc">
+      <UniqueIdentifier>{de8ade9a-8c58-483d-a2e9-991bea7d6d92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Misc\Headers">
+      <UniqueIdentifier>{6e451bee-275c-4db0-a116-f143606dc2e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Misc\Source">
+      <UniqueIdentifier>{29ea51ad-77f7-42da-84ee-b8a188d6312c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
-      <Filter>Game\Header Files</Filter>
+      <Filter>Game\Main Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>Game\Header Files</Filter>
+      <Filter>Game\Main Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AssetManager.h">
       <Filter>Engine\Headers</Filter>
@@ -64,18 +76,24 @@
       <Filter>Engine\Headers</Filter>
     </ClInclude>
     <ClInclude Include="Defines.h">
-      <Filter>Game\Header Files</Filter>
+      <Filter>Game\Main Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SplashState.h">
       <Filter>Game\States\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="MainMenuState.h">
+      <Filter>Game\States\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="TextButton.h">
+      <Filter>Game\Misc\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
-      <Filter>Game\Source Files</Filter>
+      <Filter>Game\Main Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="StrategyProject.cpp">
-      <Filter>Game\Source Files</Filter>
+      <Filter>Game\Main Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AssetManager.cpp">
       <Filter>Engine\Source</Filter>
@@ -91,6 +109,12 @@
     </ClCompile>
     <ClCompile Include="SplashState.cpp">
       <Filter>Game\States\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenuState.cpp">
+      <Filter>Game\States\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="TextButton.cpp">
+      <Filter>Game\Misc\Source</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
