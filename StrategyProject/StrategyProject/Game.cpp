@@ -2,10 +2,12 @@
 #include "Game.h"
 #include <SFML\Graphics.hpp>
 #include "Config.h"
+#include "SplashState.h"
 
 Game::Game(int windowWidth, int windowHeight, std::string title)
 {
 	_data->window.create(sf::VideoMode(windowWidth, windowHeight), title, sf::Style::Close | sf::Style::Titlebar);
+	_data->machine.addState(stateRef(new SplashState(_data)));
 
 	run();
 }

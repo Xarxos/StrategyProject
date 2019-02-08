@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "Defines.h"
 #include "Game.h"
+#include "SplashState.h"
 
 int main()
 {
