@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "MainMenuState.h"
 #include "Defines.h"
+#include "WorldMap.h"
 
 void MainMenuState::init()
 {
@@ -28,6 +29,11 @@ void MainMenuState::handleInput()
 		if (event.type == sf::Event::Closed)
 		{
 			_data->window.close();
+		}
+
+		if (_data->input.isSpriteClicked(_testGameButton, sf::Mouse::Left, _data->window))
+		{
+			_data->machine.addState(stateRef(new WorldMap(_data)), true);
 		}
 	}
 }

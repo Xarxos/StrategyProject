@@ -172,6 +172,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TextButton.h" />
+    <ClInclude Include="WorldMap.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssetManager.cpp" />
@@ -188,6 +189,7 @@
     </ClCompile>
     <ClCompile Include="StrategyProject.cpp" />
     <ClCompile Include="TextButton.cpp" />
+    <ClCompile Include="WorldMap.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

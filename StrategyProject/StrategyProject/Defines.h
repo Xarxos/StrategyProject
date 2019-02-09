@@ -10,6 +10,9 @@ namespace Define
 	const std::string GAME_TITLE("Strategy Game");
 
 	const float SPLASH_STATE_DURATION(3.0f);
+
+	const int WORLD_SIZE(10);
+	const int TILE_SIZE(10);
 }
 
 namespace Filepath

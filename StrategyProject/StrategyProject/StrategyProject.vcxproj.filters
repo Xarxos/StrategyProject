@@ -87,6 +87,9 @@
     <ClInclude Include="TextButton.h">
       <Filter>Game\Misc\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="WorldMap.h">
+      <Filter>Game\States\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -115,6 +118,9 @@
     </ClCompile>
     <ClCompile Include="TextButton.cpp">
       <Filter>Game\Misc\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldMap.cpp">
+      <Filter>Game\States\Source</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
