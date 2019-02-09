@@ -53,39 +53,39 @@ void WorldMap::handleInput()
 		{
 			_data->window.close();
 		}
+
+		if (event.type == sf::Event::MouseWheelScrolled)
+		{
+			_view.setSize(_view.getSize().x - event.mouseWheelScroll.delta * Define::WORLD_CAMERA_ZOOM_FACTOR, _view.getSize().y - event.mouseWheelScroll.delta * Define::WORLD_CAMERA_ZOOM_FACTOR);
+		}
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
-		std::cout << "W";
-		//cout << "View.getCenter().y - View.getSize().y / 2: " << view.getCenter().y - view.getSize().y / 2 << " | map.getGlobalBounds.().height: " << map.getGlobalBounds().height << "\n";
 		if (_view.getCenter().y - _view.getSize().y / 2 > 0)
 		{
-			_view.move(0.f, -5.f);
+			_view.move(0.f, -Define::WORLD_CAMERA_MOVE_SPEED);
 		}
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 	{
-		std::cout << "S";
 		if (_view.getCenter().y + _view.getSize().y / 2 < Define::WORLD_SIZE * Define::TILE_SIZE)
 		{
-			_view.move(0.f, 5.f);
+			_view.move(0.f, Define::WORLD_CAMERA_MOVE_SPEED);
 		}
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
-		std::cout << "A";
 		if (_view.getCenter().x - _view.getSize().x / 2 > 0)
 		{
-			_view.move(-5.f, 0.f);
+			_view.move(-Define::WORLD_CAMERA_MOVE_SPEED, 0.f);
 		}
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
-		std::cout << "D";
 		if (_view.getCenter().x + _view.getSize().x / 2 < Define::WORLD_SIZE * Define::TILE_SIZE)
 		{
-			_view.move(5.f, 0.f);
+			_view.move(Define::WORLD_CAMERA_MOVE_SPEED, 0.f);
 		}
 	}
 }

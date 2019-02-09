@@ -9,7 +9,6 @@ bool InputManager::isSpriteClicked(sf::Sprite object, sf::Mouse::Button button, 
 	{
 		if (object.getGlobalBounds().contains(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y))
 		{
-			std::cout << "Button contains mouse, will return true.\n";
 			return true;
 		}
 	}

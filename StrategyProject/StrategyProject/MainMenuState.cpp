@@ -31,10 +31,9 @@ void MainMenuState::handleInput()
 		{
 			_data->window.close();
 		}
-		//std::cout << "Before isSpriteClicked.\n";
+		
 		if (_data->input.isSpriteClicked(_testGameButton, sf::Mouse::Left, _data->window))
 		{
-			std::cout << "Sprite is clicked.\n";
 			_data->machine.addState(stateRef(new WorldMap(_data)), true);
 		}
 	}
