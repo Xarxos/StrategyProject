@@ -13,6 +13,8 @@ private:
 	sf::VertexArray _vertices;
 	std::vector<std::vector<int>> _tileMatrix;
 
+	sf::View _view;
+
 public:
 	WorldMap(GameDataRef data);
 

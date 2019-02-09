@@ -3,9 +3,13 @@
 #include "Defines.h"
 #include <vector>
 #include "SFML\Graphics.hpp"
+#include <iostream>
 
 WorldMap::WorldMap(GameDataRef data)
-	: _data(data), _tileMatrix(Define::WORLD_SIZE, std::vector<int>(Define::WORLD_SIZE)), _vertices(sf::Quads, Define::WORLD_SIZE * Define::WORLD_SIZE * 4)
+	: _data(data),
+	_tileMatrix(Define::WORLD_SIZE, std::vector<int>(Define::WORLD_SIZE)),
+	_vertices(sf::Quads, Define::WORLD_SIZE * Define::WORLD_SIZE * 4),
+	_view(sf::Vector2f(Define::WORLD_VIEW_WIDTH / 2, Define::WORLD_VIEW_HEIGHT / 2), sf::Vector2f(Define::WORLD_VIEW_WIDTH, Define::WORLD_VIEW_HEIGHT))
 {
 
 }
@@ -50,6 +54,40 @@ void WorldMap::handleInput()
 			_data->window.close();
 		}
 	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+	{
+		std::cout << "W";
+		//cout << "View.getCenter().y - View.getSize().y / 2: " << view.getCenter().y - view.getSize().y / 2 << " | map.getGlobalBounds.().height: " << map.getGlobalBounds().height << "\n";
+		if (_view.getCenter().y - _view.getSize().y / 2 > 0)
+		{
+			_view.move(0.f, -5.f);
+		}
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+	{
+		std::cout << "S";
+		if (_view.getCenter().y + _view.getSize().y / 2 < Define::WORLD_SIZE * Define::TILE_SIZE)
+		{
+			_view.move(0.f, 5.f);
+		}
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+	{
+		std::cout << "A";
+		if (_view.getCenter().x - _view.getSize().x / 2 > 0)
+		{
+			_view.move(-5.f, 0.f);
+		}
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+	{
+		std::cout << "D";
+		if (_view.getCenter().x + _view.getSize().x / 2 < Define::WORLD_SIZE * Define::TILE_SIZE)
+		{
+			_view.move(5.f, 0.f);
+		}
+	}
 }
 
 void WorldMap::update(float delta)
@@ -60,6 +98,8 @@ void WorldMap::update(float delta)
 void WorldMap::draw()
 {
 	_data->window.clear(sf::Color(sf::Color::White));
+
+	_data->window.setView(_view);
 
 	_data->window.draw(_vertices);
 

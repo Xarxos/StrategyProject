@@ -11,8 +11,10 @@ namespace Define
 
 	const float SPLASH_STATE_DURATION(3.0f);
 
-	const int WORLD_SIZE(10);
-	const int TILE_SIZE(10);
+	const int WORLD_SIZE(100);
+	const int TILE_SIZE(20);
+	const float WORLD_VIEW_WIDTH(SCREEN_WIDTH);
+	const float WORLD_VIEW_HEIGHT(SCREEN_HEIGHT);
 }
 
 namespace Filepath

@@ -1,15 +1,15 @@
 #include "stdafx.h"
 #include <SFML\Graphics.hpp>
 #include "InputManager.h"
+#include <iostream>
 
 bool InputManager::isSpriteClicked(sf::Sprite object, sf::Mouse::Button button, sf::RenderWindow &window)
 {
 	if (sf::Mouse::isButtonPressed(button))
 	{
-		sf::IntRect tempRect(object.getPosition().x, object.getPosition().y, object.getGlobalBounds().width, object.getGlobalBounds().height);
-
-		if (tempRect.contains(sf::Mouse::getPosition(window)))
+		if (object.getGlobalBounds().contains(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y))
 		{
+			std::cout << "Button contains mouse, will return true.\n";
 			return true;
 		}
 	}
