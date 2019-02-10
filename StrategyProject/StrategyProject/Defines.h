@@ -18,7 +18,7 @@ namespace Define
 	const float WORLD_VIEW_WIDTH(SCREEN_WIDTH);
 	const float WORLD_VIEW_HEIGHT(SCREEN_HEIGHT);
 	const float WORLD_CAMERA_MOVE_SPEED(5.f);
-	const float WORLD_CAMERA_ZOOM_FACTOR(10.f);
+	const float WORLD_CAMERA_ZOOM_FACTOR(1.1f);
 }
 
 namespace Filepath

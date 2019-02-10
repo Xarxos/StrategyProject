@@ -81,7 +81,14 @@ void WorldMap::handleInput()
 
 		if (event.type == sf::Event::MouseWheelScrolled)
 		{
-			_view.setSize(_view.getSize().x - event.mouseWheelScroll.delta * Define::WORLD_CAMERA_ZOOM_FACTOR, _view.getSize().y - event.mouseWheelScroll.delta * Define::WORLD_CAMERA_ZOOM_FACTOR);
+			if (event.mouseWheelScroll.delta >= 0)
+			{
+				_view.zoom(Define::WORLD_CAMERA_ZOOM_FACTOR);
+			}
+			else
+			{
+				_view.zoom(1 / Define::WORLD_CAMERA_ZOOM_FACTOR);
+			}
 		}
 
 		if (event.type == sf::Event::KeyPressed)
