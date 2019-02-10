@@ -31,12 +31,14 @@ namespace Filepath
 	const std::string EXIT_GAME_BUTTON("Resources/Textures/ExitButton.png");
 
 	const std::string WORLD_MAP_BACKGROUND("Resources/Textures/WorldMapBackground.png");
+	const std::string WORLD_MAP_BACKGROUND_GRAYSCALE("Resources/Textures/WorldMapBackgroundGrayScale.png");
 }
 
 namespace Colors
 {
-	const sf::Color MAP_MODE_DEFAULT(255, 255, 255, 0);
-	const sf::Color MAP_MODE_WATER(0, 0, 255, 0);
+	const sf::Color MAP_MODE_DEFAULT(255, 255, 255);
+	const sf::Color MAP_MODE_WATER(29, 52, 236);
+	const sf::Color MAP_MODE_FLATGROUND(125, 181, 5);
 }
 
 namespace Controls
@@ -48,4 +50,5 @@ namespace Controls
 
 	const sf::Keyboard::Key WORLD_MAP_MODE_DEFAULT(sf::Keyboard::Num0);
 	const sf::Keyboard::Key WORLD_MAP_MODE_WATER(sf::Keyboard::Num1);
+	const sf::Keyboard::Key WORLD_MAP_MODE_FLATGROUND(sf::Keyboard::Num2);
 }

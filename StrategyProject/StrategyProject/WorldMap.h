@@ -6,7 +6,7 @@
 #include <vector>
 #include <map>
 
-struct TileMap
+/*struct TileMap
 {
 	std::vector<double> flatGround;
 	std::vector<double> hills;
@@ -15,7 +15,7 @@ struct TileMap
 	std::vector<double> forest;
 	std::vector<double> grassLand;
 	std::vector<double> farmLand;
-};
+};*/
 
 enum class MapMode
 {

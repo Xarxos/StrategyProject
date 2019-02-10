@@ -19,6 +19,15 @@ WorldMap::WorldMap(GameDataRef data)
 		0.35, 0.35, 0.25, 0.95, 0.10,
 		0.15, 0.55, 0.85, 0.55, 0.07
 	};
+
+	_tileTerrains[MapMode::FlatGround] =
+	{
+		0.20, 0.30, 0.85, 0.05, 0.99,
+		0.40, 0.92, 0.97, 0.40, 0.60,
+		0.30, 0.80, 0.90, 0.10, 0.35,
+		0.65, 0.65, 0.75, 0.05, 0.90,
+		0.85, 0.45, 0.15, 0.45, 0.93
+	};
 }
 
 void WorldMap::init()
@@ -28,6 +37,7 @@ void WorldMap::init()
 	float start = clock.getElapsedTime().asSeconds();
 
 	_data->assets.loadTexture("World Map Background", Filepath::WORLD_MAP_BACKGROUND);
+	_data->assets.loadTexture("World Map Background Grayscale", Filepath::WORLD_MAP_BACKGROUND_GRAYSCALE);
 	_backgroundTexture = _data->assets.getTexture("World Map Background");
 
 	for (int row = 0; row < Define::WORLD_SIZE; row++)
@@ -83,6 +93,10 @@ void WorldMap::handleInput()
 			if (event.key.code == Controls::WORLD_MAP_MODE_WATER)
 			{
 				changeMapMode(MapMode::Water);
+			}
+			if (event.key.code == Controls::WORLD_MAP_MODE_FLATGROUND)
+			{
+				changeMapMode(MapMode::FlatGround);
 			}
 		}
 	}
@@ -140,13 +154,24 @@ void WorldMap::changeMapMode(MapMode mode)
 	switch (mode)
 	{
 		case MapMode::Default:
+			_backgroundTexture = _data->assets.getTexture("World Map Background");
 			baseColor = Colors::MAP_MODE_DEFAULT;
 			break;
 
 		case MapMode::Water:
+			_backgroundTexture = _data->assets.getTexture("World Map Background Grayscale");
 			baseColor = Colors::MAP_MODE_WATER;
 			break;
+
+		case MapMode::FlatGround:
+			_backgroundTexture = _data->assets.getTexture("World Map Background Grayscale");
+			baseColor = Colors::MAP_MODE_FLATGROUND;
+			break;
 	}
+
+	int differenceRed = 255 - baseColor.r;
+	int differenceGreen = 255 - baseColor.g;
+	int differenceBlue = 255 - baseColor.b;
 
 	for (int row = 0; row < Define::WORLD_SIZE; row++)
 	{
@@ -158,11 +183,12 @@ void WorldMap::changeMapMode(MapMode mode)
 			{
 				if (mode == MapMode::Default)
 				{
-					_vertices[quadIndex + i].color = sf::Color(baseColor) + sf::Color(0, 0, 0, 255);
+					_vertices[quadIndex + i].color = sf::Color(baseColor);
 				}
 				else
 				{
-					_vertices[quadIndex + i].color = sf::Color(0, 0, 255, 255 * _tileTerrains.at(mode)[_tileMatrix[row][column]]);
+					double currentTerrain = _tileTerrains.at(mode)[_tileMatrix[row][column]];
+					_vertices[quadIndex + i].color = sf::Color(255 - differenceRed * currentTerrain, 255 - differenceGreen * currentTerrain, 255 - differenceBlue * currentTerrain);
 				}
 			}
 		}
