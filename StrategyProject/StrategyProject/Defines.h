@@ -2,6 +2,7 @@
 
 #include <string>
 #include "StateMachine.h"
+#include "SFML\Graphics.hpp"
 
 namespace Define
 {
@@ -27,4 +28,20 @@ namespace Filepath
 	const std::string MAIN_MENU_BACKGROUND("Resources/Textures/MainMenuBackground.png");
 	const std::string TEST_GAME_BUTTON("Resources/Textures/TestGameButton.png");
 	const std::string EXIT_GAME_BUTTON("Resources/Textures/ExitButton.png");
+}
+
+namespace Colors
+{
+	const sf::Color MAP_MODE_WATER(0, 0, 255, 0);
+}
+
+namespace Controls
+{
+	const sf::Keyboard::Key CAMERA_MOVE_UP(sf::Keyboard::W);
+	const sf::Keyboard::Key CAMERA_MOVE_DOWN(sf::Keyboard::S);
+	const sf::Keyboard::Key CAMERA_MOVE_LEFT(sf::Keyboard::A);
+	const sf::Keyboard::Key CAMERA_MOVE_RIGHT(sf::Keyboard::D);
+
+	const sf::Keyboard::Key WORLD_MAP_MODE_DEFAULT(sf::Keyboard::Num0);
+	const sf::Keyboard::Key WORLD_MAP_MODE_WATER(sf::Keyboard::Num1);
 }

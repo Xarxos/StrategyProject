@@ -34,15 +34,6 @@ void WorldMap::init()
 	sf::Clock clock;
 	float start = clock.getElapsedTime().asSeconds();
 
-	/*_tileTerrain.water =
-	{
-		0.05, 0.01, 0.08, 0.95, 0.01,
-		0.02, 0.02, 0.03, 0.60, 0.40,
-		0.65, 0.20, 0.10, 0.90, 0.65,
-		0.35, 0.35, 0.25, 0.95, 0.10,
-		0.15, 0.55, 0.85, 0.55, 0.07
-	};*/
-
 	for (int row = 0; row < Define::WORLD_SIZE; row++)
 	{
 		for (int column = 0; column < Define::WORLD_SIZE; column++)
@@ -91,37 +82,39 @@ void WorldMap::handleInput()
 
 		if (event.type == sf::Event::KeyPressed)
 		{
-			std::cout << "Key pressed.\n";
-			if (event.key.code == sf::Keyboard::Num1)
+			if (event.key.code == Controls::WORLD_MAP_MODE_DEFAULT)
 			{
-				std::cout << "Keypressed: Num1\n";
+				changeMapMode(MapMode::Default);
+			}
+			if (event.key.code == Controls::WORLD_MAP_MODE_WATER)
+			{
 				changeMapMode(MapMode::Water);
 			}
 		}
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+	if (sf::Keyboard::isKeyPressed(Controls::CAMERA_MOVE_UP))
 	{
 		if (_view.getCenter().y - _view.getSize().y / 2 > 0)
 		{
 			_view.move(0.f, -Define::WORLD_CAMERA_MOVE_SPEED);
 		}
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+	if (sf::Keyboard::isKeyPressed(Controls::CAMERA_MOVE_DOWN))
 	{
 		if (_view.getCenter().y + _view.getSize().y / 2 < Define::WORLD_SIZE * Define::TILE_SIZE)
 		{
 			_view.move(0.f, Define::WORLD_CAMERA_MOVE_SPEED);
 		}
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+	if (sf::Keyboard::isKeyPressed(Controls::CAMERA_MOVE_LEFT))
 	{
 		if (_view.getCenter().x - _view.getSize().x / 2 > 0)
 		{
 			_view.move(-Define::WORLD_CAMERA_MOVE_SPEED, 0.f);
 		}
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+	if (sf::Keyboard::isKeyPressed(Controls::CAMERA_MOVE_RIGHT))
 	{
 		if (_view.getCenter().x + _view.getSize().x / 2 < Define::WORLD_SIZE * Define::TILE_SIZE)
 		{
@@ -148,6 +141,15 @@ void WorldMap::draw()
 
 void WorldMap::changeMapMode(MapMode mode)
 {
+	sf::Color baseColor;
+
+	switch (mode)
+	{
+		case MapMode::Water:
+			baseColor = Colors::MAP_MODE_WATER;
+			break;
+	}
+
 	for (int row = 0; row < Define::WORLD_SIZE; row++)
 	{
 		for (int column = 0; column < Define::WORLD_SIZE; column++)
@@ -156,7 +158,17 @@ void WorldMap::changeMapMode(MapMode mode)
 
 			for (int i = 0; i < 4; i++)
 			{
-				_vertices[quadIndex + i].color = sf::Color(0, 0, 255, 255 * _tileTerrains.at(mode)[_tileMatrix[row][column]]);
+				if (mode == MapMode::Default)
+				{
+					_vertices[quadIndex + 0].color = sf::Color(sf::Color::Green);
+					_vertices[quadIndex + 1].color = sf::Color(sf::Color::Red);
+					_vertices[quadIndex + 2].color = sf::Color(sf::Color::Blue);
+					_vertices[quadIndex + 3].color = sf::Color(sf::Color::Magenta);
+				}
+				else
+				{
+					_vertices[quadIndex + i].color = sf::Color(baseColor) + sf::Color(0, 0, 0, 255 * _tileTerrains.at(mode)[_tileMatrix[row][column]]);
+				}
 			}
 		}
 	}
