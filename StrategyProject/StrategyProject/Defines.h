@@ -14,6 +14,7 @@ namespace Define
 
 	const int WORLD_SIZE(5);
 	const int TILE_SIZE(100);
+	const float TILE_TX_SIZE(180.f);
 	const float WORLD_VIEW_WIDTH(SCREEN_WIDTH);
 	const float WORLD_VIEW_HEIGHT(SCREEN_HEIGHT);
 	const float WORLD_CAMERA_MOVE_SPEED(5.f);
@@ -28,10 +29,13 @@ namespace Filepath
 	const std::string MAIN_MENU_BACKGROUND("Resources/Textures/MainMenuBackground.png");
 	const std::string TEST_GAME_BUTTON("Resources/Textures/TestGameButton.png");
 	const std::string EXIT_GAME_BUTTON("Resources/Textures/ExitButton.png");
+
+	const std::string WORLD_MAP_BACKGROUND("Resources/Textures/WorldMapBackground.png");
 }
 
 namespace Colors
 {
+	const sf::Color MAP_MODE_DEFAULT(255, 255, 255, 0);
 	const sf::Color MAP_MODE_WATER(0, 0, 255, 0);
 }
 

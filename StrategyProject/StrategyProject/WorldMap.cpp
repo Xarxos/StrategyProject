@@ -19,13 +19,6 @@ WorldMap::WorldMap(GameDataRef data)
 		0.35, 0.35, 0.25, 0.95, 0.10,
 		0.15, 0.55, 0.85, 0.55, 0.07
 	};
-	/*_tiles.flatGround.resize(Define::WORLD_SIZE * Define::WORLD_SIZE);
-	_tiles.hills.resize(Define::WORLD_SIZE * Define::WORLD_SIZE);
-	_tiles.mountains.resize(Define::WORLD_SIZE * Define::WORLD_SIZE);
-	_tiles.water.resize(Define::WORLD_SIZE * Define::WORLD_SIZE);
-	_tiles.forest.resize(Define::WORLD_SIZE * Define::WORLD_SIZE);
-	_tiles.grassLand.resize(Define::WORLD_SIZE * Define::WORLD_SIZE);
-	_tiles.farmLand.resize(Define::WORLD_SIZE * Define::WORLD_SIZE);*/
 }
 
 void WorldMap::init()
@@ -34,6 +27,9 @@ void WorldMap::init()
 	sf::Clock clock;
 	float start = clock.getElapsedTime().asSeconds();
 
+	_data->assets.loadTexture("World Map Background", Filepath::WORLD_MAP_BACKGROUND);
+	_backgroundTexture = _data->assets.getTexture("World Map Background");
+
 	for (int row = 0; row < Define::WORLD_SIZE; row++)
 	{
 		for (int column = 0; column < Define::WORLD_SIZE; column++)
@@ -41,22 +37,20 @@ void WorldMap::init()
 			_tileMatrix[row][column] = row * Define::WORLD_SIZE + column;
 			int quadIndex = _tileMatrix[row][column] * 4;
 
-			_vertices[quadIndex + 0].position = sf::Vector2f(row * Define::TILE_SIZE, column * Define::TILE_SIZE);
-			_vertices[quadIndex + 1].position = sf::Vector2f(row * Define::TILE_SIZE, column * Define::TILE_SIZE + Define::TILE_SIZE);
-			_vertices[quadIndex + 2].position = sf::Vector2f(row * Define::TILE_SIZE + Define::TILE_SIZE, column * Define::TILE_SIZE + Define::TILE_SIZE);
-			_vertices[quadIndex + 3].position = sf::Vector2f(row * Define::TILE_SIZE + Define::TILE_SIZE, column * Define::TILE_SIZE);
+			_vertices[quadIndex + 0].position = sf::Vector2f(column * Define::TILE_SIZE, row * Define::TILE_SIZE);
+			_vertices[quadIndex + 1].position = sf::Vector2f(column * Define::TILE_SIZE + Define::TILE_SIZE, row * Define::TILE_SIZE);
+			_vertices[quadIndex + 2].position = sf::Vector2f(column * Define::TILE_SIZE + Define::TILE_SIZE, row * Define::TILE_SIZE + Define::TILE_SIZE);
+			_vertices[quadIndex + 3].position = sf::Vector2f(column * Define::TILE_SIZE, row * Define::TILE_SIZE + Define::TILE_SIZE);
 
 			_vertices[quadIndex + 0].color = sf::Color(sf::Color::Green);
 			_vertices[quadIndex + 1].color = sf::Color(sf::Color::Red);
 			_vertices[quadIndex + 2].color = sf::Color(sf::Color::Blue);
 			_vertices[quadIndex + 3].color = sf::Color(sf::Color::Magenta);
 
-			/*
-			_vertices[quadIndex + 0].texCoords = sf::Vector2f(0.f, 0.f);
-			_vertices[quadIndex + 1].texCoords = sf::Vector2f(Config::SQUARE_TX_SIZE, 0.f);
-			_vertices[quadIndex + 2].texCoords = sf::Vector2f(Config::SQUARE_TX_SIZE, Config::SQUARE_TX_SIZE);
-			_vertices[quadIndex + 3].texCoords = sf::Vector2f(0.f, Config::SQUARE_TX_SIZE);
-			*/
+			_vertices[quadIndex + 0].texCoords = sf::Vector2f(column * Define::TILE_TX_SIZE, row * Define::TILE_TX_SIZE);
+			_vertices[quadIndex + 1].texCoords = sf::Vector2f(column * Define::TILE_TX_SIZE + Define::TILE_TX_SIZE, row * Define::TILE_TX_SIZE);
+			_vertices[quadIndex + 2].texCoords = sf::Vector2f(column * Define::TILE_TX_SIZE + Define::TILE_TX_SIZE, row * Define::TILE_TX_SIZE + Define::TILE_TX_SIZE);
+			_vertices[quadIndex + 3].texCoords = sf::Vector2f(column * Define::TILE_TX_SIZE, row * Define::TILE_TX_SIZE + Define::TILE_TX_SIZE);
 		}
 	}
 
@@ -134,7 +128,7 @@ void WorldMap::draw()
 
 	_data->window.setView(_view);
 
-	_data->window.draw(_vertices);
+	_data->window.draw(_vertices, &_backgroundTexture);
 
 	_data->window.display();
 }
@@ -145,6 +139,10 @@ void WorldMap::changeMapMode(MapMode mode)
 
 	switch (mode)
 	{
+		case MapMode::Default:
+			baseColor = Colors::MAP_MODE_DEFAULT;
+			break;
+
 		case MapMode::Water:
 			baseColor = Colors::MAP_MODE_WATER;
 			break;
@@ -160,34 +158,13 @@ void WorldMap::changeMapMode(MapMode mode)
 			{
 				if (mode == MapMode::Default)
 				{
-					_vertices[quadIndex + 0].color = sf::Color(sf::Color::Green);
-					_vertices[quadIndex + 1].color = sf::Color(sf::Color::Red);
-					_vertices[quadIndex + 2].color = sf::Color(sf::Color::Blue);
-					_vertices[quadIndex + 3].color = sf::Color(sf::Color::Magenta);
+					_vertices[quadIndex + i].color = sf::Color(baseColor) + sf::Color(0, 0, 0, 255);
 				}
 				else
 				{
-					_vertices[quadIndex + i].color = sf::Color(baseColor) + sf::Color(0, 0, 0, 255 * _tileTerrains.at(mode)[_tileMatrix[row][column]]);
+					_vertices[quadIndex + i].color = sf::Color(0, 0, 255, 255 * _tileTerrains.at(mode)[_tileMatrix[row][column]]);
 				}
 			}
 		}
 	}
-	/*std::cout << "Map Mode: Water\n";
-	switch (mode)
-	{
-		case MapMode::Water:
-			for (int row = 0; row < Define::WORLD_SIZE; row++)
-			{
-				for (int column = 0; column < Define::WORLD_SIZE; column++)
-				{
-					int quadIndex = _tileMatrix[row][column] * 4;
-
-					_vertices[quadIndex + 0].color = sf::Color(0, 0, 255, 255 * _tiles.water[_tileMatrix[row][column]]);
-					_vertices[quadIndex + 1].color = sf::Color(0, 0, 255, 255 * _tiles.water[_tileMatrix[row][column]]);
-					_vertices[quadIndex + 2].color = sf::Color(0, 0, 255, 255 * _tiles.water[_tileMatrix[row][column]]);
-					_vertices[quadIndex + 3].color = sf::Color(0, 0, 255, 255 * _tiles.water[_tileMatrix[row][column]]);
-				}
-			}
-			break;
-	}*/
 }

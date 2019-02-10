@@ -32,6 +32,7 @@ private:
 	sf::VertexArray _vertices;
 	std::vector<std::vector<int>> _tileMatrix;
 	std::map<MapMode, std::vector<double>> _tileTerrains;
+	sf::Texture _backgroundTexture;
 
 	sf::View _view;
 
