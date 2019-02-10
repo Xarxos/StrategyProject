@@ -34,7 +34,9 @@ void MainMenuState::handleInput()
 		
 		if (_data->input.isSpriteClicked(_testGameButton, sf::Mouse::Left, _data->window))
 		{
+			std::cout << "Attempt to add WorldMap...";
 			_data->machine.addState(stateRef(new WorldMap(_data)), true);
+			std::cout << "Success!\n";
 		}
 	}
 }

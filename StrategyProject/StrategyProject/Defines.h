@@ -11,8 +11,8 @@ namespace Define
 
 	const float SPLASH_STATE_DURATION(0.5f);
 
-	const int WORLD_SIZE(100);
-	const int TILE_SIZE(20);
+	const int WORLD_SIZE(5);
+	const int TILE_SIZE(100);
 	const float WORLD_VIEW_WIDTH(SCREEN_WIDTH);
 	const float WORLD_VIEW_HEIGHT(SCREEN_HEIGHT);
 	const float WORLD_CAMERA_MOVE_SPEED(5.f);
