@@ -90,6 +90,9 @@
     <ClInclude Include="WorldMap.h">
       <Filter>Game\States\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="TileDataBoxState.h">
+      <Filter>Game\States\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -120,6 +123,9 @@
       <Filter>Game\Misc\Source</Filter>
     </ClCompile>
     <ClCompile Include="WorldMap.cpp">
+      <Filter>Game\States\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="TileDataBoxState.cpp">
       <Filter>Game\States\Source</Filter>
     </ClCompile>
   </ItemGroup>

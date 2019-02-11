@@ -4,6 +4,7 @@
 #include <vector>
 #include "SFML\Graphics.hpp"
 #include <iostream>
+#include "TileDataBoxState.h"
 
 WorldMap::WorldMap(GameDataRef data)
 	: _data(data),
@@ -97,6 +98,14 @@ void WorldMap::handleInput()
 				std::cout << "World Mouse: " << worldMouse.x << "," << worldMouse.y << "\n";
 
 				int tileClicked(coordsToTile(worldMouse));
+				std::map<Terrain, double> tileTerrainData;
+
+				for (std::map<Terrain, std::vector<double>>::iterator it = _tileTerrains.begin(); it != _tileTerrains.end(); it++)
+				{
+					tileTerrainData[it->first] = _tileTerrains.at(it->first)[tileClicked];
+				}
+
+				_data->machine.addState(stateRef(new TileDataBoxState(_data, tileTerrainData)), false);
 				std::cout << "Tile Clicked: " << tileClicked << "\n";
 				std::cout << "Water: " << _tileTerrains.at(Terrain::Water)[tileClicked] << "\n";
 				std::cout << "Flat Ground: " << _tileTerrains.at(Terrain::FlatGround)[tileClicked] << "\n";
