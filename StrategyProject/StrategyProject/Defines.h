@@ -13,7 +13,8 @@ namespace Define
 	const float SPLASH_STATE_DURATION(0.5f);
 
 	const int WORLD_SIZE(10);
-	const int TILE_SIZE(500 / WORLD_SIZE);	// Beware of integer division, could maybe cause a problem I dunno?
+	const int DEFAULT_MAP_SIZE(500);
+	const int TILE_SIZE(DEFAULT_MAP_SIZE / WORLD_SIZE);	// Beware of integer division, could maybe cause a problem I dunno?
 	const int WORLD_TX_SIZE(900);
 	const int TILE_TX_SIZE(WORLD_TX_SIZE / WORLD_SIZE);	// Beware of integer division, could maybe cause a problem I dunno?
 	const float WORLD_VIEW_WIDTH(SCREEN_WIDTH);
