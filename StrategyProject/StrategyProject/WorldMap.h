@@ -53,4 +53,5 @@ private:
 	void loadTerrainData();
 	//int terrainPixelsInTile(int tileX, int tileY, Terrain terrain);
 	void changeMapMode(Terrain mapMode);
+	int coordsToTile(sf::Vector2i worldCoords);
 };

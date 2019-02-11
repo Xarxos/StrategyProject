@@ -89,6 +89,23 @@ void WorldMap::handleInput()
 			_data->window.close();
 		}
 
+		if (event.type == sf::Event::MouseButtonPressed)
+		{
+			if (event.mouseButton.button == sf::Mouse::Left)
+			{
+				sf::Vector2i worldMouse(_data->window.mapPixelToCoords(sf::Mouse::getPosition(_data->window), _view).x, _data->window.mapPixelToCoords(sf::Mouse::getPosition(_data->window), _view).y);
+				std::cout << "World Mouse: " << worldMouse.x << "," << worldMouse.y << "\n";
+
+				int tileClicked(coordsToTile(worldMouse));
+				std::cout << "Tile Clicked: " << tileClicked << "\n";
+				std::cout << "Water: " << _tileTerrains.at(Terrain::Water)[tileClicked] << "\n";
+				std::cout << "Flat Ground: " << _tileTerrains.at(Terrain::FlatGround)[tileClicked] << "\n";
+				std::cout << "Hills: " << _tileTerrains.at(Terrain::Hills)[tileClicked] << "\n";
+				std::cout << "Mountains: " << _tileTerrains.at(Terrain::Mountains)[tileClicked] << "\n";
+				std::cout << "Forest: " << _tileTerrains.at(Terrain::Forest)[tileClicked] << "\n";
+			}
+		}
+
 		if (event.type == sf::Event::MouseWheelScrolled)
 		{
 			if (event.mouseWheelScroll.delta >= 0)
@@ -340,4 +357,9 @@ void WorldMap::changeMapMode(Terrain mapMode)
 			}
 		}
 	}
+}
+
+int WorldMap::coordsToTile(sf::Vector2i worldCoords)
+{
+	return _tileMatrix[worldCoords.y / Define::TILE_SIZE][worldCoords.x / Define::TILE_SIZE];
 }

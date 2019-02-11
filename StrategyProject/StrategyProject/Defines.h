@@ -12,7 +12,7 @@ namespace Define
 
 	const float SPLASH_STATE_DURATION(0.5f);
 
-	const int WORLD_SIZE(10);
+	const int WORLD_SIZE(30);
 	const int DEFAULT_MAP_SIZE(500);
 	const int TILE_SIZE(DEFAULT_MAP_SIZE / WORLD_SIZE);	// Beware of integer division, could maybe cause a problem I dunno?
 	const int WORLD_TX_SIZE(900);
@@ -40,6 +40,8 @@ namespace Filepath
 
 	const std::string WORLD_MAP_BACKGROUND("Resources/Textures/WorldMapBackground.png");
 	const std::string WORLD_MAP_BACKGROUND_GRAYSCALE("Resources/Textures/WorldMapBackgroundGrayScale.png");
+	//const std::string WORLD_MAP_BACKGROUND("Resources/Data/terrain.bmp");
+	//const std::string WORLD_MAP_BACKGROUND_GRAYSCALE("Resources/Data/terrainGrayscale.bmp");
 }
 
 namespace Colors
