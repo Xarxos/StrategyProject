@@ -11,13 +11,13 @@ WorldMap::WorldMap(GameDataRef data)
 	_vertices(sf::Quads, Define::WORLD_SIZE * Define::WORLD_SIZE * 4),
 	_view(sf::Vector2f(Define::WORLD_VIEW_WIDTH / 2, Define::WORLD_VIEW_HEIGHT / 2), sf::Vector2f(Define::WORLD_VIEW_WIDTH, Define::WORLD_VIEW_HEIGHT))
 {
-	_tileTerrains[MapMode::Water].resize(Define::WORLD_SIZE * Define::WORLD_SIZE);
-	_tileTerrains[MapMode::FlatGround].resize(Define::WORLD_SIZE * Define::WORLD_SIZE);
-	_tileTerrains[MapMode::Hills].resize(Define::WORLD_SIZE * Define::WORLD_SIZE);
-	_tileTerrains[MapMode::Mountains].resize(Define::WORLD_SIZE * Define::WORLD_SIZE);
-	_tileTerrains[MapMode::Forest].resize(Define::WORLD_SIZE * Define::WORLD_SIZE);
+	_tileTerrains[Terrain::Water].resize(Define::WORLD_SIZE * Define::WORLD_SIZE);
+	_tileTerrains[Terrain::FlatGround].resize(Define::WORLD_SIZE * Define::WORLD_SIZE);
+	_tileTerrains[Terrain::Hills].resize(Define::WORLD_SIZE * Define::WORLD_SIZE);
+	_tileTerrains[Terrain::Mountains].resize(Define::WORLD_SIZE * Define::WORLD_SIZE);
+	_tileTerrains[Terrain::Forest].resize(Define::WORLD_SIZE * Define::WORLD_SIZE);
 	
-	/*_tileTerrains[MapMode::Water] =
+	/*_tileTerrains[Terrain::Water] =
 	{
 		0.05, 0.01, 0.08, 0.95, 0.01,
 		0.02, 0.02, 0.03, 0.60, 0.40,
@@ -26,7 +26,7 @@ WorldMap::WorldMap(GameDataRef data)
 		0.15, 0.55, 0.85, 0.55, 0.07
 	};
 
-	_tileTerrains[MapMode::FlatGround] =
+	_tileTerrains[Terrain::FlatGround] =
 	{
 		0.20, 0.30, 0.85, 0.05, 0.99,
 		0.40, 0.92, 0.97, 0.40, 0.60,
@@ -105,27 +105,27 @@ void WorldMap::handleInput()
 		{
 			if (event.key.code == Controls::WORLD_MAP_MODE_DEFAULT)
 			{
-				changeMapMode(MapMode::Default);
+				changeMapMode(Terrain::Default);
 			}
 			if (event.key.code == Controls::WORLD_MAP_MODE_WATER)
 			{
-				changeMapMode(MapMode::Water);
+				changeMapMode(Terrain::Water);
 			}
 			if (event.key.code == Controls::WORLD_MAP_MODE_FLATGROUND)
 			{
-				changeMapMode(MapMode::FlatGround);
+				changeMapMode(Terrain::FlatGround);
 			}
 			if (event.key.code == Controls::WORLD_MAP_MODE_HILLS)
 			{
-				changeMapMode(MapMode::Hills);
+				changeMapMode(Terrain::Hills);
 			}
 			if (event.key.code == Controls::WORLD_MAP_MODE_MOUNTAINS)
 			{
-				changeMapMode(MapMode::Mountains);
+				changeMapMode(Terrain::Mountains);
 			}
 			if (event.key.code == Controls::WORLD_MAP_MODE_FOREST)
 			{
-				changeMapMode(MapMode::Forest);
+				changeMapMode(Terrain::Forest);
 			}
 		}
 	}
@@ -183,7 +183,6 @@ void WorldMap::loadTerrainData()
 	{
 		for (int column = 0; column < Define::WORLD_SIZE; column++)
 		{
-			//std::cout << "Start Tile " << column << "," << row << "...\n";
 			int waterPixels(0);
 			int flatgroundPixels(0);
 			int hillPixels(0);
@@ -194,7 +193,6 @@ void WorldMap::loadTerrainData()
 			{
 				for (int pixelColumn = 0; pixelColumn < Define::TILE_TX_SIZE; pixelColumn++)
 				{
-					//std::cout << "Start Pixel " << pixelColumn << "," << pixelRow << "...";
 					if (_terrainData.getPixel(column * Define::TILE_TX_SIZE + pixelColumn, row * Define::TILE_TX_SIZE + pixelRow) == Define::DATA_COLOR_WATER)
 					{
 						waterPixels++;
@@ -219,18 +217,10 @@ void WorldMap::loadTerrainData()
 					{
 						std::cout << "WRONG COLOR DETECTED!\n";
 					}
-
-					//std::cout << "End.\n";
 				}
 			}
-			//std::cout << "After Loops...";
+
 			double totalPixels = Define::TILE_TX_SIZE * Define::TILE_TX_SIZE;
-			/*std::cout << "Total Pixels: " << totalPixels << "\n";
-			std::cout << "Water Pixels: " << waterPixels << "\n";
-			std::cout << "Flatground Pixels: " << flatgroundPixels << "\n";
-			std::cout << "Hill Pixels: " << hillPixels << "\n";
-			std::cout << "Mountain Pixels: " << mountainPixels << "\n";
-			std::cout << "Forest Pixels: " << forestPixels << "\n";*/
 
 			double waterRatio = waterPixels / totalPixels;
 			double flatgroundRatio = flatgroundPixels / totalPixels;
@@ -238,49 +228,89 @@ void WorldMap::loadTerrainData()
 			double mountainsRatio = mountainPixels / totalPixels;
 			double forestRatio = forestPixels / totalPixels;
 
-			_tileTerrains.at(MapMode::Water)[_tileMatrix[row][column]] = waterRatio;
-			_tileTerrains.at(MapMode::FlatGround)[_tileMatrix[row][column]] = flatgroundRatio;
-			_tileTerrains.at(MapMode::Hills)[_tileMatrix[row][column]] = hillsRatio;
-			_tileTerrains.at(MapMode::Mountains)[_tileMatrix[row][column]] = mountainsRatio;
-			_tileTerrains.at(MapMode::Forest)[_tileMatrix[row][column]] = forestRatio;
-
-			//std::cout << "End.\n";
+			_tileTerrains.at(Terrain::Water)[_tileMatrix[row][column]] = waterRatio;
+			_tileTerrains.at(Terrain::FlatGround)[_tileMatrix[row][column]] = flatgroundRatio;
+			_tileTerrains.at(Terrain::Hills)[_tileMatrix[row][column]] = hillsRatio;
+			_tileTerrains.at(Terrain::Mountains)[_tileMatrix[row][column]] = mountainsRatio;
+			_tileTerrains.at(Terrain::Forest)[_tileMatrix[row][column]] = forestRatio;
 		}
 	}
 }
 
-void WorldMap::changeMapMode(MapMode mode)
+/*int WorldMap::terrainPixelsInTile(int tileX, int tileY, Terrain terrain)
+{
+	int terrainPixels(0);
+	sf::Color terrainColor;
+
+	switch (terrain)
+	{
+		case Terrain::Water:
+			terrainColor = Define::DATA_COLOR_WATER;
+			break;
+
+		case Terrain::FlatGround:
+			terrainColor = Define::DATA_COLOR_FLATGROUND;
+			break;
+
+		case Terrain::Hills:
+			terrainColor = Define::DATA_COLOR_HILLS;
+			break;
+
+		case Terrain::Mountains:
+			terrainColor = Define::DATA_COLOR_MOUNTAINS;
+			break;
+
+		case Terrain::Forest:
+			terrainColor = Define::DATA_COLOR_FOREST;
+			break;
+	}
+
+	for (int pixelRow = 0; pixelRow < Define::TILE_TX_SIZE; pixelRow++)
+	{
+		for (int pixelColumn = 0; pixelColumn < Define::TILE_TX_SIZE; pixelColumn++)
+		{
+			if (_terrainData.getPixel(tileX * Define::TILE_TX_SIZE + pixelColumn, tileY * Define::TILE_TX_SIZE + pixelRow) == terrainColor)
+			{
+				terrainPixels++;
+			}
+		}
+	}
+
+	return terrainPixels;
+}*/
+
+void WorldMap::changeMapMode(Terrain mapMode)
 {
 	sf::Color baseColor;
 
-	switch (mode)
+	switch (mapMode)
 	{
-		case MapMode::Default:
+		case Terrain::Default:
 			_backgroundTexture = _data->assets.getTexture("World Map Background");
 			baseColor = Colors::MAP_MODE_DEFAULT;
 			break;
 
-		case MapMode::Water:
+		case Terrain::Water:
 			_backgroundTexture = _data->assets.getTexture("World Map Background Grayscale");
 			baseColor = Colors::MAP_MODE_WATER;
 			break;
 
-		case MapMode::FlatGround:
+		case Terrain::FlatGround:
 			_backgroundTexture = _data->assets.getTexture("World Map Background Grayscale");
 			baseColor = Colors::MAP_MODE_FLATGROUND;
 			break;
 
-		case MapMode::Hills:
+		case Terrain::Hills:
 			_backgroundTexture = _data->assets.getTexture("World Map Background Grayscale");
 			baseColor = Colors::MAP_MODE_HILLS;
 			break;
 
-		case MapMode::Mountains:
+		case Terrain::Mountains:
 			_backgroundTexture = _data->assets.getTexture("World Map Background Grayscale");
 			baseColor = Colors::MAP_MODE_MOUNTAINS;
 			break;
 
-		case MapMode::Forest:
+		case Terrain::Forest:
 			_backgroundTexture = _data->assets.getTexture("World Map Background Grayscale");
 			baseColor = Colors::MAP_MODE_FOREST;
 			break;
@@ -298,13 +328,13 @@ void WorldMap::changeMapMode(MapMode mode)
 
 			for (int i = 0; i < 4; i++)
 			{
-				if (mode == MapMode::Default)
+				if (mapMode == Terrain::Default)
 				{
 					_vertices[quadIndex + i].color = sf::Color(baseColor);
 				}
 				else
 				{
-					double currentTerrain = _tileTerrains.at(mode)[_tileMatrix[row][column]];
+					double currentTerrain = _tileTerrains.at(mapMode)[_tileMatrix[row][column]];
 					_vertices[quadIndex + i].color = sf::Color(255 - differenceRed * currentTerrain, 255 - differenceGreen * currentTerrain, 255 - differenceBlue * currentTerrain);
 				}
 			}

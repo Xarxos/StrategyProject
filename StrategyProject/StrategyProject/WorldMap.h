@@ -17,7 +17,7 @@
 	std::vector<double> farmLand;
 };*/
 
-enum class MapMode
+enum class Terrain
 {
 	Default = -1,
 	Water,
@@ -34,7 +34,7 @@ private:
 
 	sf::VertexArray _vertices;
 	std::vector<std::vector<int>> _tileMatrix;
-	std::map<MapMode, std::vector<double>> _tileTerrains;
+	std::map<Terrain, std::vector<double>> _tileTerrains;
 	sf::Texture _backgroundTexture;
 	sf::Image _terrainData;
 
@@ -51,5 +51,6 @@ public:
 
 private:
 	void loadTerrainData();
-	void changeMapMode(MapMode mode);
+	//int terrainPixelsInTile(int tileX, int tileY, Terrain terrain);
+	void changeMapMode(Terrain mapMode);
 };
