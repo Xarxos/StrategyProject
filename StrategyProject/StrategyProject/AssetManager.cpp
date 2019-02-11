@@ -30,3 +30,17 @@ sf::Font& AssetManager::getFont(const std::string &name)
 {
 	return _fonts.at(name);
 }
+
+void AssetManager::loadImage(const std::string &name, const std::string &fileName)
+{
+	if (!_images[name].loadFromFile(fileName))
+	{
+		// TODO: Throw an exception or something.
+		std::cout << "Failed to load an image.\n";
+	}
+}
+
+sf::Image& AssetManager::getImage(const std::string &name)
+{
+	return _images.at(name);
+}

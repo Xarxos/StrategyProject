@@ -21,7 +21,10 @@ enum class MapMode
 {
 	Default = -1,
 	Water,
-	FlatGround
+	FlatGround,
+	Hills,
+	Mountains,
+	Forest
 };
 
 class WorldMap : public State
@@ -33,6 +36,7 @@ private:
 	std::vector<std::vector<int>> _tileMatrix;
 	std::map<MapMode, std::vector<double>> _tileTerrains;
 	sf::Texture _backgroundTexture;
+	sf::Image _terrainData;
 
 	sf::View _view;
 
@@ -46,5 +50,6 @@ public:
 	virtual void draw() override;
 
 private:
+	void loadTerrainData();
 	void changeMapMode(MapMode mode);
 };
