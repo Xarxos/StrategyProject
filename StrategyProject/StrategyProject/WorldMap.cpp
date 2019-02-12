@@ -105,6 +105,8 @@ void WorldMap::handleInput()
 					tileTerrainData[it->first] = _tileTerrains.at(it->first)[tileClicked];
 				}
 
+				this->freezeInput(true);
+				this->pause(true);
 				_data->machine.addState(stateRef(new TileDataBoxState(_data, tileTerrainData)), false);
 				std::cout << "Tile Clicked: " << tileClicked << "\n";
 				std::cout << "Water: " << _tileTerrains.at(Terrain::Water)[tileClicked] << "\n";
@@ -193,13 +195,13 @@ void WorldMap::update(float delta)
 
 void WorldMap::draw()
 {
-	_data->window.clear(sf::Color(sf::Color::White));
+	//_data->window.clear(sf::Color(sf::Color::White));
 
 	_data->window.setView(_view);
 
 	_data->window.draw(_vertices, &_backgroundTexture);
 
-	_data->window.display();
+	//_data->window.display();
 }
 
 void WorldMap::loadTerrainData()

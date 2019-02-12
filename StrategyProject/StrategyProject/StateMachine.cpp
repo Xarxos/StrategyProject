@@ -18,11 +18,11 @@ void StateMachine::processStateChanges()
 {
 	if (_isRemoving && !_states.empty())
 	{
-		_states.pop();
+		_states.pop_back();
 
 		if (!_states.empty())
 		{
-			_states.top()->resume();
+			_states.back()->resumeAll();
 		}
 
 		_isRemoving = false;
@@ -34,21 +34,16 @@ void StateMachine::processStateChanges()
 		{
 			if (_isReplacing)
 			{
-				_states.pop();
+				_states.pop_back();
 			}
 			else
 			{
-				_states.top()->pause();
+				//_states.top()->pause();
 			}
 		}
 
-		_states.push(std::move(_newState));
-		_states.top()->init();
+		_states.push_back(std::move(_newState));
+		_states.back()->init();
 		_isAdding = false;
 	}
-}
-
-stateRef& StateMachine::getActiveState()
-{
-	return _states.top();
 }

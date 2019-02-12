@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <stack>
+#include <vector>
 
 #include "State.h"
 
@@ -10,7 +11,7 @@ typedef std::unique_ptr<State> stateRef;
 class StateMachine
 {
 private:
-	std::stack<stateRef> _states;
+	std::vector<stateRef> _states;
 	stateRef _newState;
 
 	bool _isRemoving;
@@ -26,5 +27,6 @@ public:
 
 	void processStateChanges();
 
-	stateRef& getActiveState();
+	stateRef& getActiveState() { return _states.back(); }
+	std::vector<stateRef>& getStateStack() { return _states; }
 };

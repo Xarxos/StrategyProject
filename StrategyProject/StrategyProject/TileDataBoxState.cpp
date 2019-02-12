@@ -15,8 +15,10 @@ void TileDataBoxState::init()
 {
 	_data->assets.loadTexture("Tile Data Box", Filepath::TILE_DATA_BOX_BACKGROUND);
 	_data->assets.loadFont("Tile Data Box Font", Filepath::TILE_DATA_BOX_FONT);
+	_data->assets.loadTexture("Data Box Close Button", Filepath::TILE_DATA_BOX_CLOSE_BUTTON);
 
 	_background.setTexture(_data->assets.getTexture("Tile Data Box"));
+	_closeButton.setTexture(_data->assets.getTexture("Data Box Close Button"));
 
 	int loopCount(1);
 
@@ -59,10 +61,10 @@ void TileDataBoxState::init()
 
 		std::cout << "X = " << _background.getPosition().x + _background.getLocalBounds().width / 10 << ", Y = " << _background.getPosition().y + _background.getLocalBounds().height / 6 * loopCount << "\n";
 		
-
 		loopCount++;
 	}
 	
+	_closeButton.setPosition(_background.getPosition().x + _background.getLocalBounds().width - _closeButton.getLocalBounds().width, _background.getPosition().y);
 
 	//_logo.setOrigin(sf::Vector2f(_logo.getLocalBounds().width / 2, _logo.getLocalBounds().height / 2));
 	//_logo.setPosition(Define::SCREEN_WIDTH / 2, Define::SCREEN_HEIGHT / 2);
@@ -78,6 +80,11 @@ void TileDataBoxState::handleInput()
 		{
 			_data->window.close();
 		}
+
+		if (_data->input.isSpriteClicked(_closeButton, sf::Mouse::Left, _data->window))
+		{
+			_data->machine.removeState();
+		}
 	}
 }
 
@@ -88,13 +95,14 @@ void TileDataBoxState::update(float delta)
 
 void TileDataBoxState::draw()
 {
-	_data->window.clear(sf::Color(sf::Color::White));
+	//_data->window.clear(sf::Color(sf::Color::White));
 
 	_data->window.draw(_background);
 	for (std::map<Terrain, sf::Text>::iterator it = _dataText.begin(); it != _dataText.end(); it++)
 	{
 		_data->window.draw(it->second);
 	}
+	_data->window.draw(_closeButton);
 	
-	_data->window.display();
+	//_data->window.display();
 }

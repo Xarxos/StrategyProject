@@ -128,5 +128,8 @@
     <ClCompile Include="TileDataBoxState.cpp">
       <Filter>Game\States\Source</Filter>
     </ClCompile>
+    <ClCompile Include="State.cpp">
+      <Filter>Engine\Source</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

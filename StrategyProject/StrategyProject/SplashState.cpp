@@ -38,10 +38,10 @@ void SplashState::update(float delta)
 
 void SplashState::draw()
 {
-	_data->window.clear(sf::Color(sf::Color::White));
+	//_data->window.clear(sf::Color(sf::Color::White));
 
 	_data->window.draw(_background);
 	_data->window.draw(_logo);
 
-	_data->window.display();
+	//_data->window.display();
 }
