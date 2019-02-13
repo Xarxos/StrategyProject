@@ -199,18 +199,18 @@ void WorldMap::handleInput()
 
 void WorldMap::update(float delta)
 {
-	std::list<subStateRef>::iterator it = _subStates.begin();
+	std::list<subStateRef>::reverse_iterator rit = _subStates.rbegin();
 
-	while (it != _subStates.end())
+	while (rit != _subStates.rend())
 	{
-		if ((*it)->remove())
+		if ((*rit)->remove())
 		{
-			it = _subStates.erase(it);
+			rit = decltype(rit)(_subStates.erase(std::next(rit).base()));
 		}
 		else
 		{
-			(*it)->update(delta);
-			it++;
+			(*rit)->update(delta);
+			rit++;
 		}
 	}
 }
