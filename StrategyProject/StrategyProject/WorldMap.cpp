@@ -63,6 +63,11 @@ void WorldMap::init()
 
 void WorldMap::handleInput()
 {
+	for (auto &subState : _subStates)
+	{
+		subState->handleInput();
+	}
+
 	sf::Event event;
 
 	while (_data->window.pollEvent(event))
@@ -87,7 +92,7 @@ void WorldMap::handleInput()
 					tileTerrainData[it->first] = _tileTerrains.at(it->first)[tileClicked];
 				}
 
-				_subStates.push_back(std::move(stateRef(new TileDataBoxState(_data, tileTerrainData))));
+				_subStates.push_back(std::move(subStateRef(new TileDataBoxState(_data, tileTerrainData))));
 				_subStates.back()->init();
 
 				std::cout << "Tile Clicked: " << tileClicked << "\n";
@@ -172,7 +177,37 @@ void WorldMap::handleInput()
 
 void WorldMap::update(float delta)
 {
+	std::list<subStateRef>::iterator it = _subStates.begin();
 
+	while (it != _subStates.end())
+	{
+		if ((*it)->remove())
+		{
+			std::cout << "Remove substate.\n";
+			it = _subStates.erase(it);
+			std::cout << "Removed it!\n";
+		}
+		else
+		{
+			(*it)->update(delta);
+			it++;
+		}
+	}
+
+	/*for (std::list<subStateRef>::iterator it = _subStates.begin(); it != _subStates.end(); it++)
+	{
+		std::cout << "Increment substate update.\n";
+		if ((*it)->remove())
+		{
+			std::cout << "Remove substate.\n";
+			it = _subStates.erase(it);
+			std::cout << "Removed it!\n";
+		}
+		else
+		{
+			(*it)->update(delta);
+		}
+	}*/
 }
 
 void WorldMap::draw()

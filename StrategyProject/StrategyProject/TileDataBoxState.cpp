@@ -8,15 +8,17 @@
 TileDataBoxState::TileDataBoxState(GameDataRef data, const std::map<Terrain, double> &terrainData)
 	: _data(data), _terrainData(terrainData)
 {
-	//_dataText.resize(_terrainData.size());
+
 }
 
 void TileDataBoxState::init()
 {
 	_data->assets.loadTexture("Tile Data Box", Filepath::TILE_DATA_BOX_BACKGROUND);
+	_data->assets.loadTexture("Tile Data Box Close Button", Filepath::TILE_DATA_BOX_CLOSE_BUTTON);
 	_data->assets.loadFont("Tile Data Box Font", Filepath::TILE_DATA_BOX_FONT);
 
 	_background.setTexture(_data->assets.getTexture("Tile Data Box"));
+	_closeButton.setTexture(_data->assets.getTexture("Tile Data Box Close Button"));
 
 	int loopCount(1);
 
@@ -59,13 +61,10 @@ void TileDataBoxState::init()
 
 		std::cout << "X = " << _background.getPosition().x + _background.getLocalBounds().width / 10 << ", Y = " << _background.getPosition().y + _background.getLocalBounds().height / 6 * loopCount << "\n";
 		
+		_closeButton.setPosition(_background.getPosition().x + _background.getLocalBounds().width - _closeButton.getLocalBounds().width, _background.getPosition().y);
 
 		loopCount++;
 	}
-	
-
-	//_logo.setOrigin(sf::Vector2f(_logo.getLocalBounds().width / 2, _logo.getLocalBounds().height / 2));
-	//_logo.setPosition(Define::SCREEN_WIDTH / 2, Define::SCREEN_HEIGHT / 2);
 }
 
 void TileDataBoxState::handleInput()
@@ -77,6 +76,11 @@ void TileDataBoxState::handleInput()
 		if (event.type == sf::Event::Closed)
 		{
 			_data->window.close();
+		}
+
+		if (_data->input.isSpriteClicked(_closeButton, sf::Mouse::Left, _data->window))
+		{
+			_remove = true;
 		}
 	}
 }
@@ -95,6 +99,7 @@ void TileDataBoxState::draw()
 	{
 		_data->window.draw(it->second);
 	}
+	_data->window.draw(_closeButton);
 	
 	//_data->window.display();
 }

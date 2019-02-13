@@ -1,6 +1,7 @@
 #pragma once
 
 #include "State.h"
+#include "SubState.h"
 #include "Game.h"
 #include "SFML\Graphics.hpp"
 #include <map>
@@ -8,14 +9,13 @@
 #include "Defines.h"
 #include <vector>
 
-class TileDataBoxState : public State
+class TileDataBoxState : public SubState
 {
 private:
 	GameDataRef _data;
 
 	sf::Sprite _background;
 	sf::Sprite _closeButton;
-	//std::vector<sf::Text> _dataText;
 
 	std::map<Terrain, double> _terrainData;
 	std::map<Terrain, sf::Text> _dataText;

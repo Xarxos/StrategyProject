@@ -3,8 +3,10 @@
 #include "Game.h"
 #include "SFML\Graphics.hpp"
 #include "State.h"
+#include "SubState.h"
 #include <vector>
 #include <map>
+#include <list>
 
 /*struct TileMap
 {
@@ -40,7 +42,7 @@ private:
 
 	sf::View _view;
 
-	std::vector<stateRef> _subStates;
+	std::list<subStateRef> _subStates;
 
 public:
 	WorldMap(GameDataRef data);

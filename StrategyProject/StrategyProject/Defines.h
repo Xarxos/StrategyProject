@@ -27,8 +27,6 @@ namespace Define
 	const sf::Color DATA_COLOR_HILLS(sf::Color(153, 136, 108));
 	const sf::Color DATA_COLOR_MOUNTAINS(sf::Color(255, 255, 255));
 	const sf::Color DATA_COLOR_FOREST(sf::Color(13, 153, 32));
-
-	//const int TILE_DATA_BOX_TEXT_SIZE()
 }
 
 namespace Filepath
@@ -47,6 +45,7 @@ namespace Filepath
 
 	const std::string TILE_DATA_BOX_BACKGROUND("Resources/Textures/TileDataBoxBackground.png");
 	const std::string TILE_DATA_BOX_FONT("Resources/Fonts/ARBONNIE.ttf");
+	const std::string TILE_DATA_BOX_CLOSE_BUTTON("Resources/Textures/DataBoxCloseButton.png");
 }
 
 namespace Colors

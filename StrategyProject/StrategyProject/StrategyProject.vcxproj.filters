@@ -93,6 +93,9 @@
     <ClInclude Include="TileDataBoxState.h">
       <Filter>Game\States\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="SubState.h">
+      <Filter>Engine\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
