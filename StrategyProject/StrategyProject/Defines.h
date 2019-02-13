@@ -26,6 +26,8 @@ namespace Define
 	const float WORLD_CAMERA_MOVE_SPEED(5.f);
 	const float WORLD_CAMERA_ZOOM_FACTOR(1.1f);
 	const int WORLD_CAMERA_EDGE_MARGIN(100);
+	const float WORLD_CAMERA_MAX_ZOOM_FACTOR(2.f);
+	const float WORLD_CAMERA_MIN_ZOOM_FACTOR(0.5f);
 
 	const sf::Color DATA_COLOR_WATER(sf::Color(29, 52, 226));
 	const sf::Color DATA_COLOR_FLATGROUND(sf::Color(125, 181, 5));

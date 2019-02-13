@@ -107,11 +107,25 @@ void WorldMap::handleInput()
 			{
 				if (event.mouseWheelScroll.delta >= 0)
 				{
-					_view.zoom(Define::WORLD_CAMERA_ZOOM_FACTOR);
+					if (_view.getSize().x < Define::WORLD_VIEW_WIDTH * 1 / Define::WORLD_CAMERA_MIN_ZOOM_FACTOR
+						&& _view.getSize().y < Define::WORLD_VIEW_HEIGHT * 1 / Define::WORLD_CAMERA_MIN_ZOOM_FACTOR)
+					{
+						if (_view.getCenter().y - _view.getSize().y / 2 > 0 - Define::WORLD_CAMERA_EDGE_MARGIN
+							&& _view.getCenter().y + _view.getSize().y / 2 < Define::WORLD_SIZE_IN_TILES_Y * Define::TILE_SIZE + Define::WORLD_CAMERA_EDGE_MARGIN
+							&& _view.getCenter().x - _view.getSize().x / 2 > 0 - Define::WORLD_CAMERA_EDGE_MARGIN
+							&& _view.getCenter().x + _view.getSize().x / 2 < Define::WORLD_SIZE_IN_TILES_X * Define::TILE_SIZE + Define::WORLD_CAMERA_EDGE_MARGIN)
+						{
+							_view.zoom(Define::WORLD_CAMERA_ZOOM_FACTOR);
+						}
+					}
 				}
 				else
 				{
-					_view.zoom(1 / Define::WORLD_CAMERA_ZOOM_FACTOR);
+					if (_view.getSize().x > Define::WORLD_VIEW_WIDTH * 1 / Define::WORLD_CAMERA_MAX_ZOOM_FACTOR
+						&& _view.getSize().y > Define::WORLD_VIEW_HEIGHT * 1 / Define::WORLD_CAMERA_MAX_ZOOM_FACTOR)
+					{
+						_view.zoom(1 / Define::WORLD_CAMERA_ZOOM_FACTOR);
+					}
 				}
 			}
 
