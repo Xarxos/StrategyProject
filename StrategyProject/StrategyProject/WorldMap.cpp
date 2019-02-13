@@ -146,28 +146,28 @@ void WorldMap::handleInput()
 
 		if (sf::Keyboard::isKeyPressed(Controls::CAMERA_MOVE_UP))
 		{
-			if (_view.getCenter().y - _view.getSize().y / 2 > 0)
+			if (_view.getCenter().y - _view.getSize().y / 2 > 0 - Define::WORLD_CAMERA_EDGE_MARGIN)
 			{
 				_view.move(0.f, -Define::WORLD_CAMERA_MOVE_SPEED);
 			}
 		}
 		if (sf::Keyboard::isKeyPressed(Controls::CAMERA_MOVE_DOWN))
 		{
-			if (_view.getCenter().y + _view.getSize().y / 2 < Define::WORLD_SIZE_IN_TILES_Y * Define::TILE_SIZE)
+			if (_view.getCenter().y + _view.getSize().y / 2 < Define::WORLD_SIZE_IN_TILES_Y * Define::TILE_SIZE + Define::WORLD_CAMERA_EDGE_MARGIN)
 			{
 				_view.move(0.f, Define::WORLD_CAMERA_MOVE_SPEED);
 			}
 		}
 		if (sf::Keyboard::isKeyPressed(Controls::CAMERA_MOVE_LEFT))
 		{
-			if (_view.getCenter().x - _view.getSize().x / 2 > 0)
+			if (_view.getCenter().x - _view.getSize().x / 2 > 0 - Define::WORLD_CAMERA_EDGE_MARGIN)
 			{
 				_view.move(-Define::WORLD_CAMERA_MOVE_SPEED, 0.f);
 			}
 		}
 		if (sf::Keyboard::isKeyPressed(Controls::CAMERA_MOVE_RIGHT))
 		{
-			if (_view.getCenter().x + _view.getSize().x / 2 < Define::WORLD_SIZE_IN_TILES_X * Define::TILE_SIZE)
+			if (_view.getCenter().x + _view.getSize().x / 2 < Define::WORLD_SIZE_IN_TILES_X * Define::TILE_SIZE + Define::WORLD_CAMERA_EDGE_MARGIN)
 			{
 				_view.move(Define::WORLD_CAMERA_MOVE_SPEED, 0.f);
 			}
