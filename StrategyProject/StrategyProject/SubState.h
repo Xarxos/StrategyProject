@@ -2,8 +2,9 @@
 
 #include "State.h"
 #include <memory>
+#include "SFML\Graphics.hpp"
 
-class SubState : public State
+class SubState
 {
 protected:
 	bool _remove;
@@ -14,6 +15,15 @@ public:
 	{
 	
 	}
+
+	virtual void init() = 0;
+
+	virtual bool handleInput(sf::Event &event) = 0;
+	virtual void update(float delta) = 0;
+	virtual void draw() = 0;
+
+	virtual void pause() {}
+	virtual void resume() {}
 
 	bool remove() { return _remove; }
 };

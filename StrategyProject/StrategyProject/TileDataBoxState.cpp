@@ -67,22 +67,26 @@ void TileDataBoxState::init()
 	}
 }
 
-void TileDataBoxState::handleInput()
+bool TileDataBoxState::handleInput(sf::Event &event)
 {
-	sf::Event event;
-
-	while (_data->window.pollEvent(event))
+	if (event.type == sf::Event::Closed)
 	{
-		if (event.type == sf::Event::Closed)
-		{
-			_data->window.close();
-		}
-
-		if (_data->input.isSpriteClicked(_closeButton, sf::Mouse::Left, _data->window))
-		{
-			_remove = true;
-		}
+		_data->window.close();
+		return true;
 	}
+
+	if (_data->input.isSpriteClicked(_closeButton, sf::Mouse::Left, _data->window))
+	{
+		_remove = true;
+		return true;
+	}
+
+	if (_data->input.isSpriteClicked(_background, sf::Mouse::Left, _data->window))
+	{
+		return true;
+	}
+
+	return false;
 }
 
 void TileDataBoxState::update(float delta)

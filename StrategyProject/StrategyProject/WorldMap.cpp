@@ -63,116 +63,138 @@ void WorldMap::init()
 
 void WorldMap::handleInput()
 {
-	for (auto &subState : _subStates)
-	{
-		subState->handleInput();
-	}
-
 	sf::Event event;
 
 	while (_data->window.pollEvent(event))
 	{
-		if (event.type == sf::Event::Closed)
+		bool eventHandled = false;
+
+		std::list<subStateRef>::reverse_iterator rit;
+
+		for (rit = _subStates.rbegin(); rit != _subStates.rend() && !eventHandled; rit++)
 		{
-			_data->window.close();
+			eventHandled = (*rit)->handleInput(event);
 		}
 
-		if (event.type == sf::Event::MouseButtonPressed)
+		if (!eventHandled)
 		{
-			if (event.mouseButton.button == sf::Mouse::Left)
+			if (event.type == sf::Event::Closed)
 			{
-				sf::Vector2i worldMouse(_data->window.mapPixelToCoords(sf::Mouse::getPosition(_data->window), _view).x, _data->window.mapPixelToCoords(sf::Mouse::getPosition(_data->window), _view).y);
-				std::cout << "World Mouse: " << worldMouse.x << "," << worldMouse.y << "\n";
+				_data->window.close();
+			}
 
-				int tileClicked(coordsToTile(worldMouse));
-				std::map<Terrain, double> tileTerrainData;
-
-				for (std::map<Terrain, std::vector<double>>::iterator it = _tileTerrains.begin(); it != _tileTerrains.end(); it++)
+			if (event.type == sf::Event::MouseButtonPressed)
+			{
+				if (event.mouseButton.button == sf::Mouse::Left)
 				{
-					tileTerrainData[it->first] = _tileTerrains.at(it->first)[tileClicked];
+					sf::Vector2i worldMouse(_data->window.mapPixelToCoords(sf::Mouse::getPosition(_data->window), _view).x, _data->window.mapPixelToCoords(sf::Mouse::getPosition(_data->window), _view).y);
+					std::cout << "World Mouse: " << worldMouse.x << "," << worldMouse.y << "\n";
+
+					int tileClicked(coordsToTile(worldMouse));
+					std::map<Terrain, double> tileTerrainData;
+
+					for (std::map<Terrain, std::vector<double>>::iterator it = _tileTerrains.begin(); it != _tileTerrains.end(); it++)
+					{
+						tileTerrainData[it->first] = _tileTerrains.at(it->first)[tileClicked];
+					}
+
+					_subStates.push_back(std::move(subStateRef(new TileDataBoxState(_data, tileTerrainData))));
+					_subStates.back()->init();
+
+					std::cout << "Tile Clicked: " << tileClicked << "\n";
+					std::cout << "Water: " << _tileTerrains.at(Terrain::Water)[tileClicked] << "\n";
+					std::cout << "Flat Ground: " << _tileTerrains.at(Terrain::FlatGround)[tileClicked] << "\n";
+					std::cout << "Hills: " << _tileTerrains.at(Terrain::Hills)[tileClicked] << "\n";
+					std::cout << "Mountains: " << _tileTerrains.at(Terrain::Mountains)[tileClicked] << "\n";
+					std::cout << "Forest: " << _tileTerrains.at(Terrain::Forest)[tileClicked] << "\n";
 				}
+			}
 
-				_subStates.push_back(std::move(subStateRef(new TileDataBoxState(_data, tileTerrainData))));
-				_subStates.back()->init();
+			if (event.type == sf::Event::MouseWheelScrolled)
+			{
+				if (event.mouseWheelScroll.delta >= 0)
+				{
+					_view.zoom(Define::WORLD_CAMERA_ZOOM_FACTOR);
+				}
+				else
+				{
+					_view.zoom(1 / Define::WORLD_CAMERA_ZOOM_FACTOR);
+				}
+			}
 
-				std::cout << "Tile Clicked: " << tileClicked << "\n";
-				std::cout << "Water: " << _tileTerrains.at(Terrain::Water)[tileClicked] << "\n";
-				std::cout << "Flat Ground: " << _tileTerrains.at(Terrain::FlatGround)[tileClicked] << "\n";
-				std::cout << "Hills: " << _tileTerrains.at(Terrain::Hills)[tileClicked] << "\n";
-				std::cout << "Mountains: " << _tileTerrains.at(Terrain::Mountains)[tileClicked] << "\n";
-				std::cout << "Forest: " << _tileTerrains.at(Terrain::Forest)[tileClicked] << "\n";
+			if (event.type == sf::Event::KeyPressed)
+			{
+				if (event.key.code == Controls::WORLD_MAP_MODE_DEFAULT)
+				{
+					changeMapMode(Terrain::Default);
+				}
+				if (event.key.code == Controls::WORLD_MAP_MODE_WATER)
+				{
+					changeMapMode(Terrain::Water);
+				}
+				if (event.key.code == Controls::WORLD_MAP_MODE_FLATGROUND)
+				{
+					changeMapMode(Terrain::FlatGround);
+				}
+				if (event.key.code == Controls::WORLD_MAP_MODE_HILLS)
+				{
+					changeMapMode(Terrain::Hills);
+				}
+				if (event.key.code == Controls::WORLD_MAP_MODE_MOUNTAINS)
+				{
+					changeMapMode(Terrain::Mountains);
+				}
+				if (event.key.code == Controls::WORLD_MAP_MODE_FOREST)
+				{
+					changeMapMode(Terrain::Forest);
+				}
 			}
 		}
 
-		if (event.type == sf::Event::MouseWheelScrolled)
+		if (sf::Keyboard::isKeyPressed(Controls::CAMERA_MOVE_UP))
 		{
-			if (event.mouseWheelScroll.delta >= 0)
+			if (_view.getCenter().y - _view.getSize().y / 2 > 0)
 			{
-				_view.zoom(Define::WORLD_CAMERA_ZOOM_FACTOR);
-			}
-			else
-			{
-				_view.zoom(1 / Define::WORLD_CAMERA_ZOOM_FACTOR);
+				_view.move(0.f, -Define::WORLD_CAMERA_MOVE_SPEED);
 			}
 		}
-
-		if (event.type == sf::Event::KeyPressed)
+		if (sf::Keyboard::isKeyPressed(Controls::CAMERA_MOVE_DOWN))
 		{
-			if (event.key.code == Controls::WORLD_MAP_MODE_DEFAULT)
+			if (_view.getCenter().y + _view.getSize().y / 2 < Define::WORLD_SIZE * Define::TILE_SIZE)
 			{
-				changeMapMode(Terrain::Default);
+				_view.move(0.f, Define::WORLD_CAMERA_MOVE_SPEED);
 			}
-			if (event.key.code == Controls::WORLD_MAP_MODE_WATER)
+		}
+		if (sf::Keyboard::isKeyPressed(Controls::CAMERA_MOVE_LEFT))
+		{
+			if (_view.getCenter().x - _view.getSize().x / 2 > 0)
 			{
-				changeMapMode(Terrain::Water);
+				_view.move(-Define::WORLD_CAMERA_MOVE_SPEED, 0.f);
 			}
-			if (event.key.code == Controls::WORLD_MAP_MODE_FLATGROUND)
+		}
+		if (sf::Keyboard::isKeyPressed(Controls::CAMERA_MOVE_RIGHT))
+		{
+			if (_view.getCenter().x + _view.getSize().x / 2 < Define::WORLD_SIZE * Define::TILE_SIZE)
 			{
-				changeMapMode(Terrain::FlatGround);
-			}
-			if (event.key.code == Controls::WORLD_MAP_MODE_HILLS)
-			{
-				changeMapMode(Terrain::Hills);
-			}
-			if (event.key.code == Controls::WORLD_MAP_MODE_MOUNTAINS)
-			{
-				changeMapMode(Terrain::Mountains);
-			}
-			if (event.key.code == Controls::WORLD_MAP_MODE_FOREST)
-			{
-				changeMapMode(Terrain::Forest);
+				_view.move(Define::WORLD_CAMERA_MOVE_SPEED, 0.f);
 			}
 		}
 	}
+	
 
-	if (sf::Keyboard::isKeyPressed(Controls::CAMERA_MOVE_UP))
+	
+	
+
+	/*for (auto &subState : _subStates)
 	{
-		if (_view.getCenter().y - _view.getSize().y / 2 > 0)
-		{
-			_view.move(0.f, -Define::WORLD_CAMERA_MOVE_SPEED);
-		}
+		subState->handleInput();
 	}
-	if (sf::Keyboard::isKeyPressed(Controls::CAMERA_MOVE_DOWN))
+
+	
+
+	while (_data->window.pollEvent(event))
 	{
-		if (_view.getCenter().y + _view.getSize().y / 2 < Define::WORLD_SIZE * Define::TILE_SIZE)
-		{
-			_view.move(0.f, Define::WORLD_CAMERA_MOVE_SPEED);
-		}
-	}
-	if (sf::Keyboard::isKeyPressed(Controls::CAMERA_MOVE_LEFT))
-	{
-		if (_view.getCenter().x - _view.getSize().x / 2 > 0)
-		{
-			_view.move(-Define::WORLD_CAMERA_MOVE_SPEED, 0.f);
-		}
-	}
-	if (sf::Keyboard::isKeyPressed(Controls::CAMERA_MOVE_RIGHT))
-	{
-		if (_view.getCenter().x + _view.getSize().x / 2 < Define::WORLD_SIZE * Define::TILE_SIZE)
-		{
-			_view.move(Define::WORLD_CAMERA_MOVE_SPEED, 0.f);
-		}
-	}
+		*/
 }
 
 void WorldMap::update(float delta)
@@ -183,9 +205,7 @@ void WorldMap::update(float delta)
 	{
 		if ((*it)->remove())
 		{
-			std::cout << "Remove substate.\n";
 			it = _subStates.erase(it);
-			std::cout << "Removed it!\n";
 		}
 		else
 		{
@@ -193,21 +213,6 @@ void WorldMap::update(float delta)
 			it++;
 		}
 	}
-
-	/*for (std::list<subStateRef>::iterator it = _subStates.begin(); it != _subStates.end(); it++)
-	{
-		std::cout << "Increment substate update.\n";
-		if ((*it)->remove())
-		{
-			std::cout << "Remove substate.\n";
-			it = _subStates.erase(it);
-			std::cout << "Removed it!\n";
-		}
-		else
-		{
-			(*it)->update(delta);
-		}
-	}*/
 }
 
 void WorldMap::draw()

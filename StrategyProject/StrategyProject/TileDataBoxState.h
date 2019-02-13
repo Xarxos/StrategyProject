@@ -25,7 +25,7 @@ public:
 
 	virtual void init() override;
 
-	virtual void handleInput() override;
+	virtual bool handleInput(sf::Event &event) override;
 	virtual void update(float delta) override;
 	virtual void draw() override;
 };
