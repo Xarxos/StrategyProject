@@ -8,15 +8,15 @@
 
 WorldMap::WorldMap(GameDataRef data)
 	: _data(data),
-	_tileMatrix(Define::WORLD_SIZE, std::vector<int>(Define::WORLD_SIZE)),
-	_vertices(sf::Quads, Define::WORLD_SIZE * Define::WORLD_SIZE * 4),
+	_tileMatrix(Define::WORLD_SIZE_IN_TILES_Y, std::vector<int>(Define::WORLD_SIZE_IN_TILES_X)),
+	_vertices(sf::Quads, Define::WORLD_SIZE_IN_TILES_X * Define::WORLD_SIZE_IN_TILES_Y * 4),
 	_view(sf::Vector2f(Define::WORLD_VIEW_WIDTH / 2, Define::WORLD_VIEW_HEIGHT / 2), sf::Vector2f(Define::WORLD_VIEW_WIDTH, Define::WORLD_VIEW_HEIGHT))
 {
-	_tileTerrains[Terrain::Water].resize(Define::WORLD_SIZE * Define::WORLD_SIZE);
-	_tileTerrains[Terrain::FlatGround].resize(Define::WORLD_SIZE * Define::WORLD_SIZE);
-	_tileTerrains[Terrain::Hills].resize(Define::WORLD_SIZE * Define::WORLD_SIZE);
-	_tileTerrains[Terrain::Mountains].resize(Define::WORLD_SIZE * Define::WORLD_SIZE);
-	_tileTerrains[Terrain::Forest].resize(Define::WORLD_SIZE * Define::WORLD_SIZE);
+	_tileTerrains[Terrain::Water].resize(Define::WORLD_SIZE_IN_TILES_X * Define::WORLD_SIZE_IN_TILES_Y);
+	_tileTerrains[Terrain::FlatGround].resize(Define::WORLD_SIZE_IN_TILES_X * Define::WORLD_SIZE_IN_TILES_Y);
+	_tileTerrains[Terrain::Hills].resize(Define::WORLD_SIZE_IN_TILES_X * Define::WORLD_SIZE_IN_TILES_Y);
+	_tileTerrains[Terrain::Mountains].resize(Define::WORLD_SIZE_IN_TILES_X * Define::WORLD_SIZE_IN_TILES_Y);
+	_tileTerrains[Terrain::Forest].resize(Define::WORLD_SIZE_IN_TILES_X * Define::WORLD_SIZE_IN_TILES_Y);
 }
 
 void WorldMap::init()
@@ -31,11 +31,11 @@ void WorldMap::init()
 	_backgroundTexture = _data->assets.getTexture("World Map Background");
 	_terrainData = _data->assets.getImage("World Map Terrain Data");
 
-	for (int row = 0; row < Define::WORLD_SIZE; row++)
+	for (int row = 0; row < Define::WORLD_SIZE_IN_TILES_Y; row++)
 	{
-		for (int column = 0; column < Define::WORLD_SIZE; column++)
+		for (int column = 0; column < Define::WORLD_SIZE_IN_TILES_X; column++)
 		{
-			_tileMatrix[row][column] = row * Define::WORLD_SIZE + column;
+			_tileMatrix[row][column] = row * Define::WORLD_SIZE_IN_TILES_X + column;
 			int quadIndex = _tileMatrix[row][column] * 4;
 
 			_vertices[quadIndex + 0].position = sf::Vector2f(column * Define::TILE_SIZE, row * Define::TILE_SIZE);
@@ -58,7 +58,7 @@ void WorldMap::init()
 	loadTerrainData();
 
 	float end = clock.getElapsedTime().asSeconds();
-	std::cout << "Loaded " << Define::WORLD_SIZE * Define::WORLD_SIZE << " tiles in " << end - start << " seconds.\n";
+	std::cout << "Loaded " << Define::WORLD_SIZE_IN_TILES_X * Define::WORLD_SIZE_IN_TILES_Y << " tiles in " << end - start << " seconds.\n";
 }
 
 void WorldMap::handleInput()
@@ -100,13 +100,6 @@ void WorldMap::handleInput()
 
 					_subStates.push_back(std::move(subStateRef(new TileDataBoxState(_data, tileTerrainData))));
 					_subStates.back()->init();
-
-					std::cout << "Tile Clicked: " << tileClicked << "\n";
-					std::cout << "Water: " << _tileTerrains.at(Terrain::Water)[tileClicked] << "\n";
-					std::cout << "Flat Ground: " << _tileTerrains.at(Terrain::FlatGround)[tileClicked] << "\n";
-					std::cout << "Hills: " << _tileTerrains.at(Terrain::Hills)[tileClicked] << "\n";
-					std::cout << "Mountains: " << _tileTerrains.at(Terrain::Mountains)[tileClicked] << "\n";
-					std::cout << "Forest: " << _tileTerrains.at(Terrain::Forest)[tileClicked] << "\n";
 				}
 			}
 
@@ -160,7 +153,7 @@ void WorldMap::handleInput()
 		}
 		if (sf::Keyboard::isKeyPressed(Controls::CAMERA_MOVE_DOWN))
 		{
-			if (_view.getCenter().y + _view.getSize().y / 2 < Define::WORLD_SIZE * Define::TILE_SIZE)
+			if (_view.getCenter().y + _view.getSize().y / 2 < Define::WORLD_SIZE_IN_TILES_Y * Define::TILE_SIZE)
 			{
 				_view.move(0.f, Define::WORLD_CAMERA_MOVE_SPEED);
 			}
@@ -174,27 +167,12 @@ void WorldMap::handleInput()
 		}
 		if (sf::Keyboard::isKeyPressed(Controls::CAMERA_MOVE_RIGHT))
 		{
-			if (_view.getCenter().x + _view.getSize().x / 2 < Define::WORLD_SIZE * Define::TILE_SIZE)
+			if (_view.getCenter().x + _view.getSize().x / 2 < Define::WORLD_SIZE_IN_TILES_X * Define::TILE_SIZE)
 			{
 				_view.move(Define::WORLD_CAMERA_MOVE_SPEED, 0.f);
 			}
 		}
 	}
-	
-
-	
-	
-
-	/*for (auto &subState : _subStates)
-	{
-		subState->handleInput();
-	}
-
-	
-
-	while (_data->window.pollEvent(event))
-	{
-		*/
 }
 
 void WorldMap::update(float delta)
@@ -234,9 +212,9 @@ void WorldMap::draw()
 void WorldMap::loadTerrainData()
 {
 	std::cout << "Load Terrain Data...\n";
-	for (int row = 0; row < Define::WORLD_SIZE; row++)
+	for (int row = 0; row < Define::WORLD_SIZE_IN_TILES_Y; row++)
 	{
-		for (int column = 0; column < Define::WORLD_SIZE; column++)
+		for (int column = 0; column < Define::WORLD_SIZE_IN_TILES_X; column++)
 		{
 			int waterPixels(0);
 			int flatgroundPixels(0);
@@ -375,9 +353,9 @@ void WorldMap::changeMapMode(Terrain mapMode)
 	int differenceGreen = 255 - baseColor.g;
 	int differenceBlue = 255 - baseColor.b;
 
-	for (int row = 0; row < Define::WORLD_SIZE; row++)
+	for (int row = 0; row < Define::WORLD_SIZE_IN_TILES_Y; row++)
 	{
-		for (int column = 0; column < Define::WORLD_SIZE; column++)
+		for (int column = 0; column < Define::WORLD_SIZE_IN_TILES_X; column++)
 		{
 			int quadIndex = _tileMatrix[row][column] * 4;
 

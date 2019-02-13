@@ -12,11 +12,13 @@ namespace Define
 
 	const float SPLASH_STATE_DURATION(0.5f);
 
-	const int WORLD_SIZE(30);
+	const int WORLD_SIZE_IN_TILES_X(30);
+	const int WORLD_SIZE_IN_TILES_Y(30);
 	const int DEFAULT_MAP_SIZE(500);
-	const int TILE_SIZE(DEFAULT_MAP_SIZE / WORLD_SIZE);	// Beware of integer division, could maybe cause a problem I dunno?
-	const int WORLD_TX_SIZE(900);
-	const int TILE_TX_SIZE(WORLD_TX_SIZE / WORLD_SIZE);	// Beware of integer division, could maybe cause a problem I dunno?
+	const int TILE_SIZE(DEFAULT_MAP_SIZE / WORLD_SIZE_IN_TILES_X);	// Beware of integer division, could maybe cause a problem I dunno?
+	const int WORLD_TX_SIZE_X(900);
+	const int WORLD_TX_SIZE_Y(900);
+	const int TILE_TX_SIZE(WORLD_TX_SIZE_X / WORLD_SIZE_IN_TILES_X);	// Beware of integer division, could maybe cause a problem I dunno?
 	const float WORLD_VIEW_WIDTH(SCREEN_WIDTH);
 	const float WORLD_VIEW_HEIGHT(SCREEN_HEIGHT);
 	const float WORLD_CAMERA_MOVE_SPEED(5.f);

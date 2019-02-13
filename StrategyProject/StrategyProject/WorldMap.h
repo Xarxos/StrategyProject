@@ -8,17 +8,6 @@
 #include <map>
 #include <list>
 
-/*struct TileMap
-{
-	std::vector<double> flatGround;
-	std::vector<double> hills;
-	std::vector<double> mountains;
-	std::vector<double> water;
-	std::vector<double> forest;
-	std::vector<double> grassLand;
-	std::vector<double> farmLand;
-};*/
-
 enum class Terrain
 {
 	Default = -1,
