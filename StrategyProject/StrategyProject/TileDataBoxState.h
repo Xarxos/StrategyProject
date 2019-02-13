@@ -22,6 +22,9 @@ private:
 
 	sf::View _view;
 
+	bool _mouseButtonHeld;
+	sf::Vector2i _previousMousePos;
+
 public:
 	TileDataBoxState(GameDataRef data, const std::map<Terrain, double> &terrainData);
 

@@ -8,7 +8,8 @@
 TileDataBoxState::TileDataBoxState(GameDataRef data, const std::map<Terrain, double> &terrainData)
 	: _data(data),
 	_terrainData(terrainData),
-	_view(sf::Vector2f(Define::WORLD_VIEW_WIDTH / 2, Define::WORLD_VIEW_HEIGHT / 2), sf::Vector2f(Define::WORLD_VIEW_WIDTH, Define::WORLD_VIEW_HEIGHT))
+	_view(sf::Vector2f(Define::WORLD_VIEW_WIDTH / 2, Define::WORLD_VIEW_HEIGHT / 2), sf::Vector2f(Define::WORLD_VIEW_WIDTH, Define::WORLD_VIEW_HEIGHT)),
+	_mouseButtonHeld(false)
 {
 
 }
@@ -77,15 +78,34 @@ bool TileDataBoxState::handleInput(sf::Event &event)
 		return true;
 	}
 
-	if (_data->input.isSpriteClicked(_closeButton, sf::Mouse::Left, _data->window))
+	if (event.type == sf::Event::MouseButtonPressed)
 	{
-		_remove = true;
-		return true;
+		if (_data->input.isSpriteClicked(_closeButton, sf::Mouse::Left, _data->window))
+		{
+			_remove = true;
+			return true;
+		}
 	}
 
-	if (_data->input.isSpriteClicked(_background, sf::Mouse::Left, _data->window))
+	if (event.type == sf::Event::MouseButtonPressed)
 	{
-		return true;
+		if (_data->input.isSpriteClicked(_background, sf::Mouse::Left, _data->window))
+		{
+			_mouseButtonHeld = true;
+			_previousMousePos = _data->input.getMousePosition(_data->window);
+
+			return true;
+		}
+	}
+
+	if (event.type == sf::Event::MouseButtonReleased)
+	{
+		if (_mouseButtonHeld)
+		{
+			_mouseButtonHeld = false;
+
+			return true;
+		}
 	}
 
 	return false;
@@ -93,13 +113,25 @@ bool TileDataBoxState::handleInput(sf::Event &event)
 
 void TileDataBoxState::update(float delta)
 {
+	if (_mouseButtonHeld)
+	{
+		sf::Vector2i currentMousePos = _data->input.getMousePosition(_data->window);
+		sf::Vector2i deltaMousePos = currentMousePos - _previousMousePos;
 
+		_background.setPosition(_background.getPosition().x + deltaMousePos.x, _background.getPosition().y + deltaMousePos.y);
+		_closeButton.setPosition(_closeButton.getPosition().x + deltaMousePos.x, _closeButton.getPosition().y + deltaMousePos.y);
+
+		for (std::map<Terrain, sf::Text>::iterator it = _dataText.begin(); it != _dataText.end(); it++)
+		{
+			it->second.setPosition(it->second.getPosition().x + deltaMousePos.x, it->second.getPosition().y + deltaMousePos.y);
+		}
+
+		_previousMousePos = currentMousePos;
+	}
 }
 
 void TileDataBoxState::draw()
 {
-	//_data->window.clear(sf::Color(sf::Color::White));
-
 	_data->window.setView(_view);
 
 	_data->window.draw(_background);
@@ -108,6 +140,4 @@ void TileDataBoxState::draw()
 		_data->window.draw(it->second);
 	}
 	_data->window.draw(_closeButton);
-	
-	//_data->window.display();
 }
