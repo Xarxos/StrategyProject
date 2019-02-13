@@ -3,9 +3,6 @@
 #include <SFML\Graphics.hpp>
 #include "Config.h"
 #include "SplashState.h"
-#include "State.h"
-#include <vector>
-#include <iostream>
 
 Game::Game(int windowWidth, int windowHeight, std::string title)
 {
@@ -36,36 +33,11 @@ void Game::run()
 
 		while (accumulator >= Config::FRAME_RATE)
 		{
-			for (auto &element : _data->machine.getStateStack())
-			{
-				if (!element->inputFrozen())
-				{
-					element->handleInput();
-				}
-			}
-
-			for (auto &element : _data->machine.getStateStack())
-			{
-				if (!element->isPaused())
-				{
-					element->update(Config::FRAME_RATE);
-				}
-			}
+			_data->machine.getActiveState()->handleInput();
+			_data->machine.getActiveState()->update(Config::FRAME_RATE);
 
 			accumulator -= Config::FRAME_RATE;
 		}
-
-		_data->window.clear(sf::Color::White);
-
-		for (auto &element : _data->machine.getStateStack())
-		{
-			if (!element->isHidden())
-			{
-				element->draw();
-			}
-		}
-
-		_data->window.display();
-		//_data->machine.getActiveState()->draw();
+		_data->machine.getActiveState()->draw();
 	}
 }

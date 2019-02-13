@@ -48,11 +48,11 @@ void MainMenuState::update(float delta)
 
 void MainMenuState::draw()
 {
-	//_data->window.clear(sf::Color(sf::Color::White));
+	_data->window.clear(sf::Color(sf::Color::White));
 
 	_data->window.draw(_background);
 	_data->window.draw(_testGameButton);
 	_data->window.draw(_exitButton);
 
-	//_data->window.display();
+	_data->window.display();
 }
