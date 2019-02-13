@@ -6,7 +6,9 @@
 #include <iostream>
 
 TileDataBoxState::TileDataBoxState(GameDataRef data, const std::map<Terrain, double> &terrainData)
-	: _data(data), _terrainData(terrainData)
+	: _data(data),
+	_terrainData(terrainData),
+	_view(sf::Vector2f(Define::WORLD_VIEW_WIDTH / 2, Define::WORLD_VIEW_HEIGHT / 2), sf::Vector2f(Define::WORLD_VIEW_WIDTH, Define::WORLD_VIEW_HEIGHT))
 {
 
 }
@@ -97,6 +99,8 @@ void TileDataBoxState::update(float delta)
 void TileDataBoxState::draw()
 {
 	//_data->window.clear(sf::Color(sf::Color::White));
+
+	_data->window.setView(_view);
 
 	_data->window.draw(_background);
 	for (std::map<Terrain, sf::Text>::iterator it = _dataText.begin(); it != _dataText.end(); it++)

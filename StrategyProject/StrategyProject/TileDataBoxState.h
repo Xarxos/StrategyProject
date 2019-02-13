@@ -20,6 +20,8 @@ private:
 	std::map<Terrain, double> _terrainData;
 	std::map<Terrain, sf::Text> _dataText;
 
+	sf::View _view;
+
 public:
 	TileDataBoxState(GameDataRef data, const std::map<Terrain, double> &terrainData);
 
