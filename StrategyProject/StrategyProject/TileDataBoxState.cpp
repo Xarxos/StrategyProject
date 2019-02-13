@@ -88,7 +88,7 @@ void TileDataBoxState::update(float delta)
 
 void TileDataBoxState::draw()
 {
-	_data->window.clear(sf::Color(sf::Color::White));
+	//_data->window.clear(sf::Color(sf::Color::White));
 
 	_data->window.draw(_background);
 	for (std::map<Terrain, sf::Text>::iterator it = _dataText.begin(); it != _dataText.end(); it++)
@@ -96,5 +96,5 @@ void TileDataBoxState::draw()
 		_data->window.draw(it->second);
 	}
 	
-	_data->window.display();
+	//_data->window.display();
 }

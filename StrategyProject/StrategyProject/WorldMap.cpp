@@ -17,24 +17,6 @@ WorldMap::WorldMap(GameDataRef data)
 	_tileTerrains[Terrain::Hills].resize(Define::WORLD_SIZE * Define::WORLD_SIZE);
 	_tileTerrains[Terrain::Mountains].resize(Define::WORLD_SIZE * Define::WORLD_SIZE);
 	_tileTerrains[Terrain::Forest].resize(Define::WORLD_SIZE * Define::WORLD_SIZE);
-	
-	/*_tileTerrains[Terrain::Water] =
-	{
-		0.05, 0.01, 0.08, 0.95, 0.01,
-		0.02, 0.02, 0.03, 0.60, 0.40,
-		0.65, 0.20, 0.10, 0.90, 0.65,
-		0.35, 0.35, 0.25, 0.95, 0.10,
-		0.15, 0.55, 0.85, 0.55, 0.07
-	};
-
-	_tileTerrains[Terrain::FlatGround] =
-	{
-		0.20, 0.30, 0.85, 0.05, 0.99,
-		0.40, 0.92, 0.97, 0.40, 0.60,
-		0.30, 0.80, 0.90, 0.10, 0.35,
-		0.65, 0.65, 0.75, 0.05, 0.90,
-		0.85, 0.45, 0.15, 0.45, 0.93
-	};*/
 }
 
 void WorldMap::init()
@@ -105,7 +87,9 @@ void WorldMap::handleInput()
 					tileTerrainData[it->first] = _tileTerrains.at(it->first)[tileClicked];
 				}
 
-				_data->machine.addState(stateRef(new TileDataBoxState(_data, tileTerrainData)), false);
+				_subStates.push_back(std::move(stateRef(new TileDataBoxState(_data, tileTerrainData))));
+				_subStates.back()->init();
+
 				std::cout << "Tile Clicked: " << tileClicked << "\n";
 				std::cout << "Water: " << _tileTerrains.at(Terrain::Water)[tileClicked] << "\n";
 				std::cout << "Flat Ground: " << _tileTerrains.at(Terrain::FlatGround)[tileClicked] << "\n";
@@ -198,6 +182,11 @@ void WorldMap::draw()
 	_data->window.setView(_view);
 
 	_data->window.draw(_vertices, &_backgroundTexture);
+
+	for (auto &subState : _subStates)
+	{
+		subState->draw();
+	}
 
 	_data->window.display();
 }

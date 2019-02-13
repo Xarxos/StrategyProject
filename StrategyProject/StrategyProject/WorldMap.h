@@ -40,6 +40,8 @@ private:
 
 	sf::View _view;
 
+	std::vector<stateRef> _subStates;
+
 public:
 	WorldMap(GameDataRef data);
 
