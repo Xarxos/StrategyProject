@@ -199,7 +199,7 @@ void WorldMap::update(float delta)
 		{
 			rit = decltype(rit)(_subStates.erase(std::next(rit).base()));
 		}
-		else if ((*rit)->moveToTop())
+		else if ((*rit)->moveToTop() && rit != _subStates.rbegin())
 		{
 			subStateRef temp = std::move(*rit);
 			rit = decltype(rit)(_subStates.erase(std::next(rit).base()));
