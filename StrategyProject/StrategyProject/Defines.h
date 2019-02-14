@@ -12,8 +12,8 @@ namespace Define
 
 	const float SPLASH_STATE_DURATION(0.5f);
 
-	const int WORLD_SIZE_IN_TILES_X(30);
-	const int WORLD_SIZE_IN_TILES_Y(30);
+	const int WORLD_SIZE_IN_TILES_X(20);
+	const int WORLD_SIZE_IN_TILES_Y(20);
 	const int DEFAULT_MAP_SIZE(500);
 	const int TILE_SIZE(DEFAULT_MAP_SIZE / WORLD_SIZE_IN_TILES_X);	// Beware of integer division, could maybe cause a problem I dunno?
 
@@ -34,6 +34,8 @@ namespace Define
 	const sf::Color DATA_COLOR_HILLS(sf::Color(153, 136, 108));
 	const sf::Color DATA_COLOR_MOUNTAINS(sf::Color(255, 255, 255));
 	const sf::Color DATA_COLOR_FOREST(sf::Color(13, 153, 32));
+
+	const float TILE_SELECT_OUTLINE_THICKNESS(TILE_SIZE / 10);
 }
 
 namespace Filepath
@@ -60,9 +62,11 @@ namespace Colors
 	const sf::Color MAP_MODE_DEFAULT(255, 255, 255);
 	const sf::Color MAP_MODE_WATER(0, 0, 255);
 	const sf::Color MAP_MODE_FLATGROUND(255, 255, 0);
-	const sf::Color MAP_MODE_HILLS(sf::Color(0, 255, 255));
-	const sf::Color MAP_MODE_MOUNTAINS(sf::Color(255, 0, 0));
-	const sf::Color MAP_MODE_FOREST(sf::Color(0, 255, 0));
+	const sf::Color MAP_MODE_HILLS(0, 255, 255);
+	const sf::Color MAP_MODE_MOUNTAINS(255, 0, 0);
+	const sf::Color MAP_MODE_FOREST(0, 255, 0);
+
+	const sf::Color TILE_SELECT_HIGHLIGHT_COLOR(sf::Color::Magenta);
 }
 
 namespace Controls

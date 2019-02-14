@@ -24,9 +24,12 @@ private:
 	GameDataRef _data;
 
 	sf::VertexArray _vertices;
+	sf::Texture _backgroundTexture;
+	sf::RectangleShape _selectedTile;
+	bool _tileIsSelected;
+
 	std::vector<std::vector<int>> _tileMatrix;
 	std::map<Terrain, std::vector<double>> _tileTerrainRatios;
-	sf::Texture _backgroundTexture;
 	sf::Image _terrainData;
 
 	sf::View _view;
@@ -52,7 +55,9 @@ private:
 	void handleMouseScrollEvent(sf::Event &event);
 	void handleKeyPressEvent(sf::Event &event);
 	void handleRealTimeKeyPressInput();
+
+	void correctCameraView();
 	
 	void changeMapMode(Terrain mapMode);
-	int coordsToTile(sf::Vector2i worldCoords);
+	sf::Vector2i coordsToTile(sf::Vector2i worldCoords);
 };

@@ -10,7 +10,9 @@ WorldMap::WorldMap(GameDataRef data)
 	: _data(data),
 	_tileMatrix(Define::WORLD_SIZE_IN_TILES_Y, std::vector<int>(Define::WORLD_SIZE_IN_TILES_X)),
 	_vertices(sf::Quads, Define::WORLD_SIZE_IN_TILES_X * Define::WORLD_SIZE_IN_TILES_Y * 4),
-	_view(sf::Vector2f(Define::WORLD_VIEW_WIDTH / 2, Define::WORLD_VIEW_HEIGHT / 2), sf::Vector2f(Define::WORLD_VIEW_WIDTH, Define::WORLD_VIEW_HEIGHT))
+	_view(sf::Vector2f(Define::WORLD_VIEW_WIDTH / 2, Define::WORLD_VIEW_HEIGHT / 2), sf::Vector2f(Define::WORLD_VIEW_WIDTH, Define::WORLD_VIEW_HEIGHT)),
+	_selectedTile(sf::Vector2f(Define::TILE_SIZE, Define::TILE_SIZE)),
+	_tileIsSelected(false)
 {
 	_tileTerrainRatios[Terrain::Water].resize(Define::WORLD_SIZE_IN_TILES_X * Define::WORLD_SIZE_IN_TILES_Y);
 	_tileTerrainRatios[Terrain::FlatGround].resize(Define::WORLD_SIZE_IN_TILES_X * Define::WORLD_SIZE_IN_TILES_Y);
@@ -34,6 +36,10 @@ void WorldMap::init()
 			initializeTile(column, row);
 		}
 	}
+
+	_selectedTile.setFillColor(sf::Color(255, 255, 255, 0));
+	_selectedTile.setOutlineColor(Colors::TILE_SELECT_HIGHLIGHT_COLOR);
+	_selectedTile.setOutlineThickness(Define::TILE_SELECT_OUTLINE_THICKNESS);
 
 	loadTerrainData();
 
@@ -185,9 +191,10 @@ void WorldMap::handleMousePressEvent(sf::Event &event)
 	if (event.mouseButton.button == sf::Mouse::Left)
 	{
 		sf::Vector2i worldMouse(_data->window.mapPixelToCoords(sf::Mouse::getPosition(_data->window), _view).x, _data->window.mapPixelToCoords(sf::Mouse::getPosition(_data->window), _view).y);
-		std::cout << "World Mouse: " << worldMouse.x << "," << worldMouse.y << "\n";
 
-		int tileClicked(coordsToTile(worldMouse));
+		int tileClicked = _tileMatrix[coordsToTile(worldMouse).y][coordsToTile(worldMouse).x];
+		_selectedTile.setPosition(coordsToTile(worldMouse).x * Define::TILE_SIZE, coordsToTile(worldMouse).y * Define::TILE_SIZE); // <----------------------- Shit doesn't work.
+		_tileIsSelected = true;
 		std::map<Terrain, double> tileTerrainData;
 
 		for (std::map<Terrain, std::vector<double>>::iterator it = _tileTerrainRatios.begin(); it != _tileTerrainRatios.end(); it++)
@@ -206,13 +213,19 @@ void WorldMap::handleMouseScrollEvent(sf::Event &event)
 		if (_view.getSize().x < Define::WORLD_VIEW_WIDTH * 1 / Define::WORLD_CAMERA_MIN_ZOOM_FACTOR
 			&& _view.getSize().y < Define::WORLD_VIEW_HEIGHT * 1 / Define::WORLD_CAMERA_MIN_ZOOM_FACTOR)
 		{
-			if (_view.getCenter().y - _view.getSize().y / 2 > 0 - Define::WORLD_CAMERA_EDGE_MARGIN
+			/*if (_view.getCenter().y - _view.getSize().y / 2 > 0 - Define::WORLD_CAMERA_EDGE_MARGIN
 				&& _view.getCenter().y + _view.getSize().y / 2 < Define::WORLD_SIZE_IN_TILES_Y * Define::TILE_SIZE + Define::WORLD_CAMERA_EDGE_MARGIN
 				&& _view.getCenter().x - _view.getSize().x / 2 > 0 - Define::WORLD_CAMERA_EDGE_MARGIN
 				&& _view.getCenter().x + _view.getSize().x / 2 < Define::WORLD_SIZE_IN_TILES_X * Define::TILE_SIZE + Define::WORLD_CAMERA_EDGE_MARGIN)
-			{
+			{*/
 				_view.zoom(Define::WORLD_CAMERA_ZOOM_FACTOR);
-			}
+			//}
+
+			/*float actualCameraEdgeRelativeToAllowedCameraEdge = (0 - Define::WORLD_CAMERA_EDGE_MARGIN) - (_view.getCenter().y - _view.getSize().y / 2);		// I really wish I could think of a more concise name for this variable...
+			if (actualCameraEdgeRelativeToAllowedCameraEdge < 0)
+			{
+				_view.setCenter(_view.getCenter().x, _view.getCenter().y + actualCameraEdgeRelativeToAllowedCameraEdge));
+			}*/
 		}
 	}
 	else
@@ -255,31 +268,19 @@ void WorldMap::handleRealTimeKeyPressInput()
 {
 	if (sf::Keyboard::isKeyPressed(Controls::CAMERA_MOVE_UP))
 	{
-		if (_view.getCenter().y - _view.getSize().y / 2 > 0 - Define::WORLD_CAMERA_EDGE_MARGIN)
-		{
-			_view.move(0.f, -Define::WORLD_CAMERA_MOVE_SPEED);
-		}
+		_view.move(0.f, -Define::WORLD_CAMERA_MOVE_SPEED);
 	}
 	if (sf::Keyboard::isKeyPressed(Controls::CAMERA_MOVE_DOWN))
 	{
-		if (_view.getCenter().y + _view.getSize().y / 2 < Define::WORLD_SIZE_IN_TILES_Y * Define::TILE_SIZE + Define::WORLD_CAMERA_EDGE_MARGIN)
-		{
-			_view.move(0.f, Define::WORLD_CAMERA_MOVE_SPEED);
-		}
+		_view.move(0.f, Define::WORLD_CAMERA_MOVE_SPEED);
 	}
 	if (sf::Keyboard::isKeyPressed(Controls::CAMERA_MOVE_LEFT))
 	{
-		if (_view.getCenter().x - _view.getSize().x / 2 > 0 - Define::WORLD_CAMERA_EDGE_MARGIN)
-		{
-			_view.move(-Define::WORLD_CAMERA_MOVE_SPEED, 0.f);
-		}
+		_view.move(-Define::WORLD_CAMERA_MOVE_SPEED, 0.f);
 	}
 	if (sf::Keyboard::isKeyPressed(Controls::CAMERA_MOVE_RIGHT))
 	{
-		if (_view.getCenter().x + _view.getSize().x / 2 < Define::WORLD_SIZE_IN_TILES_X * Define::TILE_SIZE + Define::WORLD_CAMERA_EDGE_MARGIN)
-		{
-			_view.move(Define::WORLD_CAMERA_MOVE_SPEED, 0.f);
-		}
+		_view.move(Define::WORLD_CAMERA_MOVE_SPEED, 0.f);
 	}
 }
 
@@ -305,7 +306,36 @@ void WorldMap::update(float delta)
 			(*rit)->update(delta);
 			rit++;
 		}
-		
+	}
+
+
+
+	correctCameraView();
+
+
+}
+
+// Putting a pin in this one!
+void WorldMap::correctCameraView()
+{
+	if (_view.getCenter().y - _view.getSize().y / 2 < 0 - Define::WORLD_CAMERA_EDGE_MARGIN)
+	{
+		_view.move(0.f, Define::WORLD_CAMERA_MOVE_SPEED);
+	}
+
+	if (_view.getCenter().y + _view.getSize().y / 2 > Define::WORLD_SIZE_IN_TILES_Y * Define::TILE_SIZE + Define::WORLD_CAMERA_EDGE_MARGIN)
+	{
+		_view.move(0.f, -Define::WORLD_CAMERA_MOVE_SPEED);
+	}
+
+	if (_view.getCenter().x - _view.getSize().x / 2 < 0 - Define::WORLD_CAMERA_EDGE_MARGIN)
+	{
+		_view.move(Define::WORLD_CAMERA_MOVE_SPEED, 0.f);
+	}
+
+	if (_view.getCenter().x + _view.getSize().x / 2 > Define::WORLD_SIZE_IN_TILES_X * Define::TILE_SIZE + Define::WORLD_CAMERA_EDGE_MARGIN)
+	{
+		_view.move(-Define::WORLD_CAMERA_MOVE_SPEED, 0.f);
 	}
 }
 
@@ -316,6 +346,11 @@ void WorldMap::draw()
 	_data->window.setView(_view);
 
 	_data->window.draw(_vertices, &_backgroundTexture);
+
+	if (_tileIsSelected)
+	{
+		_data->window.draw(_selectedTile);
+	}
 
 	for (auto &subState : _subStates)
 	{
@@ -383,7 +418,7 @@ void WorldMap::changeMapMode(Terrain mapMode)
 	}
 }
 
-int WorldMap::coordsToTile(sf::Vector2i worldCoords)
+sf::Vector2i WorldMap::coordsToTile(sf::Vector2i worldCoords)
 {
-	return _tileMatrix[worldCoords.y / Define::TILE_SIZE][worldCoords.x / Define::TILE_SIZE];
+	return sf::Vector2i(worldCoords.x / Define::TILE_SIZE, worldCoords.y / Define::TILE_SIZE);
 }
