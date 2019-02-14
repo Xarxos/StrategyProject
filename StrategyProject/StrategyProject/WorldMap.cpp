@@ -359,38 +359,33 @@ void WorldMap::loadTerrainDataForTile(int tileX, int tileY)
 void WorldMap::changeMapMode(Terrain mapMode)
 {
 	sf::Color baseColor;
+	_backgroundTexture = _data->assets.getTexture("World Map Background Grayscale");
 
 	switch (mapMode)
 	{
-		case Terrain::Default:
-			_backgroundTexture = _data->assets.getTexture("World Map Background");
-			baseColor = Colors::MAP_MODE_DEFAULT;
-			break;
-
 		case Terrain::Water:
-			_backgroundTexture = _data->assets.getTexture("World Map Background Grayscale");
 			baseColor = Colors::MAP_MODE_WATER;
 			break;
 
 		case Terrain::FlatGround:
-			_backgroundTexture = _data->assets.getTexture("World Map Background Grayscale");
 			baseColor = Colors::MAP_MODE_FLATGROUND;
 			break;
 
 		case Terrain::Hills:
-			_backgroundTexture = _data->assets.getTexture("World Map Background Grayscale");
 			baseColor = Colors::MAP_MODE_HILLS;
 			break;
 
 		case Terrain::Mountains:
-			_backgroundTexture = _data->assets.getTexture("World Map Background Grayscale");
 			baseColor = Colors::MAP_MODE_MOUNTAINS;
 			break;
 
 		case Terrain::Forest:
-			_backgroundTexture = _data->assets.getTexture("World Map Background Grayscale");
 			baseColor = Colors::MAP_MODE_FOREST;
 			break;
+
+		default:
+			_backgroundTexture = _data->assets.getTexture("World Map Background");
+			baseColor = Colors::MAP_MODE_DEFAULT;
 	}
 
 	int differenceRed = 255 - baseColor.r;
