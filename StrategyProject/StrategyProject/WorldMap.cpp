@@ -85,9 +85,11 @@ void WorldMap::loadTerrainData()
 	{
 		for (int column = 0; column < Define::WORLD_SIZE_IN_TILES_X; column++)
 		{
+			//std::cout << "Row: " << row << ", Column: " << column << "\n";
 			loadTerrainDataForTile(column, row);
 		}
 	}
+	std::cout << "Loaded Terrain Data.\n";
 }
 
 void WorldMap::loadTerrainDataForTile(int tileX, int tileY)
@@ -100,8 +102,10 @@ void WorldMap::loadTerrainDataForTile(int tileX, int tileY)
 
 	for (int pixelRow = 0; pixelRow < Define::TILE_TX_SIZE; pixelRow++)
 	{
+		//std::cout << "PixelRow: " << pixelRow << "\n";
 		for (int pixelColumn = 0; pixelColumn < Define::TILE_TX_SIZE; pixelColumn++)
 		{
+			//", PixelColumn: " << pixelColumn <<
 			if (_terrainData.getPixel(tileX * Define::TILE_TX_SIZE + pixelColumn, tileY * Define::TILE_TX_SIZE + pixelRow) == Define::DATA_COLOR_WATER)
 			{
 				waterPixels++;
@@ -128,7 +132,7 @@ void WorldMap::loadTerrainDataForTile(int tileX, int tileY)
 			}
 		}
 	}
-
+	//std::cout << "After pixel loops.\n";
 	double totalPixels = Define::TILE_TX_SIZE * Define::TILE_TX_SIZE;
 
 	double waterRatio = waterPixels / totalPixels;

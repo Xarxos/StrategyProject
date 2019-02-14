@@ -12,14 +12,14 @@ namespace Define
 
 	const float SPLASH_STATE_DURATION(0.5f);
 
-	const int WORLD_SIZE_IN_TILES_X(20);
+	const int WORLD_SIZE_IN_TILES_X(55);	// These need to have the same ratio between X and Y as WORLD_TX_SIZE has between its X and Y.
 	const int WORLD_SIZE_IN_TILES_Y(20);
 	const int DEFAULT_MAP_SIZE(500);
-	const int TILE_SIZE(DEFAULT_MAP_SIZE / WORLD_SIZE_IN_TILES_X);	// Beware of integer division, could maybe cause a problem I dunno?
+	const int TILE_SIZE(100);	// Beware of integer division, could maybe cause a problem I dunno?
 
-	const int WORLD_TX_SIZE_X(900);
-	const int WORLD_TX_SIZE_Y(900);
-	const int TILE_TX_SIZE(WORLD_TX_SIZE_X / WORLD_SIZE_IN_TILES_X);	// Beware of integer division, could maybe cause a problem I dunno?
+	const int WORLD_TX_SIZE_X(5500);	// The size and ratio of these values need to allow for whole numbers for both WORLD_SIZE_IN_TILES and TILE_TX_SIZE.
+	const int WORLD_TX_SIZE_Y(2000);
+	const int TILE_TX_SIZE(100);	// Beware of integer division, could maybe cause a problem I dunno?
 
 	const float WORLD_VIEW_WIDTH(SCREEN_WIDTH);
 	const float WORLD_VIEW_HEIGHT(SCREEN_HEIGHT);
@@ -47,10 +47,12 @@ namespace Filepath
 	const std::string TEST_GAME_BUTTON("Resources/Textures/TestGameButton.png");
 	const std::string EXIT_GAME_BUTTON("Resources/Textures/ExitButton.png");
 
-	const std::string WORLD_MAP_BACKGROUND("Resources/Textures/WorldMapBackground.png");
-	const std::string WORLD_MAP_BACKGROUND_GRAYSCALE("Resources/Textures/WorldMapBackgroundGrayScale.png");
+	//const std::string WORLD_MAP_BACKGROUND("Resources/Textures/WorldMapBackground.png");
+	//const std::string WORLD_MAP_BACKGROUND_GRAYSCALE("Resources/Textures/WorldMapBackgroundGrayScale.png");
 	//const std::string WORLD_MAP_BACKGROUND("Resources/Data/terrain.bmp");
 	//const std::string WORLD_MAP_BACKGROUND_GRAYSCALE("Resources/Data/terrainGrayscale.bmp");
+	const std::string WORLD_MAP_BACKGROUND("Resources/Data/bigmap.bmp");
+	const std::string WORLD_MAP_BACKGROUND_GRAYSCALE("Resources/Data/bigmapGrayscale.bmp");
 
 	const std::string TILE_DATA_BOX_BACKGROUND("Resources/Textures/TileDataBoxBackground.png");
 	const std::string TILE_DATA_BOX_FONT("Resources/Fonts/ARBONNIE.ttf");
