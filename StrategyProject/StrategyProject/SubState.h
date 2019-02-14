@@ -8,6 +8,7 @@ class SubState
 {
 protected:
 	bool _remove;
+	bool _moveToTop;
 
 public:
 	SubState()
@@ -26,6 +27,8 @@ public:
 	virtual void resume() {}
 
 	bool remove() { return _remove; }
+	bool moveToTop() { return _moveToTop; }
+	//void disableMoveToTope() { _moveToTop = false; }
 };
 
 typedef std::unique_ptr<SubState> subStateRef;

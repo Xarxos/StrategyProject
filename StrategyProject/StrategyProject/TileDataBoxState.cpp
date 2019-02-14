@@ -91,6 +91,7 @@ bool TileDataBoxState::handleInput(sf::Event &event)
 	{
 		if (_data->input.isSpriteClicked(_background, sf::Mouse::Left, _data->window))
 		{
+			_moveToTop = true;
 			_mouseButtonHeld = true;
 			_previousMousePos = _data->input.getMousePosition(_data->window);
 
@@ -127,6 +128,11 @@ void TileDataBoxState::update(float delta)
 		}
 
 		_previousMousePos = currentMousePos;
+	}
+
+	if (_moveToTop)
+	{
+		_moveToTop = false;
 	}
 }
 
