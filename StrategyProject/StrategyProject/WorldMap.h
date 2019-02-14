@@ -25,7 +25,7 @@ private:
 
 	sf::VertexArray _vertices;
 	std::vector<std::vector<int>> _tileMatrix;
-	std::map<Terrain, std::vector<double>> _tileTerrains;
+	std::map<Terrain, std::vector<double>> _tileTerrainRatios;
 	sf::Texture _backgroundTexture;
 	sf::Image _terrainData;
 
@@ -43,14 +43,16 @@ public:
 	virtual void draw() override;
 
 private:
+	void loadAssets();
+	void initializeTile(int tileX, int tileY);
+	void loadTerrainData();
+	void loadTerrainDataForTile(int tileX, int tileY);
+
 	void handleMousePressEvent(sf::Event &event);
 	void handleMouseScrollEvent(sf::Event &event);
 	void handleKeyPressEvent(sf::Event &event);
 	void handleRealTimeKeyPressInput();
-
-	void loadTerrainData();
-	void loadTerrainDataForTile(int tileX, int tileY);
-	//int terrainPixelsInTile(int tileX, int tileY, Terrain terrain);
+	
 	void changeMapMode(Terrain mapMode);
 	int coordsToTile(sf::Vector2i worldCoords);
 };

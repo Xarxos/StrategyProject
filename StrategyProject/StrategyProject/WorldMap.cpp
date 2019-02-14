@@ -12,11 +12,11 @@ WorldMap::WorldMap(GameDataRef data)
 	_vertices(sf::Quads, Define::WORLD_SIZE_IN_TILES_X * Define::WORLD_SIZE_IN_TILES_Y * 4),
 	_view(sf::Vector2f(Define::WORLD_VIEW_WIDTH / 2, Define::WORLD_VIEW_HEIGHT / 2), sf::Vector2f(Define::WORLD_VIEW_WIDTH, Define::WORLD_VIEW_HEIGHT))
 {
-	_tileTerrains[Terrain::Water].resize(Define::WORLD_SIZE_IN_TILES_X * Define::WORLD_SIZE_IN_TILES_Y);
-	_tileTerrains[Terrain::FlatGround].resize(Define::WORLD_SIZE_IN_TILES_X * Define::WORLD_SIZE_IN_TILES_Y);
-	_tileTerrains[Terrain::Hills].resize(Define::WORLD_SIZE_IN_TILES_X * Define::WORLD_SIZE_IN_TILES_Y);
-	_tileTerrains[Terrain::Mountains].resize(Define::WORLD_SIZE_IN_TILES_X * Define::WORLD_SIZE_IN_TILES_Y);
-	_tileTerrains[Terrain::Forest].resize(Define::WORLD_SIZE_IN_TILES_X * Define::WORLD_SIZE_IN_TILES_Y);
+	_tileTerrainRatios[Terrain::Water].resize(Define::WORLD_SIZE_IN_TILES_X * Define::WORLD_SIZE_IN_TILES_Y);
+	_tileTerrainRatios[Terrain::FlatGround].resize(Define::WORLD_SIZE_IN_TILES_X * Define::WORLD_SIZE_IN_TILES_Y);
+	_tileTerrainRatios[Terrain::Hills].resize(Define::WORLD_SIZE_IN_TILES_X * Define::WORLD_SIZE_IN_TILES_Y);
+	_tileTerrainRatios[Terrain::Mountains].resize(Define::WORLD_SIZE_IN_TILES_X * Define::WORLD_SIZE_IN_TILES_Y);
+	_tileTerrainRatios[Terrain::Forest].resize(Define::WORLD_SIZE_IN_TILES_X * Define::WORLD_SIZE_IN_TILES_Y);
 }
 
 void WorldMap::init()
@@ -25,33 +25,13 @@ void WorldMap::init()
 	sf::Clock clock;
 	float start = clock.getElapsedTime().asSeconds();
 
-	_data->assets.loadImage("World Map Terrain Data", Filepath::WORLD_MAP_BACKGROUND);
-	_data->assets.loadTexture("World Map Background", Filepath::WORLD_MAP_BACKGROUND);
-	_data->assets.loadTexture("World Map Background Grayscale", Filepath::WORLD_MAP_BACKGROUND_GRAYSCALE);
-	_backgroundTexture = _data->assets.getTexture("World Map Background");
-	_terrainData = _data->assets.getImage("World Map Terrain Data");
+	loadAssets();
 
 	for (int row = 0; row < Define::WORLD_SIZE_IN_TILES_Y; row++)
 	{
 		for (int column = 0; column < Define::WORLD_SIZE_IN_TILES_X; column++)
 		{
-			_tileMatrix[row][column] = row * Define::WORLD_SIZE_IN_TILES_X + column;
-			int quadIndex = _tileMatrix[row][column] * 4;
-
-			_vertices[quadIndex + 0].position = sf::Vector2f(column * Define::TILE_SIZE, row * Define::TILE_SIZE);
-			_vertices[quadIndex + 1].position = sf::Vector2f(column * Define::TILE_SIZE + Define::TILE_SIZE, row * Define::TILE_SIZE);
-			_vertices[quadIndex + 2].position = sf::Vector2f(column * Define::TILE_SIZE + Define::TILE_SIZE, row * Define::TILE_SIZE + Define::TILE_SIZE);
-			_vertices[quadIndex + 3].position = sf::Vector2f(column * Define::TILE_SIZE, row * Define::TILE_SIZE + Define::TILE_SIZE);
-
-			_vertices[quadIndex + 0].color = sf::Color(sf::Color::Green);
-			_vertices[quadIndex + 1].color = sf::Color(sf::Color::Red);
-			_vertices[quadIndex + 2].color = sf::Color(sf::Color::Blue);
-			_vertices[quadIndex + 3].color = sf::Color(sf::Color::Magenta);
-
-			_vertices[quadIndex + 0].texCoords = sf::Vector2f(column * Define::TILE_TX_SIZE, row * Define::TILE_TX_SIZE);
-			_vertices[quadIndex + 1].texCoords = sf::Vector2f(column * Define::TILE_TX_SIZE + Define::TILE_TX_SIZE, row * Define::TILE_TX_SIZE);
-			_vertices[quadIndex + 2].texCoords = sf::Vector2f(column * Define::TILE_TX_SIZE + Define::TILE_TX_SIZE, row * Define::TILE_TX_SIZE + Define::TILE_TX_SIZE);
-			_vertices[quadIndex + 3].texCoords = sf::Vector2f(column * Define::TILE_TX_SIZE, row * Define::TILE_TX_SIZE + Define::TILE_TX_SIZE);
+			initializeTile(column, row);
 		}
 	}
 
@@ -59,6 +39,103 @@ void WorldMap::init()
 
 	float end = clock.getElapsedTime().asSeconds();
 	std::cout << "Loaded " << Define::WORLD_SIZE_IN_TILES_X * Define::WORLD_SIZE_IN_TILES_Y << " tiles in " << end - start << " seconds.\n";
+}
+
+void WorldMap::loadAssets()
+{
+	_data->assets.loadImage("World Map Terrain Data", Filepath::WORLD_MAP_BACKGROUND);
+	_data->assets.loadTexture("World Map Background", Filepath::WORLD_MAP_BACKGROUND);
+	_data->assets.loadTexture("World Map Background Grayscale", Filepath::WORLD_MAP_BACKGROUND_GRAYSCALE);
+
+	_backgroundTexture = _data->assets.getTexture("World Map Background");
+	_terrainData = _data->assets.getImage("World Map Terrain Data");
+}
+
+void WorldMap::initializeTile(int tileX, int tileY)
+{
+	_tileMatrix[tileY][tileX] = tileY * Define::WORLD_SIZE_IN_TILES_X + tileX;
+	int quadIndex = _tileMatrix[tileY][tileX] * 4;
+
+	_vertices[quadIndex + 0].position = sf::Vector2f(tileX * Define::TILE_SIZE, tileY * Define::TILE_SIZE);
+	_vertices[quadIndex + 1].position = sf::Vector2f(tileX * Define::TILE_SIZE + Define::TILE_SIZE, tileY * Define::TILE_SIZE);
+	_vertices[quadIndex + 2].position = sf::Vector2f(tileX * Define::TILE_SIZE + Define::TILE_SIZE, tileY * Define::TILE_SIZE + Define::TILE_SIZE);
+	_vertices[quadIndex + 3].position = sf::Vector2f(tileX * Define::TILE_SIZE, tileY * Define::TILE_SIZE + Define::TILE_SIZE);
+
+	_vertices[quadIndex + 0].color = sf::Color(sf::Color::Green);
+	_vertices[quadIndex + 1].color = sf::Color(sf::Color::Red);
+	_vertices[quadIndex + 2].color = sf::Color(sf::Color::Blue);
+	_vertices[quadIndex + 3].color = sf::Color(sf::Color::Magenta);
+
+	_vertices[quadIndex + 0].texCoords = sf::Vector2f(tileX * Define::TILE_TX_SIZE, tileY * Define::TILE_TX_SIZE);
+	_vertices[quadIndex + 1].texCoords = sf::Vector2f(tileX * Define::TILE_TX_SIZE + Define::TILE_TX_SIZE, tileY * Define::TILE_TX_SIZE);
+	_vertices[quadIndex + 2].texCoords = sf::Vector2f(tileX * Define::TILE_TX_SIZE + Define::TILE_TX_SIZE, tileY * Define::TILE_TX_SIZE + Define::TILE_TX_SIZE);
+	_vertices[quadIndex + 3].texCoords = sf::Vector2f(tileX * Define::TILE_TX_SIZE, tileY * Define::TILE_TX_SIZE + Define::TILE_TX_SIZE);
+}
+
+void WorldMap::loadTerrainData()
+{
+	std::cout << "Load Terrain Data...\n";
+	for (int row = 0; row < Define::WORLD_SIZE_IN_TILES_Y; row++)
+	{
+		for (int column = 0; column < Define::WORLD_SIZE_IN_TILES_X; column++)
+		{
+			loadTerrainDataForTile(column, row);
+		}
+	}
+}
+
+void WorldMap::loadTerrainDataForTile(int tileX, int tileY)
+{
+	int waterPixels(0);
+	int flatgroundPixels(0);
+	int hillPixels(0);
+	int mountainPixels(0);
+	int forestPixels(0);
+
+	for (int pixelRow = 0; pixelRow < Define::TILE_TX_SIZE; pixelRow++)
+	{
+		for (int pixelColumn = 0; pixelColumn < Define::TILE_TX_SIZE; pixelColumn++)
+		{
+			if (_terrainData.getPixel(tileX * Define::TILE_TX_SIZE + pixelColumn, tileY * Define::TILE_TX_SIZE + pixelRow) == Define::DATA_COLOR_WATER)
+			{
+				waterPixels++;
+			}
+			else if (_terrainData.getPixel(tileX * Define::TILE_TX_SIZE + pixelColumn, tileY * Define::TILE_TX_SIZE + pixelRow) == Define::DATA_COLOR_FLATGROUND)
+			{
+				flatgroundPixels++;
+			}
+			else if (_terrainData.getPixel(tileX * Define::TILE_TX_SIZE + pixelColumn, tileY * Define::TILE_TX_SIZE + pixelRow) == Define::DATA_COLOR_HILLS)
+			{
+				hillPixels++;
+			}
+			else if (_terrainData.getPixel(tileX * Define::TILE_TX_SIZE + pixelColumn, tileY * Define::TILE_TX_SIZE + pixelRow) == Define::DATA_COLOR_MOUNTAINS)
+			{
+				mountainPixels++;
+			}
+			else if (_terrainData.getPixel(tileX * Define::TILE_TX_SIZE + pixelColumn, tileY * Define::TILE_TX_SIZE + pixelRow) == Define::DATA_COLOR_FOREST)
+			{
+				forestPixels++;
+			}
+			else
+			{
+				std::cout << "WRONG COLOR DETECTED!\n";
+			}
+		}
+	}
+
+	double totalPixels = Define::TILE_TX_SIZE * Define::TILE_TX_SIZE;
+
+	double waterRatio = waterPixels / totalPixels;
+	double flatgroundRatio = flatgroundPixels / totalPixels;
+	double hillsRatio = hillPixels / totalPixels;
+	double mountainsRatio = mountainPixels / totalPixels;
+	double forestRatio = forestPixels / totalPixels;
+
+	_tileTerrainRatios.at(Terrain::Water)[_tileMatrix[tileY][tileX]] = waterRatio;
+	_tileTerrainRatios.at(Terrain::FlatGround)[_tileMatrix[tileY][tileX]] = flatgroundRatio;
+	_tileTerrainRatios.at(Terrain::Hills)[_tileMatrix[tileY][tileX]] = hillsRatio;
+	_tileTerrainRatios.at(Terrain::Mountains)[_tileMatrix[tileY][tileX]] = mountainsRatio;
+	_tileTerrainRatios.at(Terrain::Forest)[_tileMatrix[tileY][tileX]] = forestRatio;
 }
 
 void WorldMap::handleInput()
@@ -113,9 +190,9 @@ void WorldMap::handleMousePressEvent(sf::Event &event)
 		int tileClicked(coordsToTile(worldMouse));
 		std::map<Terrain, double> tileTerrainData;
 
-		for (std::map<Terrain, std::vector<double>>::iterator it = _tileTerrains.begin(); it != _tileTerrains.end(); it++)
+		for (std::map<Terrain, std::vector<double>>::iterator it = _tileTerrainRatios.begin(); it != _tileTerrainRatios.end(); it++)
 		{
-			tileTerrainData[it->first] = _tileTerrains.at(it->first)[tileClicked];
+			tileTerrainData[it->first] = _tileTerrainRatios.at(it->first)[tileClicked];
 		}
 
 		_subStates.push_back(std::move(subStateRef(new TileDataBoxState(_data, tileTerrainData))));
@@ -248,114 +325,6 @@ void WorldMap::draw()
 	_data->window.display();
 }
 
-void WorldMap::loadTerrainData()
-{
-	std::cout << "Load Terrain Data...\n";
-	for (int row = 0; row < Define::WORLD_SIZE_IN_TILES_Y; row++)
-	{
-		for (int column = 0; column < Define::WORLD_SIZE_IN_TILES_X; column++)
-		{
-			loadTerrainDataForTile(column, row);
-		}
-	}
-}
-
-void WorldMap::loadTerrainDataForTile(int tileX, int tileY)
-{
-	int waterPixels(0);
-	int flatgroundPixels(0);
-	int hillPixels(0);
-	int mountainPixels(0);
-	int forestPixels(0);
-
-	for (int pixelRow = 0; pixelRow < Define::TILE_TX_SIZE; pixelRow++)
-	{
-		for (int pixelColumn = 0; pixelColumn < Define::TILE_TX_SIZE; pixelColumn++)
-		{
-			if (_terrainData.getPixel(tileX * Define::TILE_TX_SIZE + pixelColumn, tileY * Define::TILE_TX_SIZE + pixelRow) == Define::DATA_COLOR_WATER)
-			{
-				waterPixels++;
-			}
-			else if (_terrainData.getPixel(tileX * Define::TILE_TX_SIZE + pixelColumn, tileY * Define::TILE_TX_SIZE + pixelRow) == Define::DATA_COLOR_FLATGROUND)
-			{
-				flatgroundPixels++;
-			}
-			else if (_terrainData.getPixel(tileX * Define::TILE_TX_SIZE + pixelColumn, tileY * Define::TILE_TX_SIZE + pixelRow) == Define::DATA_COLOR_HILLS)
-			{
-				hillPixels++;
-			}
-			else if (_terrainData.getPixel(tileX * Define::TILE_TX_SIZE + pixelColumn, tileY * Define::TILE_TX_SIZE + pixelRow) == Define::DATA_COLOR_MOUNTAINS)
-			{
-				mountainPixels++;
-			}
-			else if (_terrainData.getPixel(tileX * Define::TILE_TX_SIZE + pixelColumn, tileY * Define::TILE_TX_SIZE + pixelRow) == Define::DATA_COLOR_FOREST)
-			{
-				forestPixels++;
-			}
-			else
-			{
-				std::cout << "WRONG COLOR DETECTED!\n";
-			}
-		}
-	}
-
-	double totalPixels = Define::TILE_TX_SIZE * Define::TILE_TX_SIZE;
-
-	double waterRatio = waterPixels / totalPixels;
-	double flatgroundRatio = flatgroundPixels / totalPixels;
-	double hillsRatio = hillPixels / totalPixels;
-	double mountainsRatio = mountainPixels / totalPixels;
-	double forestRatio = forestPixels / totalPixels;
-
-	_tileTerrains.at(Terrain::Water)[_tileMatrix[tileY][tileX]] = waterRatio;
-	_tileTerrains.at(Terrain::FlatGround)[_tileMatrix[tileY][tileX]] = flatgroundRatio;
-	_tileTerrains.at(Terrain::Hills)[_tileMatrix[tileY][tileX]] = hillsRatio;
-	_tileTerrains.at(Terrain::Mountains)[_tileMatrix[tileY][tileX]] = mountainsRatio;
-	_tileTerrains.at(Terrain::Forest)[_tileMatrix[tileY][tileX]] = forestRatio;
-}
-
-/*int WorldMap::terrainPixelsInTile(int tileX, int tileY, Terrain terrain)
-{
-	int terrainPixels(0);
-	sf::Color terrainColor;
-
-	switch (terrain)
-	{
-		case Terrain::Water:
-			terrainColor = Define::DATA_COLOR_WATER;
-			break;
-
-		case Terrain::FlatGround:
-			terrainColor = Define::DATA_COLOR_FLATGROUND;
-			break;
-
-		case Terrain::Hills:
-			terrainColor = Define::DATA_COLOR_HILLS;
-			break;
-
-		case Terrain::Mountains:
-			terrainColor = Define::DATA_COLOR_MOUNTAINS;
-			break;
-
-		case Terrain::Forest:
-			terrainColor = Define::DATA_COLOR_FOREST;
-			break;
-	}
-
-	for (int pixelRow = 0; pixelRow < Define::TILE_TX_SIZE; pixelRow++)
-	{
-		for (int pixelColumn = 0; pixelColumn < Define::TILE_TX_SIZE; pixelColumn++)
-		{
-			if (_terrainData.getPixel(tileX * Define::TILE_TX_SIZE + pixelColumn, tileY * Define::TILE_TX_SIZE + pixelRow) == terrainColor)
-			{
-				terrainPixels++;
-			}
-		}
-	}
-
-	return terrainPixels;
-}*/
-
 void WorldMap::changeMapMode(Terrain mapMode)
 {
 	sf::Color baseColor;
@@ -406,8 +375,8 @@ void WorldMap::changeMapMode(Terrain mapMode)
 				}
 				else
 				{
-					double currentTerrain = _tileTerrains.at(mapMode)[_tileMatrix[row][column]];
-					_vertices[quadIndex + i].color = sf::Color(255 - differenceRed * currentTerrain, 255 - differenceGreen * currentTerrain, 255 - differenceBlue * currentTerrain);
+					double currentTerrainRatio = _tileTerrainRatios.at(mapMode)[_tileMatrix[row][column]];
+					_vertices[quadIndex + i].color = sf::Color(255 - differenceRed * currentTerrainRatio, 255 - differenceGreen * currentTerrainRatio, 255 - differenceBlue * currentTerrainRatio);
 				}
 			}
 		}
