@@ -43,7 +43,13 @@ public:
 	virtual void draw() override;
 
 private:
+	void handleMousePressEvent(sf::Event &event);
+	void handleMouseScrollEvent(sf::Event &event);
+	void handleKeyPressEvent(sf::Event &event);
+	void handleRealTimeKeyPressInput();
+
 	void loadTerrainData();
+	void loadTerrainDataForTile(int tileX, int tileY);
 	//int terrainPixelsInTile(int tileX, int tileY, Terrain terrain);
 	void changeMapMode(Terrain mapMode);
 	int coordsToTile(sf::Vector2i worldCoords);

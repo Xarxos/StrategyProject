@@ -85,106 +85,123 @@ void WorldMap::handleInput()
 
 			if (event.type == sf::Event::MouseButtonPressed)
 			{
-				if (event.mouseButton.button == sf::Mouse::Left)
-				{
-					sf::Vector2i worldMouse(_data->window.mapPixelToCoords(sf::Mouse::getPosition(_data->window), _view).x, _data->window.mapPixelToCoords(sf::Mouse::getPosition(_data->window), _view).y);
-					std::cout << "World Mouse: " << worldMouse.x << "," << worldMouse.y << "\n";
-
-					int tileClicked(coordsToTile(worldMouse));
-					std::map<Terrain, double> tileTerrainData;
-
-					for (std::map<Terrain, std::vector<double>>::iterator it = _tileTerrains.begin(); it != _tileTerrains.end(); it++)
-					{
-						tileTerrainData[it->first] = _tileTerrains.at(it->first)[tileClicked];
-					}
-
-					_subStates.push_back(std::move(subStateRef(new TileDataBoxState(_data, tileTerrainData))));
-					_subStates.back()->init();
-				}
+				handleMousePressEvent(event);
 			}
 
 			if (event.type == sf::Event::MouseWheelScrolled)
 			{
-				if (event.mouseWheelScroll.delta >= 0)
-				{
-					if (_view.getSize().x < Define::WORLD_VIEW_WIDTH * 1 / Define::WORLD_CAMERA_MIN_ZOOM_FACTOR
-						&& _view.getSize().y < Define::WORLD_VIEW_HEIGHT * 1 / Define::WORLD_CAMERA_MIN_ZOOM_FACTOR)
-					{
-						if (_view.getCenter().y - _view.getSize().y / 2 > 0 - Define::WORLD_CAMERA_EDGE_MARGIN
-							&& _view.getCenter().y + _view.getSize().y / 2 < Define::WORLD_SIZE_IN_TILES_Y * Define::TILE_SIZE + Define::WORLD_CAMERA_EDGE_MARGIN
-							&& _view.getCenter().x - _view.getSize().x / 2 > 0 - Define::WORLD_CAMERA_EDGE_MARGIN
-							&& _view.getCenter().x + _view.getSize().x / 2 < Define::WORLD_SIZE_IN_TILES_X * Define::TILE_SIZE + Define::WORLD_CAMERA_EDGE_MARGIN)
-						{
-							_view.zoom(Define::WORLD_CAMERA_ZOOM_FACTOR);
-						}
-					}
-				}
-				else
-				{
-					if (_view.getSize().x > Define::WORLD_VIEW_WIDTH * 1 / Define::WORLD_CAMERA_MAX_ZOOM_FACTOR
-						&& _view.getSize().y > Define::WORLD_VIEW_HEIGHT * 1 / Define::WORLD_CAMERA_MAX_ZOOM_FACTOR)
-					{
-						_view.zoom(1 / Define::WORLD_CAMERA_ZOOM_FACTOR);
-					}
-				}
+				handleMouseScrollEvent(event);
 			}
 
 			if (event.type == sf::Event::KeyPressed)
 			{
-				if (event.key.code == Controls::WORLD_MAP_MODE_DEFAULT)
-				{
-					changeMapMode(Terrain::Default);
-				}
-				if (event.key.code == Controls::WORLD_MAP_MODE_WATER)
-				{
-					changeMapMode(Terrain::Water);
-				}
-				if (event.key.code == Controls::WORLD_MAP_MODE_FLATGROUND)
-				{
-					changeMapMode(Terrain::FlatGround);
-				}
-				if (event.key.code == Controls::WORLD_MAP_MODE_HILLS)
-				{
-					changeMapMode(Terrain::Hills);
-				}
-				if (event.key.code == Controls::WORLD_MAP_MODE_MOUNTAINS)
-				{
-					changeMapMode(Terrain::Mountains);
-				}
-				if (event.key.code == Controls::WORLD_MAP_MODE_FOREST)
-				{
-					changeMapMode(Terrain::Forest);
-				}
+				handleKeyPressEvent(event);
 			}
+		}
+	}
+
+	handleRealTimeKeyPressInput();
+}
+
+void WorldMap::handleMousePressEvent(sf::Event &event)
+{
+	if (event.mouseButton.button == sf::Mouse::Left)
+	{
+		sf::Vector2i worldMouse(_data->window.mapPixelToCoords(sf::Mouse::getPosition(_data->window), _view).x, _data->window.mapPixelToCoords(sf::Mouse::getPosition(_data->window), _view).y);
+		std::cout << "World Mouse: " << worldMouse.x << "," << worldMouse.y << "\n";
+
+		int tileClicked(coordsToTile(worldMouse));
+		std::map<Terrain, double> tileTerrainData;
+
+		for (std::map<Terrain, std::vector<double>>::iterator it = _tileTerrains.begin(); it != _tileTerrains.end(); it++)
+		{
+			tileTerrainData[it->first] = _tileTerrains.at(it->first)[tileClicked];
 		}
 
-		if (sf::Keyboard::isKeyPressed(Controls::CAMERA_MOVE_UP))
+		_subStates.push_back(std::move(subStateRef(new TileDataBoxState(_data, tileTerrainData))));
+		_subStates.back()->init();
+	}
+}
+void WorldMap::handleMouseScrollEvent(sf::Event &event)
+{
+	if (event.mouseWheelScroll.delta >= 0)
+	{
+		if (_view.getSize().x < Define::WORLD_VIEW_WIDTH * 1 / Define::WORLD_CAMERA_MIN_ZOOM_FACTOR
+			&& _view.getSize().y < Define::WORLD_VIEW_HEIGHT * 1 / Define::WORLD_CAMERA_MIN_ZOOM_FACTOR)
 		{
-			if (_view.getCenter().y - _view.getSize().y / 2 > 0 - Define::WORLD_CAMERA_EDGE_MARGIN)
+			if (_view.getCenter().y - _view.getSize().y / 2 > 0 - Define::WORLD_CAMERA_EDGE_MARGIN
+				&& _view.getCenter().y + _view.getSize().y / 2 < Define::WORLD_SIZE_IN_TILES_Y * Define::TILE_SIZE + Define::WORLD_CAMERA_EDGE_MARGIN
+				&& _view.getCenter().x - _view.getSize().x / 2 > 0 - Define::WORLD_CAMERA_EDGE_MARGIN
+				&& _view.getCenter().x + _view.getSize().x / 2 < Define::WORLD_SIZE_IN_TILES_X * Define::TILE_SIZE + Define::WORLD_CAMERA_EDGE_MARGIN)
 			{
-				_view.move(0.f, -Define::WORLD_CAMERA_MOVE_SPEED);
+				_view.zoom(Define::WORLD_CAMERA_ZOOM_FACTOR);
 			}
 		}
-		if (sf::Keyboard::isKeyPressed(Controls::CAMERA_MOVE_DOWN))
+	}
+	else
+	{
+		if (_view.getSize().x > Define::WORLD_VIEW_WIDTH * 1 / Define::WORLD_CAMERA_MAX_ZOOM_FACTOR
+			&& _view.getSize().y > Define::WORLD_VIEW_HEIGHT * 1 / Define::WORLD_CAMERA_MAX_ZOOM_FACTOR)
 		{
-			if (_view.getCenter().y + _view.getSize().y / 2 < Define::WORLD_SIZE_IN_TILES_Y * Define::TILE_SIZE + Define::WORLD_CAMERA_EDGE_MARGIN)
-			{
-				_view.move(0.f, Define::WORLD_CAMERA_MOVE_SPEED);
-			}
+			_view.zoom(1 / Define::WORLD_CAMERA_ZOOM_FACTOR);
 		}
-		if (sf::Keyboard::isKeyPressed(Controls::CAMERA_MOVE_LEFT))
+	}
+}
+void WorldMap::handleKeyPressEvent(sf::Event &event)
+{
+	if (event.key.code == Controls::WORLD_MAP_MODE_DEFAULT)
+	{
+		changeMapMode(Terrain::Default);
+	}
+	if (event.key.code == Controls::WORLD_MAP_MODE_WATER)
+	{
+		changeMapMode(Terrain::Water);
+	}
+	if (event.key.code == Controls::WORLD_MAP_MODE_FLATGROUND)
+	{
+		changeMapMode(Terrain::FlatGround);
+	}
+	if (event.key.code == Controls::WORLD_MAP_MODE_HILLS)
+	{
+		changeMapMode(Terrain::Hills);
+	}
+	if (event.key.code == Controls::WORLD_MAP_MODE_MOUNTAINS)
+	{
+		changeMapMode(Terrain::Mountains);
+	}
+	if (event.key.code == Controls::WORLD_MAP_MODE_FOREST)
+	{
+		changeMapMode(Terrain::Forest);
+	}
+}
+void WorldMap::handleRealTimeKeyPressInput()
+{
+	if (sf::Keyboard::isKeyPressed(Controls::CAMERA_MOVE_UP))
+	{
+		if (_view.getCenter().y - _view.getSize().y / 2 > 0 - Define::WORLD_CAMERA_EDGE_MARGIN)
 		{
-			if (_view.getCenter().x - _view.getSize().x / 2 > 0 - Define::WORLD_CAMERA_EDGE_MARGIN)
-			{
-				_view.move(-Define::WORLD_CAMERA_MOVE_SPEED, 0.f);
-			}
+			_view.move(0.f, -Define::WORLD_CAMERA_MOVE_SPEED);
 		}
-		if (sf::Keyboard::isKeyPressed(Controls::CAMERA_MOVE_RIGHT))
+	}
+	if (sf::Keyboard::isKeyPressed(Controls::CAMERA_MOVE_DOWN))
+	{
+		if (_view.getCenter().y + _view.getSize().y / 2 < Define::WORLD_SIZE_IN_TILES_Y * Define::TILE_SIZE + Define::WORLD_CAMERA_EDGE_MARGIN)
 		{
-			if (_view.getCenter().x + _view.getSize().x / 2 < Define::WORLD_SIZE_IN_TILES_X * Define::TILE_SIZE + Define::WORLD_CAMERA_EDGE_MARGIN)
-			{
-				_view.move(Define::WORLD_CAMERA_MOVE_SPEED, 0.f);
-			}
+			_view.move(0.f, Define::WORLD_CAMERA_MOVE_SPEED);
+		}
+	}
+	if (sf::Keyboard::isKeyPressed(Controls::CAMERA_MOVE_LEFT))
+	{
+		if (_view.getCenter().x - _view.getSize().x / 2 > 0 - Define::WORLD_CAMERA_EDGE_MARGIN)
+		{
+			_view.move(-Define::WORLD_CAMERA_MOVE_SPEED, 0.f);
+		}
+	}
+	if (sf::Keyboard::isKeyPressed(Controls::CAMERA_MOVE_RIGHT))
+	{
+		if (_view.getCenter().x + _view.getSize().x / 2 < Define::WORLD_SIZE_IN_TILES_X * Define::TILE_SIZE + Define::WORLD_CAMERA_EDGE_MARGIN)
+		{
+			_view.move(Define::WORLD_CAMERA_MOVE_SPEED, 0.f);
 		}
 	}
 }
@@ -238,58 +255,63 @@ void WorldMap::loadTerrainData()
 	{
 		for (int column = 0; column < Define::WORLD_SIZE_IN_TILES_X; column++)
 		{
-			int waterPixels(0);
-			int flatgroundPixels(0);
-			int hillPixels(0);
-			int mountainPixels(0);
-			int forestPixels(0);
-
-			for (int pixelRow = 0; pixelRow < Define::TILE_TX_SIZE; pixelRow++)
-			{
-				for (int pixelColumn = 0; pixelColumn < Define::TILE_TX_SIZE; pixelColumn++)
-				{
-					if (_terrainData.getPixel(column * Define::TILE_TX_SIZE + pixelColumn, row * Define::TILE_TX_SIZE + pixelRow) == Define::DATA_COLOR_WATER)
-					{
-						waterPixels++;
-					}
-					else if (_terrainData.getPixel(column * Define::TILE_TX_SIZE + pixelColumn, row * Define::TILE_TX_SIZE + pixelRow) == Define::DATA_COLOR_FLATGROUND)
-					{
-						flatgroundPixels++;
-					}
-					else if (_terrainData.getPixel(column * Define::TILE_TX_SIZE + pixelColumn, row * Define::TILE_TX_SIZE + pixelRow) == Define::DATA_COLOR_HILLS)
-					{
-						hillPixels++;
-					}
-					else if (_terrainData.getPixel(column * Define::TILE_TX_SIZE + pixelColumn, row * Define::TILE_TX_SIZE + pixelRow) == Define::DATA_COLOR_MOUNTAINS)
-					{
-						mountainPixels++;
-					}
-					else if (_terrainData.getPixel(column * Define::TILE_TX_SIZE + pixelColumn, row * Define::TILE_TX_SIZE + pixelRow) == Define::DATA_COLOR_FOREST)
-					{
-						forestPixels++;
-					}
-					else
-					{
-						std::cout << "WRONG COLOR DETECTED!\n";
-					}
-				}
-			}
-
-			double totalPixels = Define::TILE_TX_SIZE * Define::TILE_TX_SIZE;
-
-			double waterRatio = waterPixels / totalPixels;
-			double flatgroundRatio = flatgroundPixels / totalPixels;
-			double hillsRatio = hillPixels / totalPixels;
-			double mountainsRatio = mountainPixels / totalPixels;
-			double forestRatio = forestPixels / totalPixels;
-
-			_tileTerrains.at(Terrain::Water)[_tileMatrix[row][column]] = waterRatio;
-			_tileTerrains.at(Terrain::FlatGround)[_tileMatrix[row][column]] = flatgroundRatio;
-			_tileTerrains.at(Terrain::Hills)[_tileMatrix[row][column]] = hillsRatio;
-			_tileTerrains.at(Terrain::Mountains)[_tileMatrix[row][column]] = mountainsRatio;
-			_tileTerrains.at(Terrain::Forest)[_tileMatrix[row][column]] = forestRatio;
+			loadTerrainDataForTile(column, row);
 		}
 	}
+}
+
+void WorldMap::loadTerrainDataForTile(int tileX, int tileY)
+{
+	int waterPixels(0);
+	int flatgroundPixels(0);
+	int hillPixels(0);
+	int mountainPixels(0);
+	int forestPixels(0);
+
+	for (int pixelRow = 0; pixelRow < Define::TILE_TX_SIZE; pixelRow++)
+	{
+		for (int pixelColumn = 0; pixelColumn < Define::TILE_TX_SIZE; pixelColumn++)
+		{
+			if (_terrainData.getPixel(tileX * Define::TILE_TX_SIZE + pixelColumn, tileY * Define::TILE_TX_SIZE + pixelRow) == Define::DATA_COLOR_WATER)
+			{
+				waterPixels++;
+			}
+			else if (_terrainData.getPixel(tileX * Define::TILE_TX_SIZE + pixelColumn, tileY * Define::TILE_TX_SIZE + pixelRow) == Define::DATA_COLOR_FLATGROUND)
+			{
+				flatgroundPixels++;
+			}
+			else if (_terrainData.getPixel(tileX * Define::TILE_TX_SIZE + pixelColumn, tileY * Define::TILE_TX_SIZE + pixelRow) == Define::DATA_COLOR_HILLS)
+			{
+				hillPixels++;
+			}
+			else if (_terrainData.getPixel(tileX * Define::TILE_TX_SIZE + pixelColumn, tileY * Define::TILE_TX_SIZE + pixelRow) == Define::DATA_COLOR_MOUNTAINS)
+			{
+				mountainPixels++;
+			}
+			else if (_terrainData.getPixel(tileX * Define::TILE_TX_SIZE + pixelColumn, tileY * Define::TILE_TX_SIZE + pixelRow) == Define::DATA_COLOR_FOREST)
+			{
+				forestPixels++;
+			}
+			else
+			{
+				std::cout << "WRONG COLOR DETECTED!\n";
+			}
+		}
+	}
+
+	double totalPixels = Define::TILE_TX_SIZE * Define::TILE_TX_SIZE;
+
+	double waterRatio = waterPixels / totalPixels;
+	double flatgroundRatio = flatgroundPixels / totalPixels;
+	double hillsRatio = hillPixels / totalPixels;
+	double mountainsRatio = mountainPixels / totalPixels;
+	double forestRatio = forestPixels / totalPixels;
+
+	_tileTerrains.at(Terrain::Water)[_tileMatrix[tileY][tileX]] = waterRatio;
+	_tileTerrains.at(Terrain::FlatGround)[_tileMatrix[tileY][tileX]] = flatgroundRatio;
+	_tileTerrains.at(Terrain::Hills)[_tileMatrix[tileY][tileX]] = hillsRatio;
+	_tileTerrains.at(Terrain::Mountains)[_tileMatrix[tileY][tileX]] = mountainsRatio;
+	_tileTerrains.at(Terrain::Forest)[_tileMatrix[tileY][tileX]] = forestRatio;
 }
 
 /*int WorldMap::terrainPixelsInTile(int tileX, int tileY, Terrain terrain)
