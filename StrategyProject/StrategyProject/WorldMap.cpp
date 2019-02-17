@@ -196,18 +196,23 @@ void WorldMap::handleMousePressEvent(sf::Event &event)
 	{
 		sf::Vector2i worldMouse(_data->window.mapPixelToCoords(sf::Mouse::getPosition(_data->window), _view).x, _data->window.mapPixelToCoords(sf::Mouse::getPosition(_data->window), _view).y);
 
-		int tileClicked = _tileMatrix[coordsToTile(worldMouse).y][coordsToTile(worldMouse).x];
-		_selectedTile.setPosition(coordsToTile(worldMouse).x * Define::TILE_SIZE, coordsToTile(worldMouse).y * Define::TILE_SIZE); // <----------------------- Shit doesn't work.
-		_tileIsSelected = true;
-		std::map<Terrain, double> tileTerrainData;
-
-		for (std::map<Terrain, std::vector<double>>::iterator it = _tileTerrainRatios.begin(); it != _tileTerrainRatios.end(); it++)
+		if (coordsToTile(worldMouse).x != -1)
 		{
-			tileTerrainData[it->first] = _tileTerrainRatios.at(it->first)[tileClicked];
-		}
+			int tileClicked = _tileMatrix[coordsToTile(worldMouse).y][coordsToTile(worldMouse).x];
 
-		_subStates.push_back(std::move(subStateRef(new TileDataBoxState(_data, tileTerrainData))));
-		_subStates.back()->init();
+			_selectedTile.setPosition(coordsToTile(worldMouse).x * Define::TILE_SIZE, coordsToTile(worldMouse).y * Define::TILE_SIZE);
+			_tileIsSelected = true;
+
+			std::map<Terrain, double> tileTerrainData;
+
+			for (std::map<Terrain, std::vector<double>>::iterator it = _tileTerrainRatios.begin(); it != _tileTerrainRatios.end(); it++)
+			{
+				tileTerrainData[it->first] = _tileTerrainRatios.at(it->first)[tileClicked];
+			}
+
+			_subStates.push_back(std::move(subStateRef(new TileDataBoxState(_data, tileTerrainData))));
+			_subStates.back()->init();
+		}
 	}
 }
 void WorldMap::handleMouseScrollEvent(sf::Event &event)
@@ -424,5 +429,10 @@ void WorldMap::changeMapMode(Terrain mapMode)
 
 sf::Vector2i WorldMap::coordsToTile(sf::Vector2i worldCoords)
 {
+	if (!_vertices.getBounds().contains(worldCoords.x, worldCoords.y))
+	{
+		return sf::Vector2i(-1, -1);
+	}
+
 	return sf::Vector2i(worldCoords.x / Define::TILE_SIZE, worldCoords.y / Define::TILE_SIZE);
 }

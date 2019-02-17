@@ -6,20 +6,20 @@
 
 namespace Define
 {
-	const int SCREEN_WIDTH(800);
-	const int SCREEN_HEIGHT(600);
+	const int SCREEN_WIDTH(1600);
+	const int SCREEN_HEIGHT(1000);
 	const std::string GAME_TITLE("Strategy Game");
 
 	const float SPLASH_STATE_DURATION(0.5f);
 
-	const int WORLD_SIZE_IN_TILES_X(55);	// These need to have the same ratio between X and Y as WORLD_TX_SIZE has between its X and Y.
-	const int WORLD_SIZE_IN_TILES_Y(20);
+	const int WORLD_SIZE_IN_TILES_X(110);	// These need to have the same ratio between X and Y as WORLD_TX_SIZE has between its X and Y.
+	const int WORLD_SIZE_IN_TILES_Y(40);
 	const int DEFAULT_MAP_SIZE(500);
-	const int TILE_SIZE(100);	// Beware of integer division, could maybe cause a problem I dunno?
+	const int TILE_SIZE(50);	// Beware of integer division, could maybe cause a problem I dunno?
 
 	const int WORLD_TX_SIZE_X(5500);	// The size and ratio of these values need to allow for whole numbers for both WORLD_SIZE_IN_TILES and TILE_TX_SIZE.
 	const int WORLD_TX_SIZE_Y(2000);
-	const int TILE_TX_SIZE(100);	// Beware of integer division, could maybe cause a problem I dunno?
+	const int TILE_TX_SIZE(50);	// Beware of integer division, could maybe cause a problem I dunno?
 
 	const float WORLD_VIEW_WIDTH(SCREEN_WIDTH);
 	const float WORLD_VIEW_HEIGHT(SCREEN_HEIGHT);
