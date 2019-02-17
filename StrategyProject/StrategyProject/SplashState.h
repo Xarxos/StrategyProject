@@ -7,14 +7,14 @@
 class SplashState : public State
 {
 private:
-	GameDataRef _data;
+	EngineDataRef _engine;
 	sf::Clock _clock;
 
 	sf::Sprite _background;
 	sf::Sprite _logo;
 
 public:
-	SplashState(GameDataRef data) : _data(data)
+	SplashState(EngineDataRef data) : _engine(data)
 	{}
 
 	virtual void init() override;
