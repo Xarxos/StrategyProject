@@ -195,22 +195,20 @@ void WorldMap::handleMousePressEvent(sf::Event &event)
 	if (event.mouseButton.button == sf::Mouse::Left)
 	{
 		sf::Vector2i worldMouse(_data->window.mapPixelToCoords(sf::Mouse::getPosition(_data->window), _view).x, _data->window.mapPixelToCoords(sf::Mouse::getPosition(_data->window), _view).y);
+		sf::Vector2i tileClicked(coordsToTile(worldMouse).x, coordsToTile(worldMouse).y);
 
-		if (coordsToTile(worldMouse).x != -1)
+		if (tileClicked.x != -1)
 		{
-			int tileClicked = _tileMatrix[coordsToTile(worldMouse).y][coordsToTile(worldMouse).x];
-
-			_selectedTile.setPosition(coordsToTile(worldMouse).x * Define::TILE_SIZE, coordsToTile(worldMouse).y * Define::TILE_SIZE);
-			_tileIsSelected = true;
+			int tileClickedIndex = _tileMatrix[tileClicked.y][tileClicked.x];
 
 			std::map<Terrain, double> tileTerrainData;
 
 			for (std::map<Terrain, std::vector<double>>::iterator it = _tileTerrainRatios.begin(); it != _tileTerrainRatios.end(); it++)
 			{
-				tileTerrainData[it->first] = _tileTerrainRatios.at(it->first)[tileClicked];
+				tileTerrainData[it->first] = _tileTerrainRatios.at(it->first)[tileClickedIndex];
 			}
 
-			_subStates.push_back(std::move(subStateRef(new TileDataBoxState(_data, tileTerrainData))));
+			_subStates.push_back(std::move(subStateRef(new TileDataBoxState(_data, tileClicked, tileTerrainData))));
 			_subStates.back()->init();
 		}
 	}
@@ -295,6 +293,15 @@ void WorldMap::handleRealTimeKeyPressInput()
 
 void WorldMap::update(float delta)
 {
+	updateSubStates(delta);
+	
+	checkTileSelection();
+
+	correctCameraView();
+}
+
+void WorldMap::updateSubStates(float delta)
+{
 	std::list<subStateRef>::reverse_iterator rit = _subStates.rbegin();
 
 	while (rit != _subStates.rend())
@@ -316,14 +323,29 @@ void WorldMap::update(float delta)
 			rit++;
 		}
 	}
-
-
-
-	correctCameraView();
-
-
 }
 
+void WorldMap::checkTileSelection()
+{
+	if (!_subStates.empty())
+	{
+		TileDataBoxState* topSubStateIsDataBox = dynamic_cast<TileDataBoxState*>(_subStates.back().get());
+
+		if (topSubStateIsDataBox)
+		{
+			_selectedTile.setPosition(topSubStateIsDataBox->getTileCoords().x * Define::TILE_SIZE, topSubStateIsDataBox->getTileCoords().y * Define::TILE_SIZE);
+			_tileIsSelected = true;
+		}
+		else
+		{
+			_tileIsSelected = false;
+		}
+	}
+	else
+	{
+		_tileIsSelected = false;
+	}
+}
 // Putting a pin in this one!
 void WorldMap::correctCameraView()
 {

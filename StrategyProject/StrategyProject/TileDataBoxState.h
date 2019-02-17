@@ -17,6 +17,7 @@ private:
 	sf::Sprite _background;
 	sf::Sprite _closeButton;
 
+	sf::Vector2i _tileCoords;
 	std::map<Terrain, double> _terrainData;
 	std::map<Terrain, sf::Text> _dataText;
 
@@ -26,11 +27,13 @@ private:
 	sf::Vector2i _previousMousePos;
 
 public:
-	TileDataBoxState(GameDataRef data, const std::map<Terrain, double> &terrainData);
+	TileDataBoxState(GameDataRef data, sf::Vector2i tileCoords, const std::map<Terrain, double> &terrainData);
 
 	virtual void init() override;
 
 	virtual bool handleInput(sf::Event &event) override;
 	virtual void update(float delta) override;
 	virtual void draw() override;
+
+	sf::Vector2i getTileCoords() { return _tileCoords; }
 };

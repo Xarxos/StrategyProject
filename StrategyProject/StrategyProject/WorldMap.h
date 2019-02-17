@@ -56,6 +56,8 @@ private:
 	void handleKeyPressEvent(sf::Event &event);
 	void handleRealTimeKeyPressInput();
 
+	void updateSubStates(float delta);
+	void checkTileSelection();
 	void correctCameraView();
 	
 	void changeMapMode(Terrain mapMode);
