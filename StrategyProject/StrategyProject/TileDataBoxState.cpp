@@ -18,6 +18,7 @@ TileDataBoxState::TileDataBoxState(GameDataRef data, sf::Vector2i tileCoords, co
 void TileDataBoxState::init()
 {
 	_data->assets.loadTexture("Tile Data Box", Filepath::TILE_DATA_BOX_BACKGROUND);
+	_data->assets.loadTexture("Tile Data Box Selected", Filepath::TILE_DATA_BOX_SELECTED);
 	_data->assets.loadTexture("Tile Data Box Close Button", Filepath::TILE_DATA_BOX_CLOSE_BUTTON);
 	_data->assets.loadFont("Tile Data Box Font", Filepath::TILE_DATA_BOX_FONT);
 
@@ -147,4 +148,16 @@ void TileDataBoxState::draw()
 		_data->window.draw(it->second);
 	}
 	_data->window.draw(_closeButton);
+}
+
+void TileDataBoxState::selectBox(bool isSelected)
+{
+	if (isSelected)
+	{
+		_background.setTexture(_data->assets.getTexture("Tile Data Box Selected"));
+	}
+	else
+	{
+		_background.setTexture(_data->assets.getTexture("Tile Data Box"));
+	}
 }

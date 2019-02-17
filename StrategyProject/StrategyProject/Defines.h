@@ -55,6 +55,7 @@ namespace Filepath
 	const std::string WORLD_MAP_BACKGROUND_GRAYSCALE("Resources/Data/bigmapGrayscale.bmp");
 
 	const std::string TILE_DATA_BOX_BACKGROUND("Resources/Textures/TileDataBoxBackground.png");
+	const std::string TILE_DATA_BOX_SELECTED("Resources/Textures/TileDataBoxSelected.png");
 	const std::string TILE_DATA_BOX_FONT("Resources/Fonts/ARBONNIE.ttf");
 	const std::string TILE_DATA_BOX_CLOSE_BUTTON("Resources/Textures/DataBoxCloseButton.png");
 }

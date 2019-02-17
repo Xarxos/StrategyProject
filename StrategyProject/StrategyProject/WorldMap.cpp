@@ -319,6 +319,13 @@ void WorldMap::updateSubStates(float delta)
 		}
 		else
 		{
+			TileDataBoxState* currentSubStateIsDataBox = dynamic_cast<TileDataBoxState*>((*rit).get());
+
+			if (currentSubStateIsDataBox)
+			{
+				currentSubStateIsDataBox->selectBox(false);
+			}
+
 			(*rit)->update(delta);
 			rit++;
 		}
@@ -333,6 +340,7 @@ void WorldMap::checkTileSelection()
 
 		if (topSubStateIsDataBox)
 		{
+			topSubStateIsDataBox->selectBox(true);
 			_selectedTile.setPosition(topSubStateIsDataBox->getTileCoords().x * Define::TILE_SIZE, topSubStateIsDataBox->getTileCoords().y * Define::TILE_SIZE);
 			_tileIsSelected = true;
 		}

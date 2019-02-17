@@ -35,5 +35,7 @@ public:
 	virtual void update(float delta) override;
 	virtual void draw() override;
 
+	void selectBox(bool isSelected = true);
+
 	sf::Vector2i getTileCoords() { return _tileCoords; }
 };
