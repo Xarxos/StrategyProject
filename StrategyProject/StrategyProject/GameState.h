@@ -3,6 +3,7 @@
 #include "State.h"
 #include "Game.h"
 #include "SFML\Graphics.hpp"
+#include "HUD.h"
 
 struct GameData
 {
@@ -17,8 +18,12 @@ private:
 	EngineDataRef _engine;
 	GameDataRef _game = std::make_shared<GameData>();
 
+	Hud _gameHUD;
+
 public:
-	GameState(EngineDataRef data) : _engine(data)
+	GameState(EngineDataRef data)
+		: _engine(data),
+		_gameHUD(data)
 	{}
 
 	virtual void init() override;

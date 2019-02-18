@@ -7,6 +7,8 @@
 
 void GameState::init()
 {
+	_gameHUD.init();
+
 	_game->machine.addState(stateRef(new WorldMap(_engine, _game)), false);
 	_game->machine.processStateChanges();
 }
@@ -25,5 +27,11 @@ void GameState::update(float delta)
 
 void GameState::draw()
 {
+	_engine->window.clear(sf::Color(sf::Color::White));
+
 	_game->machine.getActiveState()->draw();
+
+	_gameHUD.draw();
+
+	_engine->window.display();
 }
