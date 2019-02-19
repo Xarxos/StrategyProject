@@ -12,7 +12,8 @@ WorldMap::WorldMap(GameDataRef data)
 	_tileMatrix(Define::WORLD_SIZE_IN_TILES_Y, std::vector<int>(Define::WORLD_SIZE_IN_TILES_X)),
 	_vertices(sf::Quads, Define::WORLD_SIZE_IN_TILES_X * Define::WORLD_SIZE_IN_TILES_Y * 4),
 	_HUD(data),
-	_view(sf::Vector2f(Define::WORLD_VIEW_WIDTH / 2, Define::WORLD_VIEW_HEIGHT / 2), sf::Vector2f(Define::WORLD_VIEW_WIDTH, Define::WORLD_VIEW_HEIGHT)),
+	_mainView(sf::Vector2f(Define::WORLD_VIEW_WIDTH / 2, Define::WORLD_VIEW_HEIGHT / 2), sf::Vector2f(Define::WORLD_VIEW_WIDTH, Define::WORLD_VIEW_HEIGHT)),
+	_miniMapView(sf::Vector2f(Define::WORLD_SIZE_IN_TILES_X * Define::TILE_SIZE / 2, Define::WORLD_SIZE_IN_TILES_Y * Define::TILE_SIZE / 2), sf::Vector2f(Define::WORLD_SIZE_IN_TILES_X * Define::TILE_SIZE, Define::WORLD_SIZE_IN_TILES_Y * Define::TILE_SIZE)),
 	_selectedTile(sf::Vector2f(Define::TILE_SIZE, Define::TILE_SIZE)),
 	_tileIsSelected(false)
 {
@@ -32,6 +33,7 @@ void WorldMap::init()
 	loadAssets();
 
 	_HUD.init();
+	_miniMapView.setViewport(sf::FloatRect(1 - Define::MINIMAP_SIZE_FACTOR, 1 - Define::MINIMAP_SIZE_FACTOR, Define::MINIMAP_SIZE_FACTOR, Define::MINIMAP_SIZE_FACTOR));
 
 	for (int row = 0; row < Define::WORLD_SIZE_IN_TILES_Y; row++)
 	{
@@ -198,7 +200,7 @@ void WorldMap::handleMousePressEvent(sf::Event &event)
 {
 	if (event.mouseButton.button == sf::Mouse::Left)
 	{
-		sf::Vector2i worldMouse(_data->window.mapPixelToCoords(sf::Mouse::getPosition(_data->window), _view).x, _data->window.mapPixelToCoords(sf::Mouse::getPosition(_data->window), _view).y);
+		sf::Vector2i worldMouse(_data->window.mapPixelToCoords(sf::Mouse::getPosition(_data->window), _mainView).x, _data->window.mapPixelToCoords(sf::Mouse::getPosition(_data->window), _mainView).y);
 		sf::Vector2i tileClicked(coordsToTile(worldMouse).x, coordsToTile(worldMouse).y);
 
 		if (tileClicked.x != -1)
@@ -221,30 +223,30 @@ void WorldMap::handleMouseScrollEvent(sf::Event &event)
 {
 	if (event.mouseWheelScroll.delta >= 0)
 	{
-		if (_view.getSize().x < Define::WORLD_VIEW_WIDTH * 1 / Define::WORLD_CAMERA_MIN_ZOOM_FACTOR
-			&& _view.getSize().y < Define::WORLD_VIEW_HEIGHT * 1 / Define::WORLD_CAMERA_MIN_ZOOM_FACTOR)
+		if (_mainView.getSize().x < Define::WORLD_VIEW_WIDTH * 1 / Define::WORLD_CAMERA_MIN_ZOOM_FACTOR
+			&& _mainView.getSize().y < Define::WORLD_VIEW_HEIGHT * 1 / Define::WORLD_CAMERA_MIN_ZOOM_FACTOR)
 		{
-			/*if (_view.getCenter().y - _view.getSize().y / 2 > 0 - Define::WORLD_CAMERA_EDGE_MARGIN
-				&& _view.getCenter().y + _view.getSize().y / 2 < Define::WORLD_SIZE_IN_TILES_Y * Define::TILE_SIZE + Define::WORLD_CAMERA_EDGE_MARGIN
-				&& _view.getCenter().x - _view.getSize().x / 2 > 0 - Define::WORLD_CAMERA_EDGE_MARGIN
-				&& _view.getCenter().x + _view.getSize().x / 2 < Define::WORLD_SIZE_IN_TILES_X * Define::TILE_SIZE + Define::WORLD_CAMERA_EDGE_MARGIN)
+			/*if (_mainView.getCenter().y - _mainView.getSize().y / 2 > 0 - Define::WORLD_CAMERA_EDGE_MARGIN
+				&& _mainView.getCenter().y + _mainView.getSize().y / 2 < Define::WORLD_SIZE_IN_TILES_Y * Define::TILE_SIZE + Define::WORLD_CAMERA_EDGE_MARGIN
+				&& _mainView.getCenter().x - _mainView.getSize().x / 2 > 0 - Define::WORLD_CAMERA_EDGE_MARGIN
+				&& _mainView.getCenter().x + _mainView.getSize().x / 2 < Define::WORLD_SIZE_IN_TILES_X * Define::TILE_SIZE + Define::WORLD_CAMERA_EDGE_MARGIN)
 			{*/
-				_view.zoom(Define::WORLD_CAMERA_ZOOM_FACTOR);
+				_mainView.zoom(Define::WORLD_CAMERA_ZOOM_FACTOR);
 			//}
 
-			/*float actualCameraEdgeRelativeToAllowedCameraEdge = (0 - Define::WORLD_CAMERA_EDGE_MARGIN) - (_view.getCenter().y - _view.getSize().y / 2);		// I really wish I could think of a more concise name for this variable...
+			/*float actualCameraEdgeRelativeToAllowedCameraEdge = (0 - Define::WORLD_CAMERA_EDGE_MARGIN) - (_mainView.getCenter().y - _mainView.getSize().y / 2);		// I really wish I could think of a more concise name for this variable...
 			if (actualCameraEdgeRelativeToAllowedCameraEdge < 0)
 			{
-				_view.setCenter(_view.getCenter().x, _view.getCenter().y + actualCameraEdgeRelativeToAllowedCameraEdge));
+				_mainView.setCenter(_mainView.getCenter().x, _mainView.getCenter().y + actualCameraEdgeRelativeToAllowedCameraEdge));
 			}*/
 		}
 	}
 	else
 	{
-		if (_view.getSize().x > Define::WORLD_VIEW_WIDTH * 1 / Define::WORLD_CAMERA_MAX_ZOOM_FACTOR
-			&& _view.getSize().y > Define::WORLD_VIEW_HEIGHT * 1 / Define::WORLD_CAMERA_MAX_ZOOM_FACTOR)
+		if (_mainView.getSize().x > Define::WORLD_VIEW_WIDTH * 1 / Define::WORLD_CAMERA_MAX_ZOOM_FACTOR
+			&& _mainView.getSize().y > Define::WORLD_VIEW_HEIGHT * 1 / Define::WORLD_CAMERA_MAX_ZOOM_FACTOR)
 		{
-			_view.zoom(1 / Define::WORLD_CAMERA_ZOOM_FACTOR);
+			_mainView.zoom(1 / Define::WORLD_CAMERA_ZOOM_FACTOR);
 		}
 	}
 }
@@ -279,19 +281,19 @@ void WorldMap::handleRealTimeKeyPressInput()
 {
 	if (sf::Keyboard::isKeyPressed(Controls::CAMERA_MOVE_UP))
 	{
-		_view.move(0.f, -Define::WORLD_CAMERA_MOVE_SPEED);
+		_mainView.move(0.f, -Define::WORLD_CAMERA_MOVE_SPEED);
 	}
 	if (sf::Keyboard::isKeyPressed(Controls::CAMERA_MOVE_DOWN))
 	{
-		_view.move(0.f, Define::WORLD_CAMERA_MOVE_SPEED);
+		_mainView.move(0.f, Define::WORLD_CAMERA_MOVE_SPEED);
 	}
 	if (sf::Keyboard::isKeyPressed(Controls::CAMERA_MOVE_LEFT))
 	{
-		_view.move(-Define::WORLD_CAMERA_MOVE_SPEED, 0.f);
+		_mainView.move(-Define::WORLD_CAMERA_MOVE_SPEED, 0.f);
 	}
 	if (sf::Keyboard::isKeyPressed(Controls::CAMERA_MOVE_RIGHT))
 	{
-		_view.move(Define::WORLD_CAMERA_MOVE_SPEED, 0.f);
+		_mainView.move(Define::WORLD_CAMERA_MOVE_SPEED, 0.f);
 	}
 }
 
@@ -361,24 +363,24 @@ void WorldMap::checkTileSelection()
 // Putting a pin in this one!
 void WorldMap::correctCameraView()
 {
-	if (_view.getCenter().y - _view.getSize().y / 2 < 0 - Define::WORLD_CAMERA_EDGE_MARGIN)
+	if (_mainView.getCenter().y - _mainView.getSize().y / 2 < 0 - Define::WORLD_CAMERA_EDGE_MARGIN)
 	{
-		_view.move(0.f, Define::WORLD_CAMERA_MOVE_SPEED);
+		_mainView.move(0.f, Define::WORLD_CAMERA_MOVE_SPEED);
 	}
 
-	if (_view.getCenter().y + _view.getSize().y / 2 > Define::WORLD_SIZE_IN_TILES_Y * Define::TILE_SIZE + Define::WORLD_CAMERA_EDGE_MARGIN)
+	if (_mainView.getCenter().y + _mainView.getSize().y / 2 > Define::WORLD_SIZE_IN_TILES_Y * Define::TILE_SIZE + Define::WORLD_CAMERA_EDGE_MARGIN)
 	{
-		_view.move(0.f, -Define::WORLD_CAMERA_MOVE_SPEED);
+		_mainView.move(0.f, -Define::WORLD_CAMERA_MOVE_SPEED);
 	}
 
-	if (_view.getCenter().x - _view.getSize().x / 2 < 0 - Define::WORLD_CAMERA_EDGE_MARGIN)
+	if (_mainView.getCenter().x - _mainView.getSize().x / 2 < 0 - Define::WORLD_CAMERA_EDGE_MARGIN)
 	{
-		_view.move(Define::WORLD_CAMERA_MOVE_SPEED, 0.f);
+		_mainView.move(Define::WORLD_CAMERA_MOVE_SPEED, 0.f);
 	}
 
-	if (_view.getCenter().x + _view.getSize().x / 2 > Define::WORLD_SIZE_IN_TILES_X * Define::TILE_SIZE + Define::WORLD_CAMERA_EDGE_MARGIN)
+	if (_mainView.getCenter().x + _mainView.getSize().x / 2 > Define::WORLD_SIZE_IN_TILES_X * Define::TILE_SIZE + Define::WORLD_CAMERA_EDGE_MARGIN)
 	{
-		_view.move(-Define::WORLD_CAMERA_MOVE_SPEED, 0.f);
+		_mainView.move(-Define::WORLD_CAMERA_MOVE_SPEED, 0.f);
 	}
 }
 
@@ -386,8 +388,7 @@ void WorldMap::draw()
 {
 	_data->window.clear(sf::Color(sf::Color::White));
 
-	_data->window.setView(_view);
-
+	_data->window.setView(_mainView);
 	_data->window.draw(_vertices, &_backgroundTexture);
 
 	if (_tileIsSelected)
@@ -401,6 +402,9 @@ void WorldMap::draw()
 	}
 
 	_HUD.draw();
+
+	_data->window.setView(_miniMapView);
+	_data->window.draw(_vertices, &_backgroundTexture);
 
 	_data->window.display();
 }

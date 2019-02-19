@@ -34,7 +34,8 @@ private:
 	std::map<Terrain, std::vector<double>> _tileTerrainRatios;
 	sf::Image _terrainData;
 
-	sf::View _view;
+	sf::View _mainView;
+	sf::View _miniMapView;
 
 	std::list<subStateRef> _subStates;
 
