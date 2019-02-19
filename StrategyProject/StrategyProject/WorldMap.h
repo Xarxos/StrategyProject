@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Game.h"
+#include "GameState.h"
 #include "SFML\Graphics.hpp"
 #include "State.h"
 #include "SubState.h"
@@ -21,7 +22,8 @@ enum class Terrain
 class WorldMap : public State
 {
 private:
-	GameDataRef _data;
+	EngineDataRef _engine;
+	GameDataRef _game;
 
 	sf::VertexArray _vertices;
 	sf::Texture _backgroundTexture;
@@ -37,7 +39,7 @@ private:
 	std::list<subStateRef> _subStates;
 
 public:
-	WorldMap(GameDataRef data);
+	WorldMap(EngineDataRef engineData, GameDataRef gameData);
 
 	virtual void init() override;
 

@@ -12,7 +12,7 @@
 class TileDataBoxState : public SubState
 {
 private:
-	GameDataRef _data;
+	EngineDataRef _engine;
 
 	sf::Sprite _background;
 	sf::Sprite _closeButton;
@@ -27,7 +27,7 @@ private:
 	sf::Vector2i _previousMousePos;
 
 public:
-	TileDataBoxState(GameDataRef data, sf::Vector2i tileCoords, const std::map<Terrain, double> &terrainData);
+	TileDataBoxState(EngineDataRef data, sf::Vector2i tileCoords, const std::map<Terrain, double> &terrainData);
 
 	virtual void init() override;
 

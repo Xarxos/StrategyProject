@@ -7,7 +7,7 @@
 #include "AssetManager.h"
 #include "InputManager.h"
 
-struct GameData
+struct EngineData
 {
 	StateMachine machine;
 	sf::RenderWindow window;
@@ -15,13 +15,13 @@ struct GameData
 	InputManager input;
 };
 
-typedef std::shared_ptr<GameData> GameDataRef;
+typedef std::shared_ptr<EngineData> EngineDataRef;
 
 class Game
 {
 private:
 	sf::Clock _clock;
-	GameDataRef _data = std::make_shared<GameData>();
+	EngineDataRef _engine = std::make_shared<EngineData>();
 
 public:
 	Game(int windowWidth, int windowHeight, std::string title);

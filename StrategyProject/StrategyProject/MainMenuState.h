@@ -7,14 +7,14 @@
 class MainMenuState : public State
 {
 private:
-	GameDataRef _data;
+	EngineDataRef _engine;
 
 	sf::Sprite _background;
 	sf::Sprite _testGameButton;
 	sf::Sprite _exitButton;
 
 public:
-	MainMenuState(GameDataRef data) : _data(data)
+	MainMenuState(EngineDataRef data) : _engine(data)
 	{}
 
 	virtual void init() override;

@@ -5,8 +5,8 @@
 #include <string>
 #include <iostream>
 
-TileDataBoxState::TileDataBoxState(GameDataRef data, sf::Vector2i tileCoords, const std::map<Terrain, double> &terrainData)
-	: _data(data),
+TileDataBoxState::TileDataBoxState(EngineDataRef data, sf::Vector2i tileCoords, const std::map<Terrain, double> &terrainData)
+	: _engine(data),
 	_tileCoords(tileCoords),
 	_terrainData(terrainData),
 	_view(sf::Vector2f(Define::WORLD_VIEW_WIDTH / 2, Define::WORLD_VIEW_HEIGHT / 2), sf::Vector2f(Define::WORLD_VIEW_WIDTH, Define::WORLD_VIEW_HEIGHT)),
@@ -17,13 +17,13 @@ TileDataBoxState::TileDataBoxState(GameDataRef data, sf::Vector2i tileCoords, co
 
 void TileDataBoxState::init()
 {
-	_data->assets.loadTexture("Tile Data Box", Filepath::TILE_DATA_BOX_BACKGROUND);
-	_data->assets.loadTexture("Tile Data Box Selected", Filepath::TILE_DATA_BOX_SELECTED);
-	_data->assets.loadTexture("Tile Data Box Close Button", Filepath::TILE_DATA_BOX_CLOSE_BUTTON);
-	_data->assets.loadFont("Tile Data Box Font", Filepath::TILE_DATA_BOX_FONT);
+	_engine->assets.loadTexture("Tile Data Box", Filepath::TILE_DATA_BOX_BACKGROUND);
+	_engine->assets.loadTexture("Tile Data Box Selected", Filepath::TILE_DATA_BOX_SELECTED);
+	_engine->assets.loadTexture("Tile Data Box Close Button", Filepath::TILE_DATA_BOX_CLOSE_BUTTON);
+	_engine->assets.loadFont("Tile Data Box Font", Filepath::TILE_DATA_BOX_FONT);
 
-	_background.setTexture(_data->assets.getTexture("Tile Data Box"));
-	_closeButton.setTexture(_data->assets.getTexture("Tile Data Box Close Button"));
+	_background.setTexture(_engine->assets.getTexture("Tile Data Box"));
+	_closeButton.setTexture(_engine->assets.getTexture("Tile Data Box Close Button"));
 
 	int loopCount(1);
 
@@ -59,12 +59,10 @@ void TileDataBoxState::init()
 		dataString.append("%");
 
 		_dataText[it->first].setString(dataString);
-		_dataText[it->first].setFont(_data->assets.getFont("Tile Data Box Font"));
+		_dataText[it->first].setFont(_engine->assets.getFont("Tile Data Box Font"));
 		_dataText[it->first].setCharacterSize(24);
 		_dataText[it->first].setFillColor(sf::Color::Black);
 		_dataText[it->first].setPosition(_background.getPosition().x + _background.getLocalBounds().width / 10, _background.getPosition().y + _background.getLocalBounds().height / 6 * loopCount);
-
-		std::cout << "X = " << _background.getPosition().x + _background.getLocalBounds().width / 10 << ", Y = " << _background.getPosition().y + _background.getLocalBounds().height / 6 * loopCount << "\n";
 		
 		_closeButton.setPosition(_background.getPosition().x + _background.getLocalBounds().width - _closeButton.getLocalBounds().width, _background.getPosition().y);
 
@@ -76,13 +74,13 @@ bool TileDataBoxState::handleInput(sf::Event &event)
 {
 	if (event.type == sf::Event::Closed)
 	{
-		_data->window.close();
+		_engine->window.close();
 		return true;
 	}
 
 	if (event.type == sf::Event::MouseButtonPressed)
 	{
-		if (_data->input.isSpriteClicked(_closeButton, sf::Mouse::Left, _data->window))
+		if (_engine->input.isSpriteClicked(_closeButton, sf::Mouse::Left, _engine->window))
 		{
 			_remove = true;
 			return true;
@@ -91,11 +89,11 @@ bool TileDataBoxState::handleInput(sf::Event &event)
 
 	if (event.type == sf::Event::MouseButtonPressed)
 	{
-		if (_data->input.isSpriteClicked(_background, sf::Mouse::Left, _data->window))
+		if (_engine->input.isSpriteClicked(_background, sf::Mouse::Left, _engine->window))
 		{
 			_moveToTop = true;
 			_mouseButtonHeld = true;
-			_previousMousePos = _data->input.getMousePosition(_data->window);
+			_previousMousePos = _engine->input.getMousePosition(_engine->window);
 
 			return true;
 		}
@@ -118,7 +116,7 @@ void TileDataBoxState::update(float delta)
 {
 	if (_mouseButtonHeld)
 	{
-		sf::Vector2i currentMousePos = _data->input.getMousePosition(_data->window);
+		sf::Vector2i currentMousePos = _engine->input.getMousePosition(_engine->window);
 		sf::Vector2i deltaMousePos = currentMousePos - _previousMousePos;
 
 		_background.setPosition(_background.getPosition().x + deltaMousePos.x, _background.getPosition().y + deltaMousePos.y);
@@ -140,24 +138,24 @@ void TileDataBoxState::update(float delta)
 
 void TileDataBoxState::draw()
 {
-	_data->window.setView(_view);
+	_engine->window.setView(_view);
 
-	_data->window.draw(_background);
+	_engine->window.draw(_background);
 	for (std::map<Terrain, sf::Text>::iterator it = _dataText.begin(); it != _dataText.end(); it++)
 	{
-		_data->window.draw(it->second);
+		_engine->window.draw(it->second);
 	}
-	_data->window.draw(_closeButton);
+	_engine->window.draw(_closeButton);
 }
 
 void TileDataBoxState::selectBox(bool isSelected)
 {
 	if (isSelected)
 	{
-		_background.setTexture(_data->assets.getTexture("Tile Data Box Selected"));
+		_background.setTexture(_engine->assets.getTexture("Tile Data Box Selected"));
 	}
 	else
 	{
-		_background.setTexture(_data->assets.getTexture("Tile Data Box"));
+		_background.setTexture(_engine->assets.getTexture("Tile Data Box"));
 	}
 }
