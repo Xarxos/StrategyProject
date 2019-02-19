@@ -164,8 +164,11 @@
     <ClInclude Include="Config.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="Game.h" />
+<<<<<<< HEAD
     <ClInclude Include="GameState.h" />
     <ClInclude Include="HUD.h" />
+=======
+>>>>>>> parent of b4d0a1b... Added a main GameState and restructured/renamed a bunch of code to fit this new design.
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="MainMenuState.h" />
     <ClInclude Include="SplashState.h" />
@@ -181,8 +184,11 @@
   <ItemGroup>
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="Game.cpp" />
+<<<<<<< HEAD
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="HUD.cpp" />
+=======
+>>>>>>> parent of b4d0a1b... Added a main GameState and restructured/renamed a bunch of code to fit this new design.
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="MainMenuState.cpp" />
     <ClCompile Include="SplashState.cpp" />

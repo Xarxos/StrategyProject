@@ -6,9 +6,8 @@
 #include <iostream>
 #include "TileDataBoxState.h"
 
-WorldMap::WorldMap(EngineDataRef engineData, GameDataRef gameData)
-	: _engine(engineData),
-	_game(gameData),
+WorldMap::WorldMap(GameDataRef data)
+	: _data(data),
 	_tileMatrix(Define::WORLD_SIZE_IN_TILES_Y, std::vector<int>(Define::WORLD_SIZE_IN_TILES_X)),
 	_vertices(sf::Quads, Define::WORLD_SIZE_IN_TILES_X * Define::WORLD_SIZE_IN_TILES_Y * 4),
 	_view(sf::Vector2f(Define::WORLD_VIEW_WIDTH / 2, Define::WORLD_VIEW_HEIGHT / 2), sf::Vector2f(Define::WORLD_VIEW_WIDTH, Define::WORLD_VIEW_HEIGHT)),
@@ -50,12 +49,12 @@ void WorldMap::init()
 
 void WorldMap::loadAssets()
 {
-	_engine->assets.loadImage("World Map Terrain Data", Filepath::WORLD_MAP_BACKGROUND);
-	_engine->assets.loadTexture("World Map Background", Filepath::WORLD_MAP_BACKGROUND);
-	_engine->assets.loadTexture("World Map Background Grayscale", Filepath::WORLD_MAP_BACKGROUND_GRAYSCALE);
+	_data->assets.loadImage("World Map Terrain Data", Filepath::WORLD_MAP_BACKGROUND);
+	_data->assets.loadTexture("World Map Background", Filepath::WORLD_MAP_BACKGROUND);
+	_data->assets.loadTexture("World Map Background Grayscale", Filepath::WORLD_MAP_BACKGROUND_GRAYSCALE);
 
-	_backgroundTexture = _engine->assets.getTexture("World Map Background");
-	_terrainData = _engine->assets.getImage("World Map Terrain Data");
+	_backgroundTexture = _data->assets.getTexture("World Map Background");
+	_terrainData = _data->assets.getImage("World Map Terrain Data");
 }
 
 void WorldMap::initializeTile(int tileX, int tileY)
@@ -86,6 +85,7 @@ void WorldMap::loadTerrainData()
 	{
 		for (int column = 0; column < Define::WORLD_SIZE_IN_TILES_X; column++)
 		{
+			//std::cout << "Row: " << row << ", Column: " << column << "\n";
 			loadTerrainDataForTile(column, row);
 		}
 	}
@@ -152,7 +152,7 @@ void WorldMap::handleInput()
 {
 	sf::Event event;
 
-	while (_engine->window.pollEvent(event))
+	while (_data->window.pollEvent(event))
 	{
 		bool eventHandled = false;
 
@@ -167,7 +167,7 @@ void WorldMap::handleInput()
 		{
 			if (event.type == sf::Event::Closed)
 			{
-				_engine->window.close();
+				_data->window.close();
 			}
 
 			if (event.type == sf::Event::MouseButtonPressed)
@@ -194,7 +194,7 @@ void WorldMap::handleMousePressEvent(sf::Event &event)
 {
 	if (event.mouseButton.button == sf::Mouse::Left)
 	{
-		sf::Vector2i worldMouse(_engine->window.mapPixelToCoords(sf::Mouse::getPosition(_engine->window), _view).x, _engine->window.mapPixelToCoords(sf::Mouse::getPosition(_engine->window), _view).y);
+		sf::Vector2i worldMouse(_data->window.mapPixelToCoords(sf::Mouse::getPosition(_data->window), _view).x, _data->window.mapPixelToCoords(sf::Mouse::getPosition(_data->window), _view).y);
 		sf::Vector2i tileClicked(coordsToTile(worldMouse).x, coordsToTile(worldMouse).y);
 
 		if (tileClicked.x != -1)
@@ -208,7 +208,7 @@ void WorldMap::handleMousePressEvent(sf::Event &event)
 				tileTerrainData[it->first] = _tileTerrainRatios.at(it->first)[tileClickedIndex];
 			}
 
-			_subStates.push_back(std::move(subStateRef(new TileDataBoxState(_engine, tileClicked, tileTerrainData))));
+			_subStates.push_back(std::move(subStateRef(new TileDataBoxState(_data, tileClicked, tileTerrainData))));
 			_subStates.back()->init();
 		}
 	}
@@ -380,25 +380,36 @@ void WorldMap::correctCameraView()
 
 void WorldMap::draw()
 {
+<<<<<<< HEAD
 	_engine->window.setView(_view);
+=======
+	_data->window.clear(sf::Color(sf::Color::White));
 
-	_engine->window.draw(_vertices, &_backgroundTexture);
+	_data->window.setView(_view);
+>>>>>>> parent of b4d0a1b... Added a main GameState and restructured/renamed a bunch of code to fit this new design.
+
+	_data->window.draw(_vertices, &_backgroundTexture);
 
 	if (_tileIsSelected)
 	{
-		_engine->window.draw(_selectedTile);
+		_data->window.draw(_selectedTile);
 	}
 
 	for (auto &subState : _subStates)
 	{
 		subState->draw();
 	}
+<<<<<<< HEAD
+=======
+
+	_data->window.display();
+>>>>>>> parent of b4d0a1b... Added a main GameState and restructured/renamed a bunch of code to fit this new design.
 }
 
 void WorldMap::changeMapMode(Terrain mapMode)
 {
 	sf::Color baseColor;
-	_backgroundTexture = _engine->assets.getTexture("World Map Background Grayscale");
+	_backgroundTexture = _data->assets.getTexture("World Map Background Grayscale");
 
 	switch (mapMode)
 	{
@@ -423,7 +434,7 @@ void WorldMap::changeMapMode(Terrain mapMode)
 			break;
 
 		default:
-			_backgroundTexture = _engine->assets.getTexture("World Map Background");
+			_backgroundTexture = _data->assets.getTexture("World Map Background");
 			baseColor = Colors::MAP_MODE_DEFAULT;
 	}
 
