@@ -63,8 +63,6 @@ void TileDataBoxState::init()
 		_dataText[it->first].setCharacterSize(24);
 		_dataText[it->first].setFillColor(sf::Color::Black);
 		_dataText[it->first].setPosition(_background.getPosition().x + _background.getLocalBounds().width / 10, _background.getPosition().y + _background.getLocalBounds().height / 6 * loopCount);
-
-		std::cout << "X = " << _background.getPosition().x + _background.getLocalBounds().width / 10 << ", Y = " << _background.getPosition().y + _background.getLocalBounds().height / 6 * loopCount << "\n";
 		
 		_closeButton.setPosition(_background.getPosition().x + _background.getLocalBounds().width - _closeButton.getLocalBounds().width, _background.getPosition().y);
 

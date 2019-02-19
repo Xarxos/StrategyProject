@@ -7,6 +7,7 @@
 #include <vector>
 #include <map>
 #include <list>
+#include "HUD.h"
 
 enum class Terrain
 {
@@ -25,6 +26,7 @@ private:
 
 	sf::VertexArray _vertices;
 	sf::Texture _backgroundTexture;
+	Hud _HUD;
 	sf::RectangleShape _selectedTile;
 	bool _tileIsSelected;
 

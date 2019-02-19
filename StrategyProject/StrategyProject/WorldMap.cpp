@@ -5,11 +5,13 @@
 #include "SFML\Graphics.hpp"
 #include <iostream>
 #include "TileDataBoxState.h"
+#include "HUD.h"
 
 WorldMap::WorldMap(GameDataRef data)
 	: _data(data),
 	_tileMatrix(Define::WORLD_SIZE_IN_TILES_Y, std::vector<int>(Define::WORLD_SIZE_IN_TILES_X)),
 	_vertices(sf::Quads, Define::WORLD_SIZE_IN_TILES_X * Define::WORLD_SIZE_IN_TILES_Y * 4),
+	_HUD(data),
 	_view(sf::Vector2f(Define::WORLD_VIEW_WIDTH / 2, Define::WORLD_VIEW_HEIGHT / 2), sf::Vector2f(Define::WORLD_VIEW_WIDTH, Define::WORLD_VIEW_HEIGHT)),
 	_selectedTile(sf::Vector2f(Define::TILE_SIZE, Define::TILE_SIZE)),
 	_tileIsSelected(false)
@@ -28,6 +30,8 @@ void WorldMap::init()
 	float start = clock.getElapsedTime().asSeconds();
 
 	loadAssets();
+
+	_HUD.init();
 
 	for (int row = 0; row < Define::WORLD_SIZE_IN_TILES_Y; row++)
 	{
@@ -395,6 +399,8 @@ void WorldMap::draw()
 	{
 		subState->draw();
 	}
+
+	_HUD.draw();
 
 	_data->window.display();
 }
