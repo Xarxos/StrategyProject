@@ -102,9 +102,6 @@
     <ClInclude Include="TileDataBoxState.h">
       <Filter>Game\States\Game States</Filter>
     </ClInclude>
-    <ClInclude Include="HUD.h">
-      <Filter>Game\States\Headers</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -142,9 +139,6 @@
     </ClCompile>
     <ClCompile Include="TileDataBoxState.cpp">
       <Filter>Game\States\Game States</Filter>
-    </ClCompile>
-    <ClCompile Include="HUD.cpp">
-      <Filter>Game\States\Source</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

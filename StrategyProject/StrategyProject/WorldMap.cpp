@@ -380,6 +380,8 @@ void WorldMap::correctCameraView()
 
 void WorldMap::draw()
 {
+	_engine->window.clear(sf::Color(sf::Color::White));
+
 	_engine->window.setView(_view);
 
 	_engine->window.draw(_vertices, &_backgroundTexture);
@@ -393,6 +395,8 @@ void WorldMap::draw()
 	{
 		subState->draw();
 	}
+
+	_engine->window.display();
 }
 
 void WorldMap::changeMapMode(Terrain mapMode)

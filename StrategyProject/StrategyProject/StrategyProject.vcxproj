@@ -165,7 +165,6 @@
     <ClInclude Include="Defines.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameState.h" />
-    <ClInclude Include="HUD.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="MainMenuState.h" />
     <ClInclude Include="SplashState.h" />
@@ -182,7 +181,6 @@
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameState.cpp" />
-    <ClCompile Include="HUD.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="MainMenuState.cpp" />
     <ClCompile Include="SplashState.cpp" />
