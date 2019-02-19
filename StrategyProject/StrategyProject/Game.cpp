@@ -3,12 +3,11 @@
 #include <SFML\Graphics.hpp>
 #include "Config.h"
 #include "SplashState.h"
-#include <iostream>
 
 Game::Game(int windowWidth, int windowHeight, std::string title)
 {
-	_engine->window.create(sf::VideoMode(windowWidth, windowHeight), title, sf::Style::Close | sf::Style::Titlebar);
-	_engine->machine.addState(stateRef(new SplashState(_engine)));
+	_data->window.create(sf::VideoMode(windowWidth, windowHeight), title, sf::Style::Close | sf::Style::Titlebar);
+	_data->machine.addState(stateRef(new SplashState(_data)));
 
 	run();
 }
@@ -21,9 +20,9 @@ void Game::run()
 
 	float accumulator = 0.0f;
 
-	while (_engine->window.isOpen())
+	while (_data->window.isOpen())
 	{
-		_engine->machine.processStateChanges();
+		_data->machine.processStateChanges();
 
 		newTime = _clock.getElapsedTime().asSeconds();
 
@@ -34,11 +33,11 @@ void Game::run()
 
 		while (accumulator >= Config::FRAME_RATE)
 		{
-			_engine->machine.getActiveState()->handleInput();
-			_engine->machine.getActiveState()->update(Config::FRAME_RATE);
+			_data->machine.getActiveState()->handleInput();
+			_data->machine.getActiveState()->update(Config::FRAME_RATE);
 
 			accumulator -= Config::FRAME_RATE;
 		}
-		_engine->machine.getActiveState()->draw();
+		_data->machine.getActiveState()->draw();
 	}
 }

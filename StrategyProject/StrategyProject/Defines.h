@@ -47,8 +47,6 @@ namespace Filepath
 	const std::string TEST_GAME_BUTTON("Resources/Textures/TestGameButton.png");
 	const std::string EXIT_GAME_BUTTON("Resources/Textures/ExitButton.png");
 
-	const std::string HUD_BACKGROUND("Resources/Textures/HUDBackground.png");
-
 	//const std::string WORLD_MAP_BACKGROUND("Resources/Textures/WorldMapBackground.png");
 	//const std::string WORLD_MAP_BACKGROUND_GRAYSCALE("Resources/Textures/WorldMapBackgroundGrayScale.png");
 	//const std::string WORLD_MAP_BACKGROUND("Resources/Data/terrain.bmp");
