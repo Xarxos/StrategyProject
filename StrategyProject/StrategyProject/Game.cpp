@@ -6,8 +6,8 @@
 
 Game::Game(int windowWidth, int windowHeight, std::string title)
 {
-	_data->window.create(sf::VideoMode(windowWidth, windowHeight), title, sf::Style::Close | sf::Style::Titlebar);
-	_data->machine.addState(stateRef(new SplashState(_data)));
+	_engine->window.create(sf::VideoMode(windowWidth, windowHeight), title, sf::Style::Close | sf::Style::Titlebar);
+	_engine->machine.addState(stateRef(new SplashState(_engine)));
 
 	run();
 }
@@ -20,9 +20,9 @@ void Game::run()
 
 	float accumulator = 0.0f;
 
-	while (_data->window.isOpen())
+	while (_engine->window.isOpen())
 	{
-		_data->machine.processStateChanges();
+		_engine->machine.processStateChanges();
 
 		newTime = _clock.getElapsedTime().asSeconds();
 
@@ -33,11 +33,11 @@ void Game::run()
 
 		while (accumulator >= Config::FRAME_RATE)
 		{
-			_data->machine.getActiveState()->handleInput();
-			_data->machine.getActiveState()->update(Config::FRAME_RATE);
+			_engine->machine.getActiveState()->handleInput();
+			_engine->machine.getActiveState()->update(Config::FRAME_RATE);
 
 			accumulator -= Config::FRAME_RATE;
 		}
-		_data->machine.getActiveState()->draw();
+		_engine->machine.getActiveState()->draw();
 	}
 }

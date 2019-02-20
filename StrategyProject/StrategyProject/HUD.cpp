@@ -4,8 +4,8 @@
 #include "Defines.h"
 #include "Game.h"
 
-Hud::Hud(GameDataRef data)
-	: _data(data),
+Hud::Hud(EngineDataRef engineData)
+	: _engine(engineData),
 	_view(sf::Vector2f(Define::WORLD_VIEW_WIDTH / 2, Define::WORLD_VIEW_HEIGHT / 2), sf::Vector2f(Define::WORLD_VIEW_WIDTH, Define::WORLD_VIEW_HEIGHT))
 {
 	
@@ -13,14 +13,14 @@ Hud::Hud(GameDataRef data)
 
 void Hud::init()
 {
-	_data->assets.loadTexture("HUD Background", Filepath::HUD_BACKGROUND);
+	_engine->assets.loadTexture("HUD Background", Filepath::HUD_BACKGROUND);
 
-	_background.setTexture(_data->assets.getTexture("HUD Background"));
+	_background.setTexture(_engine->assets.getTexture("HUD Background"));
 }
 
 void Hud::draw()
 {
-	_data->window.setView(_view);
+	_engine->window.setView(_view);
 
-	_data->window.draw(_background);
+	_engine->window.draw(_background);
 }

@@ -6,14 +6,14 @@
 class Hud
 {
 private:
-	GameDataRef _data;
+	EngineDataRef _engine;
 
 	sf::Sprite _background;
 
 	sf::View _view;
 
 public:
-	Hud(GameDataRef data);
+	Hud(EngineDataRef engineData);
 
 	void init();
 

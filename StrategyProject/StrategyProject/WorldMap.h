@@ -22,7 +22,7 @@ enum class Terrain
 class WorldMap : public State
 {
 private:
-	GameDataRef _data;
+	EngineDataRef _engine;
 
 	sf::VertexArray _vertices;
 	sf::Texture _backgroundTexture;
@@ -40,7 +40,7 @@ private:
 	std::list<subStateRef> _subStates;
 
 public:
-	WorldMap(GameDataRef data);
+	WorldMap(EngineDataRef engineData);
 
 	virtual void init() override;
 
