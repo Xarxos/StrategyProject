@@ -140,5 +140,8 @@
     <ClCompile Include="HUD.cpp">
       <Filter>Game\Misc</Filter>
     </ClCompile>
+    <ClCompile Include="RegionMap.cpp">
+      <Filter>Game\States\Source</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

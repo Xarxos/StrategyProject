@@ -16,6 +16,7 @@ private:
 
 	sf::Sprite _background;
 	sf::Sprite _closeButton;
+	sf::Sprite _enterButton;
 
 	sf::Vector2i _tileCoords;
 	std::map<Terrain, double> _terrainData;

@@ -226,19 +226,7 @@ void WorldMap::handleMouseScrollEvent(sf::Event &event)
 		if (_mainView.getSize().x < Define::WORLD_VIEW_WIDTH * 1 / Define::WORLD_CAMERA_MIN_ZOOM_FACTOR
 			&& _mainView.getSize().y < Define::WORLD_VIEW_HEIGHT * 1 / Define::WORLD_CAMERA_MIN_ZOOM_FACTOR)
 		{
-			/*if (_mainView.getCenter().y - _mainView.getSize().y / 2 > 0 - Define::WORLD_CAMERA_EDGE_MARGIN
-				&& _mainView.getCenter().y + _mainView.getSize().y / 2 < Define::WORLD_SIZE_IN_TILES_Y * Define::TILE_SIZE + Define::WORLD_CAMERA_EDGE_MARGIN
-				&& _mainView.getCenter().x - _mainView.getSize().x / 2 > 0 - Define::WORLD_CAMERA_EDGE_MARGIN
-				&& _mainView.getCenter().x + _mainView.getSize().x / 2 < Define::WORLD_SIZE_IN_TILES_X * Define::TILE_SIZE + Define::WORLD_CAMERA_EDGE_MARGIN)
-			{*/
 				_mainView.zoom(Define::WORLD_CAMERA_ZOOM_FACTOR);
-			//}
-
-			/*float actualCameraEdgeRelativeToAllowedCameraEdge = (0 - Define::WORLD_CAMERA_EDGE_MARGIN) - (_mainView.getCenter().y - _mainView.getSize().y / 2);		// I really wish I could think of a more concise name for this variable...
-			if (actualCameraEdgeRelativeToAllowedCameraEdge < 0)
-			{
-				_mainView.setCenter(_mainView.getCenter().x, _mainView.getCenter().y + actualCameraEdgeRelativeToAllowedCameraEdge));
-			}*/
 		}
 	}
 	else

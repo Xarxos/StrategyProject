@@ -15,11 +15,19 @@ namespace Define
 	const int WORLD_SIZE_IN_TILES_X(110);	// These need to have the same ratio between X and Y as WORLD_TX_SIZE has between its X and Y.
 	const int WORLD_SIZE_IN_TILES_Y(40);
 	const int DEFAULT_MAP_SIZE(500);
-	const int TILE_SIZE(50);	// Beware of integer division, could maybe cause a problem I dunno?
+	const int TILE_SIZE(50);
 
 	const int WORLD_TX_SIZE_X(5500);	// The size and ratio of these values need to allow for whole numbers for both WORLD_SIZE_IN_TILES and TILE_TX_SIZE.
 	const int WORLD_TX_SIZE_Y(2000);
-	const int TILE_TX_SIZE(50);	// Beware of integer division, could maybe cause a problem I dunno?
+	const int TILE_TX_SIZE(50);
+
+	const int REGION_SIZE_IN_TILES_X(100);	// These need to have the same ratio between X and Y as REGION_TX_SIZE has between its X and Y.
+	const int REGION_SIZE_IN_TILES_Y(100);
+	const int REGION_TILE_SIZE(50);
+
+	const int REGION_TX_SIZE_X(800);	// The size and ratio of these values need to allow for whole numbers for both REGION_SIZE_IN_TILES and REGION_TILE_TX_SIZE.
+	const int REGION_TX_SIZE_Y(800);
+	const int REGION_TILE_TX_SIZE(8);
 
 	const float WORLD_VIEW_WIDTH(SCREEN_WIDTH);
 	const float WORLD_VIEW_HEIGHT(SCREEN_HEIGHT);
@@ -28,6 +36,14 @@ namespace Define
 	const int WORLD_CAMERA_EDGE_MARGIN(100);
 	const float WORLD_CAMERA_MAX_ZOOM_FACTOR(2.f);
 	const float WORLD_CAMERA_MIN_ZOOM_FACTOR(0.5f);
+
+	const float REGION_VIEW_WIDTH(SCREEN_WIDTH);
+	const float REGION_VIEW_HEIGHT(SCREEN_HEIGHT);
+	const float REGION_CAMERA_MOVE_SPEED(5.f);
+	const float REGION_CAMERA_ZOOM_FACTOR(1.1f);
+	const int REGION_CAMERA_EDGE_MARGIN(100);
+	const float REGION_CAMERA_MAX_ZOOM_FACTOR(2.f);
+	const float REGION_CAMERA_MIN_ZOOM_FACTOR(0.5f);
 
 	const float MINIMAP_SIZE_FACTOR(0.20f);
 
@@ -56,12 +72,16 @@ namespace Filepath
 	const std::string WORLD_MAP_BACKGROUND("Resources/Data/bigmap.bmp");
 	const std::string WORLD_MAP_BACKGROUND_GRAYSCALE("Resources/Data/bigmapGrayscale.bmp");
 
+	const std::string REGION1_MAP_BACKGROUND("Resources/Data/RegionBotten.png");
+	const std::string REGION1_MAP_BACKGROUND_GRAYSCALE("Resources/Data/RegionBottenGrayscale.png");
+
 	const std::string HUD_BACKGROUND("Resources/Textures/HUDBackground.png");
 
 	const std::string TILE_DATA_BOX_BACKGROUND("Resources/Textures/TileDataBoxBackground.png");
 	const std::string TILE_DATA_BOX_SELECTED("Resources/Textures/TileDataBoxSelected.png");
 	const std::string TILE_DATA_BOX_FONT("Resources/Fonts/ARBONNIE.ttf");
 	const std::string TILE_DATA_BOX_CLOSE_BUTTON("Resources/Textures/DataBoxCloseButton.png");
+	const std::string TILE_DATA_BOX_ENTER_BUTTON("Resources/Textures/DataBoxEnterButton.png");
 }
 
 namespace Colors

@@ -10,7 +10,7 @@
 #include "HUD.h"
 #include "WorldMap.h"
 
-class WorldMap : public State
+class RegionMap : public State
 {
 private:
 	EngineDataRef _engine;
@@ -31,7 +31,7 @@ private:
 	std::list<subStateRef> _subStates;
 
 public:
-	WorldMap(EngineDataRef engineData);
+	RegionMap(EngineDataRef engineData);
 
 	virtual void init() override;
 
