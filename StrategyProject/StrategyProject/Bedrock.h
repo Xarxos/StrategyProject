@@ -11,9 +11,8 @@ struct Deposit
 	Property<double> size;
 };
 
-class Bedrock
+struct Bedrock
 {
-private:
-	Stone _mainStoneType;
-	std::vector<Deposit> _deposits;
+	Stone mainStoneType;
+	std::vector<Deposit> deposits;
 };

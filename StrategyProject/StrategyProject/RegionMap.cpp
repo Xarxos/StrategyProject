@@ -7,9 +7,11 @@
 #include <iostream>
 #include "TileDataBoxState.h"
 #include "HUD.h"
+#include "GameDatabase.h"
 
-RegionMap::RegionMap(EngineDataRef engineData)
+RegionMap::RegionMap(EngineDataRef engineData, DatabaseRef database)
 	: _engine(engineData),
+	_database(database),
 	_tileMatrix(Define::REGION_SIZE_IN_TILES_Y, std::vector<int>(Define::REGION_SIZE_IN_TILES_X)),
 	_vertices(sf::Quads, Define::REGION_SIZE_IN_TILES_X * Define::REGION_SIZE_IN_TILES_Y * 4),
 	_HUD(engineData),
@@ -211,7 +213,7 @@ void RegionMap::handleMousePressEvent(sf::Event &event)
 				tileTerrainData[it->first] = _tileTerrainRatios.at(it->first)[tileClickedIndex];
 			}
 
-			_subStates.push_back(std::move(subStateRef(new TileDataBoxState(_engine, tileClicked, tileTerrainData))));
+			_subStates.push_back(std::move(subStateRef(new TileDataBoxState(_engine, _database, tileClicked, tileTerrainData))));
 			_subStates.back()->init();
 		}
 	}

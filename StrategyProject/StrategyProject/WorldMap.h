@@ -1,13 +1,15 @@
 #pragma once
 
+#include <vector>
+#include <map>
+#include <list>
+
 #include "Game.h"
 #include "SFML\Graphics.hpp"
 #include "State.h"
 #include "SubState.h"
-#include <vector>
-#include <map>
-#include <list>
 #include "HUD.h"
+#include "GameDatabase.h"
 
 enum class Terrain
 {
@@ -23,6 +25,7 @@ class WorldMap : public State
 {
 private:
 	EngineDataRef _engine;
+	DatabaseRef _database = std::make_shared<Database>();
 
 	sf::VertexArray _vertices;
 	sf::Texture _backgroundTexture;

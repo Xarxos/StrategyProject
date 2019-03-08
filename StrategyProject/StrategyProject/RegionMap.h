@@ -9,11 +9,13 @@
 #include <list>
 #include "HUD.h"
 #include "WorldMap.h"
+#include "GameDatabase.h"
 
 class RegionMap : public State
 {
 private:
 	EngineDataRef _engine;
+	DatabaseRef _database;
 
 	sf::VertexArray _vertices;
 	sf::Texture _backgroundTexture;
@@ -31,7 +33,7 @@ private:
 	std::list<subStateRef> _subStates;
 
 public:
-	RegionMap(EngineDataRef engineData);
+	RegionMap(EngineDataRef engineData, DatabaseRef database);
 
 	virtual void init() override;
 

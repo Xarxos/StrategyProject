@@ -3,7 +3,11 @@
 #include <vector>
 #include <memory>
 
-
+#include "Stone.h"
+#include "Property.h"
+#include "Bedrock.h"
+#include "Tile.h"
+#include "Mineral.h"
 
 /*class Resource
 {
@@ -45,5 +49,9 @@ enum class ResourceType
 
 struct Database
 {
-	std::vector<ResourceRef> resources;
+	std::vector<Tile> tiles;
+	std::vector<Stone> stones;
+	std::vector<MineralType> mineralTypes;
 };
+
+typedef std::shared_ptr<Database> DatabaseRef;

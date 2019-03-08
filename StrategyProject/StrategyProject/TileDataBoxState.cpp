@@ -5,9 +5,11 @@
 #include "RegionMap.h"
 #include <string>
 #include <iostream>
+#include "GameDatabase.h"
 
-TileDataBoxState::TileDataBoxState(EngineDataRef engineData, sf::Vector2i tileCoords, const std::map<Terrain, double> &terrainData)
+TileDataBoxState::TileDataBoxState(EngineDataRef engineData, DatabaseRef database, sf::Vector2i tileCoords, const std::map<Terrain, double> &terrainData)
 	: _engine(engineData),
+	_database(database),
 	_tileCoords(tileCoords),
 	_terrainData(terrainData),
 	_view(sf::Vector2f(Define::WORLD_VIEW_WIDTH / 2, Define::WORLD_VIEW_HEIGHT / 2), sf::Vector2f(Define::WORLD_VIEW_WIDTH, Define::WORLD_VIEW_HEIGHT)),
@@ -93,7 +95,7 @@ bool TileDataBoxState::handleInput(sf::Event &event)
 
 		if (_engine->input.isSpriteClicked(_enterButton, sf::Mouse::Left, _engine->window))
 		{
-			_engine->machine.addState(stateRef(new RegionMap(_engine)), false);
+			_engine->machine.addState(stateRef(new RegionMap(_engine, _database)), false);
 			return true;
 		}
 

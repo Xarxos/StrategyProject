@@ -169,6 +169,7 @@
     <ClInclude Include="HUD.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="MainMenuState.h" />
+    <ClInclude Include="Mineral.h" />
     <ClInclude Include="Property.h" />
     <ClInclude Include="RegionMap.h" />
     <ClInclude Include="SplashState.h" />

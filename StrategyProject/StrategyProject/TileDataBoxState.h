@@ -8,11 +8,13 @@
 #include "WorldMap.h"
 #include "Defines.h"
 #include <vector>
+#include "GameDatabase.h"
 
 class TileDataBoxState : public SubState
 {
 private:
 	EngineDataRef _engine;
+	DatabaseRef _database;
 
 	sf::Sprite _background;
 	sf::Sprite _closeButton;
@@ -28,7 +30,7 @@ private:
 	sf::Vector2i _previousMousePos;
 
 public:
-	TileDataBoxState(EngineDataRef engineData, sf::Vector2i tileCoords, const std::map<Terrain, double> &terrainData);
+	TileDataBoxState(EngineDataRef engineData, DatabaseRef database, sf::Vector2i tileCoords, const std::map<Terrain, double> &terrainData);
 
 	virtual void init() override;
 

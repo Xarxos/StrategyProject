@@ -2,8 +2,9 @@
 
 #include "Bedrock.h"
 
-class Tile
+struct Tile
 {
-private:
-	Bedrock _bedrock;
+	int ID;
+
+	Bedrock bedrock;
 };

@@ -214,7 +214,7 @@ void WorldMap::handleMousePressEvent(sf::Event &event)
 				tileTerrainData[it->first] = _tileTerrainRatios.at(it->first)[tileClickedIndex];
 			}
 
-			_subStates.push_back(std::move(subStateRef(new TileDataBoxState(_engine, tileClicked, tileTerrainData))));
+			_subStates.push_back(std::move(subStateRef(new TileDataBoxState(_engine, _database, tileClicked, tileTerrainData))));
 			_subStates.back()->init();
 		}
 	}
