@@ -20,12 +20,6 @@
     <Filter Include="Game\States">
       <UniqueIdentifier>{5dc56eac-3211-4b3a-b742-bbb62027f139}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\States\Headers">
-      <UniqueIdentifier>{5b2da8be-ac78-4216-8d10-df1f6e2c40d9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\States\Source">
-      <UniqueIdentifier>{5f3d9e9a-5a2c-44fe-b4e5-905c84ac0d9a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game\Main Files">
       <UniqueIdentifier>{670f5ae9-a05d-4ca8-aef4-aa13ab07dd53}</UniqueIdentifier>
     </Filter>
@@ -40,11 +34,8 @@
     <Filter Include="Game\Misc">
       <UniqueIdentifier>{de8ade9a-8c58-483d-a2e9-991bea7d6d92}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Misc\Headers">
-      <UniqueIdentifier>{6e451bee-275c-4db0-a116-f143606dc2e0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Misc\Source">
-      <UniqueIdentifier>{29ea51ad-77f7-42da-84ee-b8a188d6312c}</UniqueIdentifier>
+    <Filter Include="Game\Database">
+      <UniqueIdentifier>{bd7a0cbd-18ef-40e6-a780-3d4d0826a84b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -78,29 +69,41 @@
     <ClInclude Include="Defines.h">
       <Filter>Game\Main Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SplashState.h">
-      <Filter>Game\States\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="MainMenuState.h">
-      <Filter>Game\States\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="TextButton.h">
-      <Filter>Game\Misc\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="WorldMap.h">
-      <Filter>Game\States\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="TileDataBoxState.h">
-      <Filter>Game\States\Headers</Filter>
-    </ClInclude>
     <ClInclude Include="SubState.h">
       <Filter>Engine\Headers</Filter>
     </ClInclude>
     <ClInclude Include="HUD.h">
       <Filter>Game\Misc</Filter>
     </ClInclude>
+    <ClInclude Include="WorldMap.h">
+      <Filter>Game\States</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenuState.h">
+      <Filter>Game\States</Filter>
+    </ClInclude>
     <ClInclude Include="RegionMap.h">
-      <Filter>Game\States\Headers</Filter>
+      <Filter>Game\States</Filter>
+    </ClInclude>
+    <ClInclude Include="SplashState.h">
+      <Filter>Game\States</Filter>
+    </ClInclude>
+    <ClInclude Include="TileDataBoxState.h">
+      <Filter>Game\States</Filter>
+    </ClInclude>
+    <ClInclude Include="GameDatabase.h">
+      <Filter>Game\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="Stone.h">
+      <Filter>Game\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="Property.h">
+      <Filter>Game\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="Bedrock.h">
+      <Filter>Game\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile.h">
+      <Filter>Game\Database</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -122,26 +125,26 @@
     <ClCompile Include="StateMachine.cpp">
       <Filter>Engine\Source</Filter>
     </ClCompile>
-    <ClCompile Include="SplashState.cpp">
-      <Filter>Game\States\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="MainMenuState.cpp">
-      <Filter>Game\States\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="TextButton.cpp">
-      <Filter>Game\Misc\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="WorldMap.cpp">
-      <Filter>Game\States\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="TileDataBoxState.cpp">
-      <Filter>Game\States\Source</Filter>
-    </ClCompile>
     <ClCompile Include="HUD.cpp">
       <Filter>Game\Misc</Filter>
     </ClCompile>
+    <ClCompile Include="WorldMap.cpp">
+      <Filter>Game\States</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenuState.cpp">
+      <Filter>Game\States</Filter>
+    </ClCompile>
     <ClCompile Include="RegionMap.cpp">
-      <Filter>Game\States\Source</Filter>
+      <Filter>Game\States</Filter>
+    </ClCompile>
+    <ClCompile Include="SplashState.cpp">
+      <Filter>Game\States</Filter>
+    </ClCompile>
+    <ClCompile Include="TileDataBoxState.cpp">
+      <Filter>Game\States</Filter>
+    </ClCompile>
+    <ClCompile Include="Stone.cpp">
+      <Filter>Game\Database</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
