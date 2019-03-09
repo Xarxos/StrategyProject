@@ -132,7 +132,7 @@ void RegionMap::loadTerrainDataForTile(int tileX, int tileY)
 			}
 			else
 			{
-				std::cout << "WRONG COLOR DETECTED!\n";
+				//std::cout << "WRONG COLOR DETECTED!\n";
 			}
 		}
 	}
