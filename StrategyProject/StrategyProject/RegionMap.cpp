@@ -134,7 +134,7 @@ void RegionMap::loadTerrainDataForTile(int tileX, int tileY)
 			}
 			else
 			{
-				std::cout << "WRONG COLOR DETECTED!\n";
+				//std::cout << "WRONG COLOR DETECTED!\n";
 			}
 		}
 	}
@@ -334,7 +334,7 @@ void RegionMap::checkTileSelection()
 		if (topSubStateIsDataBox)
 		{
 			topSubStateIsDataBox->selectBox(true);
-			_selectedTile.setPosition(topSubStateIsDataBox->getTileCoords().x * Define::TILE_SIZE, topSubStateIsDataBox->getTileCoords().y * Define::TILE_SIZE);
+			_selectedTile.setPosition(topSubStateIsDataBox->getTileCoords().x * Define::REGION_TILE_SIZE, topSubStateIsDataBox->getTileCoords().y * Define::REGION_TILE_SIZE);
 			_tileIsSelected = true;
 		}
 		else

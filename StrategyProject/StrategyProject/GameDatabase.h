@@ -50,6 +50,7 @@ enum class ResourceType
 struct Database
 {
 	std::vector<Tile> tiles;
+	std::vector<Region> regions;
 	std::vector<Stone> stones;
 	std::vector<MineralType> mineralTypes;
 };
