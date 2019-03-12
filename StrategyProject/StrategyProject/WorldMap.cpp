@@ -7,8 +7,9 @@
 #include "TileDataBoxState.h"
 #include "HUD.h"
 
-WorldMap::WorldMap(EngineDataRef engineData)
+WorldMap::WorldMap(EngineDataRef engineData, DatabaseRef database)
 	: _engine(engineData),
+	_database(database),
 	_tileMatrix(Define::WORLD_SIZE_IN_TILES_Y, std::vector<int>(Define::WORLD_SIZE_IN_TILES_X)),
 	_vertices(sf::Quads, Define::WORLD_SIZE_IN_TILES_X * Define::WORLD_SIZE_IN_TILES_Y * 4),
 	_HUD(engineData),

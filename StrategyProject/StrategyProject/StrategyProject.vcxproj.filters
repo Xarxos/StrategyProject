@@ -108,6 +108,9 @@
     <ClInclude Include="Mineral.h">
       <Filter>Game\Database</Filter>
     </ClInclude>
+    <ClInclude Include="GameLoadState.h">
+      <Filter>Game\States</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -148,6 +151,9 @@
     </ClCompile>
     <ClCompile Include="Stone.cpp">
       <Filter>Game\Database</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLoadState.cpp">
+      <Filter>Game\States</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -10,8 +10,11 @@ struct MineralType
 	Property<double> heatConductivity;
 };
 
+typedef std::shared_ptr<MineralType> MineralTypeRef;
+
 struct Mineral
 {
-	MineralType type;
+	MineralTypeRef type;
 	Property<double> concentration;
 };
+

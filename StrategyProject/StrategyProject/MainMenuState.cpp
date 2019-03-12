@@ -2,6 +2,8 @@
 #include "MainMenuState.h"
 #include "Defines.h"
 #include "WorldMap.h"
+#include "GameLoadState.h"
+
 #include <iostream>
 
 void MainMenuState::init()
@@ -34,9 +36,7 @@ void MainMenuState::handleInput()
 		
 		if (_engine->input.isSpriteClicked(_testGameButton, sf::Mouse::Left, _engine->window))
 		{
-			std::cout << "Attempt to add WorldMap...";
-			_engine->machine.addState(stateRef(new WorldMap(_engine)), true);
-			std::cout << "Success!\n";
+			_engine->machine.addState(stateRef(new GameLoadState(_engine)), true);
 		}
 	}
 }

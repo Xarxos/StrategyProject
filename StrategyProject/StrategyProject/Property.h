@@ -4,7 +4,7 @@ template <typename T>
 struct Property
 {
 	T actualValue;
-	bool exactValueIsKnown;
+	bool exactValueIsKnown = false;
 	T lowestValueKnown;
 	T highestValueKnown;
 };

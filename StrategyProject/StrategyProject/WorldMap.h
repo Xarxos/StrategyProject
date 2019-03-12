@@ -25,7 +25,7 @@ class WorldMap : public State
 {
 private:
 	EngineDataRef _engine;
-	DatabaseRef _database = std::make_shared<Database>();
+	DatabaseRef _database;
 
 	sf::VertexArray _vertices;
 	sf::Texture _backgroundTexture;
@@ -43,7 +43,7 @@ private:
 	std::list<subStateRef> _subStates;
 
 public:
-	WorldMap(EngineDataRef engineData);
+	WorldMap(EngineDataRef engineData, DatabaseRef database);
 
 	virtual void init() override;
 

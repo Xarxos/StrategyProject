@@ -2,24 +2,24 @@
 #include "Stone.h"
 #include "Property.h"
 #include <vector>
-
-Stone::Stone()
+/*
+StoneType::StoneType()
 {
 
 }
 
-Stone::Stone(const std::vector<Mineral> &minerals)
+StoneType::StoneType(const std::vector<Mineral> &minerals)
 	: _minerals(minerals)
 {
 
 }
 
-void Stone::init()
+void StoneType::init()
 {
 	calculateProperties();
 }
 
-void Stone::calculateProperties()
+void StoneType::calculateProperties()
 {
 	double totalMineralDensity(0.0);
 	double totalMineralSoftness(0.0);
@@ -39,3 +39,4 @@ void Stone::calculateProperties()
 	_durability.actualValue = totalMineralDurability / _minerals.size();
 	_heatConductivity.actualValue = totalMineralHeatConductivity / _minerals.size();
 }
+*/

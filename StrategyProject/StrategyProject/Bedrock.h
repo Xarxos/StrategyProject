@@ -6,13 +6,13 @@
 
 struct Deposit
 {
-	Stone stoneType;
+	StoneTypeRef stoneType;
 	Property<double> bedrockDepth;
 	Property<double> size;
 };
 
 struct Bedrock
 {
-	Stone mainStoneType;
+	StoneTypeRef mainStoneType;
 	std::vector<Deposit> deposits;
 };

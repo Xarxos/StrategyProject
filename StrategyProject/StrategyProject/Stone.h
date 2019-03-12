@@ -1,23 +1,19 @@
 #pragma once
 
-#include "Property.h"
 #include <vector>
+#include <memory>
+
+#include "Property.h"
 #include "Mineral.h"
 
-class Stone
+struct StoneType
 {
-public:
-	Stone();
-	Stone(const std::vector<Mineral> &minerals);
+	std::vector<Mineral> minerals;
 
-	void init();
-	void calculateProperties();
-
-private:
-	std::vector<Mineral> _minerals;
-
-	Property<double> _density;
-	Property<double> _softness;
-	Property<double> _durability;
-	Property<double> _heatConductivity;
+	Property<double> density;
+	Property<double> softness;
+	Property<double> durability;
+	Property<double> heatConductivity;
 };
+
+typedef std::shared_ptr<StoneType> StoneTypeRef;
