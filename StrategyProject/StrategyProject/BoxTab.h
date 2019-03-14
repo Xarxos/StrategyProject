@@ -13,7 +13,7 @@ private:
 	DatabaseRef _database;
 
 	sf::RectangleShape _tabShape;
-	sf::Text _tabText;
+	sf::Text _tabLabel;
 
 	std::vector<sf::Text> _texts;
 	std::vector<sf::Sprite> _sprites;
@@ -28,8 +28,14 @@ public:
 	sf::Vector2f getPosition() const { return _tabShape.getPosition(); }
 	sf::FloatRect getBounds() const { return _tabShape.getGlobalBounds(); }
 
+	void setTabLabel(const sf::String &tabLabel);
+
 	void openTab(bool open);
 
 	void drawTab();
 	void drawContents();
+
+private:
+	void initTabLabel();
+	void initTabShape();
 };

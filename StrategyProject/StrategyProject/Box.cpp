@@ -3,19 +3,39 @@
 #include "Defines.h"
 
 #include <iostream>
+#include <initializer_list>
 
-Box::Box(EngineDataRef engineData, DatabaseRef database)
+Box::Box(EngineDataRef engineData, DatabaseRef database, int numOfTabs)
 	: _engine(engineData),
 	_database(database),
 	_view(sf::Vector2f(Define::WORLD_VIEW_WIDTH / 2, Define::WORLD_VIEW_HEIGHT / 2), sf::Vector2f(Define::WORLD_VIEW_WIDTH, Define::WORLD_VIEW_HEIGHT)),
 	_mouseButtonHeld(false),
 	_openTabIndex(0)
 {
-	_tabs =
+	_tabs.reserve(numOfTabs);
+
+	for (int i = 0; i < numOfTabs; i++)
 	{
-		{_engine, _database},
-		{_engine, _database}
-	};
+		_tabs.push_back(BoxTab(_engine, _database));
+	}
+}
+
+Box::Box(EngineDataRef engineData, DatabaseRef database, const std::initializer_list<sf::String> &tabLabels)
+	: _engine(engineData),
+	_database(database),
+	_view(sf::Vector2f(Define::WORLD_VIEW_WIDTH / 2, Define::WORLD_VIEW_HEIGHT / 2), sf::Vector2f(Define::WORLD_VIEW_WIDTH, Define::WORLD_VIEW_HEIGHT)),
+	_mouseButtonHeld(false),
+	_openTabIndex(0)
+{
+	_tabs.reserve(tabLabels.size());
+
+	int loopCount(0);
+	for (auto &tabLabel : tabLabels)
+	{
+		_tabs.push_back(BoxTab(_engine, _database));
+		_tabs[loopCount].setTabLabel(tabLabel);
+		loopCount++;
+	}
 }
 
 void Box::init()
@@ -132,6 +152,24 @@ void Box::draw()
 	_tabs[_openTabIndex].drawContents();
 
 	_engine->window.draw(_closeButton);
+}
+
+void Box::setTabLabels(const std::initializer_list<sf::String> &tabLabels)
+{
+	if (tabLabels.size() > _tabs.size())
+	{
+		for (int i = _tabs.size(); i < tabLabels.size(); i++)
+		{
+			_tabs.push_back(BoxTab(_engine, _database));
+		}
+	}
+
+	int loopCount(0);
+	for (auto &tabLabel : tabLabels)
+	{
+		_tabs[loopCount].setTabLabel(tabLabel);
+		loopCount++;
+	}
 }
 
 void Box::selectBox(bool isSelected)

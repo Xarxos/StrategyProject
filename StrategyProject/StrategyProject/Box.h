@@ -7,6 +7,7 @@
 #include "GameDatabase.h"
 
 #include <vector>
+#include <initializer_list>
 
 class Box : public SubState
 {
@@ -27,13 +28,16 @@ private:
 	sf::Vector2i _previousMousePos;
 
 public:
-	Box(EngineDataRef engineData, DatabaseRef database);
+	Box(EngineDataRef engineData, DatabaseRef database, int numOfTabs = 1);
+	Box(EngineDataRef engineData, DatabaseRef database, const std::initializer_list<sf::String> &tabLabels);
 
 	virtual void init() override;
 
 	virtual bool handleInput(sf::Event &event) override;
 	virtual void update(float delta) override;
 	virtual void draw() override;
+
+	void setTabLabels(const std::initializer_list<sf::String> &tabLabels);
 
 	void selectBox(bool isSelected = true);
 };

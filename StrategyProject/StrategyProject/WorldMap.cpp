@@ -132,7 +132,7 @@ void WorldMap::handleMousePressEvent(sf::Event &event)
 		{
 			int tileClickedIndex = _tileMatrix[tileClicked.y][tileClicked.x];
 
-			_subStates.push_back(std::move(subStateRef(new Box(_engine, _database))));
+			_subStates.push_back(std::move(subStateRef(new Box(_engine, _database, { "Overview", "Bedrock", "Soil" }))));
 			_subStates.back()->init();
 		}
 	}
