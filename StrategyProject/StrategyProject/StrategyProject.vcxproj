@@ -162,7 +162,9 @@
   <ItemGroup>
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="Bedrock.h" />
+    <ClInclude Include="BoxTab.h" />
     <ClInclude Include="Config.h" />
+    <ClInclude Include="Box.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameDatabase.h" />
@@ -186,6 +188,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssetManager.cpp" />
+    <ClCompile Include="Box.cpp" />
+    <ClCompile Include="BoxTab.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameLoadState.cpp" />
     <ClCompile Include="HUD.cpp" />

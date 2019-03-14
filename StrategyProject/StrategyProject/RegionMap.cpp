@@ -20,11 +20,7 @@ RegionMap::RegionMap(EngineDataRef engineData, DatabaseRef database)
 	_selectedTile(sf::Vector2f(Define::REGION_TILE_SIZE, Define::REGION_TILE_SIZE)),
 	_tileIsSelected(false)
 {
-	_tileTerrainRatios[Terrain::Water].resize(Define::REGION_SIZE_IN_TILES_X * Define::REGION_SIZE_IN_TILES_Y);
-	_tileTerrainRatios[Terrain::FlatGround].resize(Define::REGION_SIZE_IN_TILES_X * Define::REGION_SIZE_IN_TILES_Y);
-	_tileTerrainRatios[Terrain::Hills].resize(Define::REGION_SIZE_IN_TILES_X * Define::REGION_SIZE_IN_TILES_Y);
-	_tileTerrainRatios[Terrain::Mountains].resize(Define::REGION_SIZE_IN_TILES_X * Define::REGION_SIZE_IN_TILES_Y);
-	_tileTerrainRatios[Terrain::Forest].resize(Define::REGION_SIZE_IN_TILES_X * Define::REGION_SIZE_IN_TILES_Y);
+	
 }
 
 void RegionMap::init()
@@ -146,11 +142,11 @@ void RegionMap::loadTerrainDataForTile(int tileX, int tileY)
 	double mountainsRatio = mountainPixels / totalPixels;
 	double forestRatio = forestPixels / totalPixels;
 
-	_tileTerrainRatios.at(Terrain::Water)[_tileMatrix[tileY][tileX]] = waterRatio;
+	/*_tileTerrainRatios.at(Terrain::Water)[_tileMatrix[tileY][tileX]] = waterRatio;
 	_tileTerrainRatios.at(Terrain::FlatGround)[_tileMatrix[tileY][tileX]] = flatgroundRatio;
 	_tileTerrainRatios.at(Terrain::Hills)[_tileMatrix[tileY][tileX]] = hillsRatio;
 	_tileTerrainRatios.at(Terrain::Mountains)[_tileMatrix[tileY][tileX]] = mountainsRatio;
-	_tileTerrainRatios.at(Terrain::Forest)[_tileMatrix[tileY][tileX]] = forestRatio;
+	_tileTerrainRatios.at(Terrain::Forest)[_tileMatrix[tileY][tileX]] = forestRatio;*/
 }
 
 void RegionMap::handleInput()
@@ -206,14 +202,14 @@ void RegionMap::handleMousePressEvent(sf::Event &event)
 		{
 			int tileClickedIndex = _tileMatrix[tileClicked.y][tileClicked.x];
 
-			std::map<Terrain, double> tileTerrainData;
+			/*std::map<Terrain, double> tileTerrainData;
 
 			for (std::map<Terrain, std::vector<double>>::iterator it = _tileTerrainRatios.begin(); it != _tileTerrainRatios.end(); it++)
 			{
 				tileTerrainData[it->first] = _tileTerrainRatios.at(it->first)[tileClickedIndex];
-			}
+			}*/
 
-			_subStates.push_back(std::move(subStateRef(new TileDataBoxState(_engine, _database, tileClicked, tileTerrainData))));
+			//_subStates.push_back(std::move(subStateRef(new TileDataBoxState(_engine, _database, tileClicked, tileTerrainData))));
 			_subStates.back()->init();
 		}
 	}
@@ -239,7 +235,7 @@ void RegionMap::handleMouseScrollEvent(sf::Event &event)
 }
 void RegionMap::handleKeyPressEvent(sf::Event &event)
 {
-	if (event.key.code == Controls::WORLD_MAP_MODE_DEFAULT)
+	/*if (event.key.code == Controls::WORLD_MAP_MODE_DEFAULT)
 	{
 		changeMapMode(Terrain::Default);
 	}
@@ -262,7 +258,7 @@ void RegionMap::handleKeyPressEvent(sf::Event &event)
 	if (event.key.code == Controls::WORLD_MAP_MODE_FOREST)
 	{
 		changeMapMode(Terrain::Forest);
-	}
+	}*/
 }
 void RegionMap::handleRealTimeKeyPressInput()
 {
@@ -396,7 +392,7 @@ void RegionMap::draw()
 	_engine->window.display();
 }
 
-void RegionMap::changeMapMode(Terrain mapMode)
+/*void RegionMap::changeMapMode(Terrain mapMode)
 {
 	sf::Color baseColor;
 	_backgroundTexture = _engine->assets.getTexture("Region 1 Background Grayscale");
@@ -452,7 +448,7 @@ void RegionMap::changeMapMode(Terrain mapMode)
 			}
 		}
 	}
-}
+}*/
 
 sf::Vector2i RegionMap::coordsToTile(sf::Vector2i worldCoords)
 {

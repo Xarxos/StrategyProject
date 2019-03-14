@@ -81,11 +81,19 @@ namespace Filepath
 
 	const std::string HUD_BACKGROUND("Resources/Textures/HUDBackground.png");
 
-	const std::string TILE_DATA_BOX_BACKGROUND("Resources/Textures/TileDataBoxBackground.png");
-	const std::string TILE_DATA_BOX_SELECTED("Resources/Textures/TileDataBoxSelected.png");
-	const std::string TILE_DATA_BOX_FONT("Resources/Fonts/ARBONNIE.ttf");
-	const std::string TILE_DATA_BOX_CLOSE_BUTTON("Resources/Textures/DataBoxCloseButton.png");
+	const std::string BOX_BACKGROUND("Resources/Textures/TileDataBoxBackground.png");
+	const std::string BOX_SELECTED("Resources/Textures/TileDataBoxSelected.png");
+	const std::string BOX_FONT("Resources/Fonts/ARBONNIE.ttf");
+	const std::string BOX_CLOSE_BUTTON("Resources/Textures/DataBoxCloseButton.png");
 	const std::string TILE_DATA_BOX_ENTER_BUTTON("Resources/Textures/DataBoxEnterButton.png");
+}
+
+namespace Graphics
+{
+	const unsigned int BOX_TEXT_SIZE(30);
+	const float BOX_TAB_OUTLINE_THICKNESS(2.f);
+	const float BOX_TABS_EDGE_MARGIN(10.f);
+	const float BOX_DEFAULT_HEIGHT(200.f);
 }
 
 namespace Colors
@@ -98,6 +106,11 @@ namespace Colors
 	const sf::Color MAP_MODE_FOREST(0, 255, 0);
 
 	const sf::Color TILE_SELECT_HIGHLIGHT_COLOR(sf::Color::Magenta);
+
+	const sf::Color BOX_TAB_OPEN(255, 255, 255, 175);
+	const sf::Color BOX_TAB_CLOSED(255, 255, 255, 0);
+	const sf::Color BOX_TAB_OUTLINE(sf::Color::Black);
+	const sf::Color BOX_TEXT(sf::Color::Black);
 }
 
 namespace Controls

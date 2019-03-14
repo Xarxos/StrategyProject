@@ -111,6 +111,12 @@
     <ClInclude Include="GameLoadState.h">
       <Filter>Game\States</Filter>
     </ClInclude>
+    <ClInclude Include="Box.h">
+      <Filter>Game\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="BoxTab.h">
+      <Filter>Game\Misc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -154,6 +160,12 @@
     </ClCompile>
     <ClCompile Include="GameLoadState.cpp">
       <Filter>Game\States</Filter>
+    </ClCompile>
+    <ClCompile Include="Box.cpp">
+      <Filter>Game\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="BoxTab.cpp">
+      <Filter>Game\Misc</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

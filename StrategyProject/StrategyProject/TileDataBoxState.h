@@ -20,9 +20,8 @@ private:
 	sf::Sprite _closeButton;
 	sf::Sprite _enterButton;
 
+	int _tileIndex;
 	sf::Vector2i _tileCoords;
-	std::map<Terrain, double> _terrainData;
-	std::map<Terrain, sf::Text> _dataText;
 
 	sf::View _view;
 
@@ -30,7 +29,7 @@ private:
 	sf::Vector2i _previousMousePos;
 
 public:
-	TileDataBoxState(EngineDataRef engineData, DatabaseRef database, sf::Vector2i tileCoords, const std::map<Terrain, double> &terrainData);
+	TileDataBoxState(EngineDataRef engineData, DatabaseRef database, int tileIndex, sf::Vector2i tileCoords);
 
 	virtual void init() override;
 

@@ -6,6 +6,7 @@
 #include <iostream>
 #include "TileDataBoxState.h"
 #include "HUD.h"
+#include "Box.h"
 
 WorldMap::WorldMap(EngineDataRef engineData, DatabaseRef database)
 	: _engine(engineData),
@@ -18,11 +19,7 @@ WorldMap::WorldMap(EngineDataRef engineData, DatabaseRef database)
 	_selectedTile(sf::Vector2f(Define::TILE_SIZE, Define::TILE_SIZE)),
 	_tileIsSelected(false)
 {
-	_tileTerrainRatios[Terrain::Water].resize(Define::WORLD_SIZE_IN_TILES_X * Define::WORLD_SIZE_IN_TILES_Y);
-	_tileTerrainRatios[Terrain::FlatGround].resize(Define::WORLD_SIZE_IN_TILES_X * Define::WORLD_SIZE_IN_TILES_Y);
-	_tileTerrainRatios[Terrain::Hills].resize(Define::WORLD_SIZE_IN_TILES_X * Define::WORLD_SIZE_IN_TILES_Y);
-	_tileTerrainRatios[Terrain::Mountains].resize(Define::WORLD_SIZE_IN_TILES_X * Define::WORLD_SIZE_IN_TILES_Y);
-	_tileTerrainRatios[Terrain::Forest].resize(Define::WORLD_SIZE_IN_TILES_X * Define::WORLD_SIZE_IN_TILES_Y);
+
 }
 
 void WorldMap::init()
@@ -48,8 +45,6 @@ void WorldMap::init()
 	_selectedTile.setOutlineColor(Colors::TILE_SELECT_HIGHLIGHT_COLOR);
 	_selectedTile.setOutlineThickness(Define::TILE_SELECT_OUTLINE_THICKNESS);
 
-	loadTerrainData();
-
 	float end = clock.getElapsedTime().asSeconds();
 	std::cout << "Loaded " << Define::WORLD_SIZE_IN_TILES_X * Define::WORLD_SIZE_IN_TILES_Y << " tiles in " << end - start << " seconds.\n";
 }
@@ -61,7 +56,6 @@ void WorldMap::loadAssets()
 	_engine->assets.loadTexture("World Map Background Grayscale", Filepath::WORLD_MAP_BACKGROUND_GRAYSCALE);
 
 	_backgroundTexture = _engine->assets.getTexture("World Map Background");
-	_terrainData = _engine->assets.getImage("World Map Terrain Data");
 }
 
 void WorldMap::initializeTile(int tileX, int tileY)
@@ -83,76 +77,6 @@ void WorldMap::initializeTile(int tileX, int tileY)
 	_vertices[quadIndex + 1].texCoords = sf::Vector2f(tileX * Define::TILE_TX_SIZE + Define::TILE_TX_SIZE, tileY * Define::TILE_TX_SIZE);
 	_vertices[quadIndex + 2].texCoords = sf::Vector2f(tileX * Define::TILE_TX_SIZE + Define::TILE_TX_SIZE, tileY * Define::TILE_TX_SIZE + Define::TILE_TX_SIZE);
 	_vertices[quadIndex + 3].texCoords = sf::Vector2f(tileX * Define::TILE_TX_SIZE, tileY * Define::TILE_TX_SIZE + Define::TILE_TX_SIZE);
-}
-
-void WorldMap::loadTerrainData()
-{
-	std::cout << "Load Terrain Data...\n";
-	for (int row = 0; row < Define::WORLD_SIZE_IN_TILES_Y; row++)
-	{
-		for (int column = 0; column < Define::WORLD_SIZE_IN_TILES_X; column++)
-		{
-			//std::cout << "Row: " << row << ", Column: " << column << "\n";
-			loadTerrainDataForTile(column, row);
-		}
-	}
-	std::cout << "Loaded Terrain Data.\n";
-}
-
-void WorldMap::loadTerrainDataForTile(int tileX, int tileY)
-{
-	int waterPixels(0);
-	int flatgroundPixels(0);
-	int hillPixels(0);
-	int mountainPixels(0);
-	int forestPixels(0);
-
-	for (int pixelRow = 0; pixelRow < Define::TILE_TX_SIZE; pixelRow++)
-	{
-		//std::cout << "PixelRow: " << pixelRow << "\n";
-		for (int pixelColumn = 0; pixelColumn < Define::TILE_TX_SIZE; pixelColumn++)
-		{
-			//", PixelColumn: " << pixelColumn <<
-			if (_terrainData.getPixel(tileX * Define::TILE_TX_SIZE + pixelColumn, tileY * Define::TILE_TX_SIZE + pixelRow) == Define::DATA_COLOR_WATER)
-			{
-				waterPixels++;
-			}
-			else if (_terrainData.getPixel(tileX * Define::TILE_TX_SIZE + pixelColumn, tileY * Define::TILE_TX_SIZE + pixelRow) == Define::DATA_COLOR_FLATGROUND)
-			{
-				flatgroundPixels++;
-			}
-			else if (_terrainData.getPixel(tileX * Define::TILE_TX_SIZE + pixelColumn, tileY * Define::TILE_TX_SIZE + pixelRow) == Define::DATA_COLOR_HILLS)
-			{
-				hillPixels++;
-			}
-			else if (_terrainData.getPixel(tileX * Define::TILE_TX_SIZE + pixelColumn, tileY * Define::TILE_TX_SIZE + pixelRow) == Define::DATA_COLOR_MOUNTAINS)
-			{
-				mountainPixels++;
-			}
-			else if (_terrainData.getPixel(tileX * Define::TILE_TX_SIZE + pixelColumn, tileY * Define::TILE_TX_SIZE + pixelRow) == Define::DATA_COLOR_FOREST)
-			{
-				forestPixels++;
-			}
-			else
-			{
-				//std::cout << "WRONG COLOR DETECTED!\n";
-			}
-		}
-	}
-	//std::cout << "After pixel loops.\n";
-	double totalPixels = Define::TILE_TX_SIZE * Define::TILE_TX_SIZE;
-
-	double waterRatio = waterPixels / totalPixels;
-	double flatgroundRatio = flatgroundPixels / totalPixels;
-	double hillsRatio = hillPixels / totalPixels;
-	double mountainsRatio = mountainPixels / totalPixels;
-	double forestRatio = forestPixels / totalPixels;
-
-	_tileTerrainRatios.at(Terrain::Water)[_tileMatrix[tileY][tileX]] = waterRatio;
-	_tileTerrainRatios.at(Terrain::FlatGround)[_tileMatrix[tileY][tileX]] = flatgroundRatio;
-	_tileTerrainRatios.at(Terrain::Hills)[_tileMatrix[tileY][tileX]] = hillsRatio;
-	_tileTerrainRatios.at(Terrain::Mountains)[_tileMatrix[tileY][tileX]] = mountainsRatio;
-	_tileTerrainRatios.at(Terrain::Forest)[_tileMatrix[tileY][tileX]] = forestRatio;
 }
 
 void WorldMap::handleInput()
@@ -208,14 +132,7 @@ void WorldMap::handleMousePressEvent(sf::Event &event)
 		{
 			int tileClickedIndex = _tileMatrix[tileClicked.y][tileClicked.x];
 
-			std::map<Terrain, double> tileTerrainData;
-
-			for (std::map<Terrain, std::vector<double>>::iterator it = _tileTerrainRatios.begin(); it != _tileTerrainRatios.end(); it++)
-			{
-				tileTerrainData[it->first] = _tileTerrainRatios.at(it->first)[tileClickedIndex];
-			}
-
-			_subStates.push_back(std::move(subStateRef(new TileDataBoxState(_engine, _database, tileClicked, tileTerrainData))));
+			_subStates.push_back(std::move(subStateRef(new Box(_engine, _database))));
 			_subStates.back()->init();
 		}
 	}
@@ -241,7 +158,7 @@ void WorldMap::handleMouseScrollEvent(sf::Event &event)
 }
 void WorldMap::handleKeyPressEvent(sf::Event &event)
 {
-	if (event.key.code == Controls::WORLD_MAP_MODE_DEFAULT)
+	/*if (event.key.code == Controls::WORLD_MAP_MODE_DEFAULT)
 	{
 		changeMapMode(Terrain::Default);
 	}
@@ -264,7 +181,7 @@ void WorldMap::handleKeyPressEvent(sf::Event &event)
 	if (event.key.code == Controls::WORLD_MAP_MODE_FOREST)
 	{
 		changeMapMode(Terrain::Forest);
-	}
+	}*/
 }
 void WorldMap::handleRealTimeKeyPressInput()
 {
@@ -397,7 +314,7 @@ void WorldMap::draw()
 
 	_engine->window.display();
 }
-
+/*
 void WorldMap::changeMapMode(Terrain mapMode)
 {
 	sf::Color baseColor;
@@ -455,7 +372,7 @@ void WorldMap::changeMapMode(Terrain mapMode)
 		}
 	}
 }
-
+*/
 sf::Vector2i WorldMap::coordsToTile(sf::Vector2i worldCoords)
 {
 	if (!_vertices.getBounds().contains(worldCoords.x, worldCoords.y))

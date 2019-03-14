@@ -11,16 +11,6 @@
 #include "HUD.h"
 #include "GameDatabase.h"
 
-enum class Terrain
-{
-	Default = -1,
-	Water,
-	FlatGround,
-	Hills,
-	Mountains,
-	Forest
-};
-
 class WorldMap : public State
 {
 private:
@@ -34,8 +24,6 @@ private:
 	bool _tileIsSelected;
 
 	std::vector<std::vector<int>> _tileMatrix;
-	std::map<Terrain, std::vector<double>> _tileTerrainRatios;
-	sf::Image _terrainData;
 
 	sf::View _mainView;
 	sf::View _miniMapView;
@@ -54,8 +42,6 @@ public:
 private:
 	void loadAssets();
 	void initializeTile(int tileX, int tileY);
-	void loadTerrainData();
-	void loadTerrainDataForTile(int tileX, int tileY);
 
 	void handleMousePressEvent(sf::Event &event);
 	void handleMouseScrollEvent(sf::Event &event);
@@ -66,6 +52,6 @@ private:
 	void checkTileSelection();
 	void correctCameraView();
 	
-	void changeMapMode(Terrain mapMode);
+	//void changeMapMode(Terrain mapMode);
 	sf::Vector2i coordsToTile(sf::Vector2i worldCoords);
 };

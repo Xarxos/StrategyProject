@@ -17,6 +17,8 @@ private:
 	EngineDataRef _engine;
 	DatabaseRef _database;
 
+	int _regionID;
+
 	sf::VertexArray _vertices;
 	sf::Texture _backgroundTexture;
 	Hud _HUD;
@@ -24,7 +26,7 @@ private:
 	bool _tileIsSelected;
 
 	std::vector<std::vector<int>> _tileMatrix;
-	std::map<Terrain, std::vector<double>> _tileTerrainRatios;
+	//std::map<Terrain, std::vector<double>> _tileTerrainRatios;
 	sf::Image _terrainData;
 
 	sf::View _mainView;
@@ -56,6 +58,6 @@ private:
 	void checkTileSelection();
 	void correctCameraView();
 
-	void changeMapMode(Terrain mapMode);
+	//void changeMapMode(Terrain mapMode);
 	sf::Vector2i coordsToTile(sf::Vector2i worldCoords);
 };
