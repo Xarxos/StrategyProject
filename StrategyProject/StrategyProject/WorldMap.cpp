@@ -7,6 +7,7 @@
 #include "TileDataBoxState.h"
 #include "HUD.h"
 #include "Box.h"
+#include "TileDataBox.h"
 
 WorldMap::WorldMap(EngineDataRef engineData, DatabaseRef database)
 	: _engine(engineData),
@@ -132,7 +133,7 @@ void WorldMap::handleMousePressEvent(sf::Event &event)
 		{
 			int tileClickedIndex = _tileMatrix[tileClicked.y][tileClicked.x];
 
-			_subStates.push_back(std::move(subStateRef(new Box(_engine, _database, { "Overview", "Bedrock", "Soil" }))));
+			_subStates.push_back(std::move(subStateRef(new TileDataBox(_engine, _database, tileClickedIndex, tileClicked))));
 			_subStates.back()->init();
 		}
 	}

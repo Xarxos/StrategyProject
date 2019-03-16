@@ -7,11 +7,12 @@
 #include "GameDatabase.h"
 
 #include <vector>
+#include <map>
 #include <initializer_list>
 
 class Box : public SubState
 {
-private:
+protected:
 	EngineDataRef _engine;
 	DatabaseRef _database;
 
@@ -40,4 +41,8 @@ public:
 	void setTabLabels(const std::initializer_list<sf::String> &tabLabels);
 
 	void selectBox(bool isSelected = true);
+
+private:
+	bool handleMousePressEvent();
+	bool handleMouseReleaseEvent();
 };

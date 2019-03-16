@@ -73,42 +73,62 @@ bool Box::handleInput(sf::Event &event)
 
 	if (event.type == sf::Event::MouseButtonPressed)
 	{
-		if (_engine->input.isSpriteClicked(_closeButton, sf::Mouse::Left, _engine->window))
+		if (handleMousePressEvent())
 		{
-			_remove = true;
-			return true;
-		}
-
-		if (_background.getGlobalBounds().contains(sf::Mouse::getPosition(_engine->window).x, sf::Mouse::getPosition(_engine->window).y))
-		{
-			_moveToTop = true;
-			_mouseButtonHeld = true;
-			_previousMousePos = _engine->input.getMousePosition(_engine->window);
-
-			for (int i = 0; i < _tabs.size(); i++)
-			{
-				if (_tabs[i].getBounds().contains(sf::Mouse::getPosition(_engine->window).x, sf::Mouse::getPosition(_engine->window).y))
-				{
-					_tabs[_openTabIndex].openTab(false);
-					_openTabIndex = i;
-					_tabs[_openTabIndex].openTab(true);
-
-					return true;
-				}
-			}
-
 			return true;
 		}
 	}
 
 	if (event.type == sf::Event::MouseButtonReleased)
 	{
-		if (_mouseButtonHeld)
+		if (handleMouseReleaseEvent())
 		{
-			_mouseButtonHeld = false;
-
 			return true;
 		}
+	}
+
+	return false;
+}
+
+bool Box::handleMousePressEvent()
+{
+	if (_engine->input.isSpriteClicked(_closeButton, sf::Mouse::Left, _engine->window))
+	{
+		_remove = true;
+		return true;
+	}
+
+	if (_background.getGlobalBounds().contains(sf::Mouse::getPosition(_engine->window).x, sf::Mouse::getPosition(_engine->window).y))
+	{
+		_moveToTop = true;
+		_mouseButtonHeld = true;
+		_previousMousePos = _engine->input.getMousePosition(_engine->window);
+
+		for (int i = 0; i < _tabs.size(); i++)
+		{
+			if (_tabs[i].getBounds().contains(sf::Mouse::getPosition(_engine->window).x, sf::Mouse::getPosition(_engine->window).y))
+			{
+				_tabs[_openTabIndex].openTab(false);
+				_openTabIndex = i;
+				_tabs[_openTabIndex].openTab(true);
+
+				return true;
+			}
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
+bool Box::handleMouseReleaseEvent()
+{
+	if (_mouseButtonHeld)
+	{
+		_mouseButtonHeld = false;
+
+		return true;
 	}
 
 	return false;

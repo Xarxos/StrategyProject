@@ -117,6 +117,12 @@
     <ClInclude Include="BoxTab.h">
       <Filter>Game\Misc</Filter>
     </ClInclude>
+    <ClInclude Include="TODO.h">
+      <Filter>Game\Main Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TileDataBox.h">
+      <Filter>Game\Misc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -165,6 +171,9 @@
       <Filter>Game\Misc</Filter>
     </ClCompile>
     <ClCompile Include="BoxTab.cpp">
+      <Filter>Game\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="TileDataBox.cpp">
       <Filter>Game\Misc</Filter>
     </ClCompile>
   </ItemGroup>
