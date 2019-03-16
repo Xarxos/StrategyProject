@@ -5,7 +5,7 @@
 #include "TileDataBox.h"
 
 TileDataBox::TileDataBox(EngineDataRef engineData, DatabaseRef database, int tileIndex, sf::Vector2i tileCoords)
-	: Box(engineData, database),
+	: Box(engineData, database, { "Overview", "Bedrock" }),
 	_tileIndex(tileIndex),
 	_tileCoords(tileCoords)
 {
@@ -14,8 +14,6 @@ TileDataBox::TileDataBox(EngineDataRef engineData, DatabaseRef database, int til
 
 void TileDataBox::init()
 {
-	setTabLabels({ "Overview", "Bedrock" });
-
 	Box::init();
 
 	_engine->assets.loadTexture("Tile Data Box Enter Button", Filepath::TILE_DATA_BOX_ENTER_BUTTON);

@@ -8,6 +8,7 @@
 
 #include <vector>
 #include <map>
+#include <string>
 #include <initializer_list>
 
 class Box : public SubState
@@ -22,14 +23,14 @@ protected:
 	sf::Texture _texture;
 	sf::Sprite _closeButton;
 
-	std::vector<BoxTab> _tabs;
-	int _openTabIndex;
+	std::map<sf::String, BoxTab> _tabs;
+	std::vector<sf::String> _tabLabels;
+	sf::String _openTabKey;
 
 	bool _mouseButtonHeld;
 	sf::Vector2i _previousMousePos;
 
 public:
-	Box(EngineDataRef engineData, DatabaseRef database, int numOfTabs = 1);
 	Box(EngineDataRef engineData, DatabaseRef database, const std::initializer_list<sf::String> &tabLabels);
 
 	virtual void init() override;
@@ -38,7 +39,7 @@ public:
 	virtual void update(float delta) override;
 	virtual void draw() override;
 
-	void setTabLabels(const std::initializer_list<sf::String> &tabLabels);
+	void overwriteTabs(const std::initializer_list<sf::String> &tabLabels);
 
 	void selectBox(bool isSelected = true);
 
