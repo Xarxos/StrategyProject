@@ -21,6 +21,20 @@ void TileDataBox::init()
 	_enterButton.setTexture(_engine->assets.getTexture("Tile Data Box Enter Button"));
 
 	_enterButton.setPosition(_background.getPosition().x + _background.getLocalBounds().width - _enterButton.getLocalBounds().width, _background.getPosition().y + _background.getLocalBounds().height - _enterButton.getLocalBounds().height);
+
+	initTileData();
+}
+
+void TileDataBox::initTileData()
+{
+	sf::Text bedrockMainStoneType;
+	bedrockMainStoneType.setString("Zagite");
+	bedrockMainStoneType.setFont(_engine->assets.getFont("Box Tab Font"));
+	bedrockMainStoneType.setCharacterSize(Graphics::BOX_TEXT_SIZE);
+	bedrockMainStoneType.setFillColor(Colors::BOX_TEXT);
+
+	_tabs.at("Bedrock").addText(bedrockMainStoneType);
+	_tabs.at("Bedrock").setTextLocalPosition(0, 50.f, 50.f);
 }
 
 bool TileDataBox::handleInput(sf::Event &event)

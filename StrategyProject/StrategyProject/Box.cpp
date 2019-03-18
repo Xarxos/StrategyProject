@@ -13,11 +13,7 @@ Box::Box(EngineDataRef engineData, DatabaseRef database, const std::initializer_
 	_openTabKey(""),
 	_tabLabels(tabLabels)
 {
-	for (auto &tabLabel : tabLabels)
-	{
-		_tabs.insert(std::make_pair(tabLabel, BoxTab(_engine, _database)));
-		_tabs.at(tabLabel).setTabLabel(tabLabel);
-	}
+	
 }
 
 void Box::init()
@@ -29,18 +25,39 @@ void Box::init()
 	_background.setTexture(&_engine->assets.getTexture("Box Background"));
 	_closeButton.setTexture(_engine->assets.getTexture("Box Close Button"));
 
+	setupTabs();
+}
+
+void Box::setupTabs()
+{
+	for (auto &tabLabel : _tabLabels)
+	{
+		_tabs.insert(std::make_pair(tabLabel, BoxTab(_engine, _database)));
+		_tabs.at(tabLabel).setTabLabel(tabLabel);
+		_tabs.at(tabLabel).init();
+	}
+
+	updateGraphics();
+}
+
+void Box::updateGraphics()
+{
 	float totalTabWidth(0.f);
 	for (auto &tabLabel : _tabLabels)
 	{
-		_tabs.at(tabLabel).init();
-		_tabs.at(tabLabel).setPosition(_background.getPosition().x + Graphics::BOX_TABS_EDGE_MARGIN + totalTabWidth, _background.getPosition().y + Graphics::BOX_TABS_EDGE_MARGIN);
+		_tabs.at(tabLabel).movePosition(_background.getPosition().x + Graphics::BOX_TABS_EDGE_MARGIN + totalTabWidth, _background.getPosition().y + Graphics::BOX_TABS_EDGE_MARGIN);
 		totalTabWidth += _tabs.at(tabLabel).getBounds().width;
 	}
 
 	_openTabKey = _tabLabels[0];
 	_tabs.at(_openTabKey).openTab(true);
 
-	_background.setSize(sf::Vector2f(totalTabWidth + Graphics::BOX_TABS_EDGE_MARGIN * 2, Graphics::BOX_DEFAULT_HEIGHT));
+	_background.setSize(sf::Vector2f(totalTabWidth + _closeButton.getLocalBounds().width + Graphics::BOX_TABS_EDGE_MARGIN * 2, Graphics::BOX_DEFAULT_HEIGHT));
+
+	for (auto &tabLabel : _tabLabels)
+	{
+		_tabs.at(tabLabel).setContentAreaSize(sf::Vector2f(_background.getLocalBounds().width - Graphics::BOX_TABS_EDGE_MARGIN * 2, _background.getLocalBounds().height - Graphics::BOX_TABS_EDGE_MARGIN * 2 - _tabs.at(tabLabel).getBounds().width));
+	}
 
 	_closeButton.setPosition(_background.getPosition().x + _background.getLocalBounds().width - _closeButton.getLocalBounds().width, _background.getPosition().y);
 }
@@ -132,7 +149,7 @@ void Box::update(float delta)
 
 		for (it = _tabs.begin(); it != _tabs.end(); it++)
 		{
-			it->second.setPosition(it->second.getPosition().x + deltaMousePos.x, it->second.getPosition().y + deltaMousePos.y);
+			it->second.movePosition(deltaMousePos.x, deltaMousePos.y);
 		}
 
 		_previousMousePos = currentMousePos;
@@ -165,26 +182,7 @@ void Box::overwriteTabs(const std::initializer_list<sf::String> &tabLabels)
 	_tabLabels = tabLabels;
 	_tabs.clear();
 
-	for (auto &tabLabel : _tabLabels)
-	{
-		_tabs.insert(std::make_pair(tabLabel, BoxTab(_engine, _database)));
-		_tabs.at(tabLabel).setTabLabel(tabLabel);
-	}
-
-	float totalTabWidth(0.f);
-	for (auto &tabLabel : _tabLabels)
-	{
-		_tabs.at(tabLabel).init();
-		_tabs.at(tabLabel).setPosition(_background.getPosition().x + Graphics::BOX_TABS_EDGE_MARGIN + totalTabWidth, _background.getPosition().y + Graphics::BOX_TABS_EDGE_MARGIN);
-		totalTabWidth += _tabs.at(tabLabel).getBounds().width;
-	}
-
-	_openTabKey = _tabLabels[0];
-	_tabs.at(_openTabKey).openTab(true);
-
-	_background.setSize(sf::Vector2f(totalTabWidth + Graphics::BOX_TABS_EDGE_MARGIN * 2, Graphics::BOX_DEFAULT_HEIGHT));
-
-	_closeButton.setPosition(_background.getPosition().x + _background.getLocalBounds().width - _closeButton.getLocalBounds().width, _background.getPosition().y);
+	setupTabs();
 }
 
 void Box::selectBox(bool isSelected)

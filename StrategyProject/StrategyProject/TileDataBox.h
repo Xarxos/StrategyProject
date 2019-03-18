@@ -30,4 +30,7 @@ public:
 	virtual void draw() override;
 
 	sf::Vector2i getTileCoords() { return _tileCoords; }
+
+private:
+	void initTileData();
 };

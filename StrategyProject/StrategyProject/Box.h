@@ -44,6 +44,8 @@ public:
 	void selectBox(bool isSelected = true);
 
 private:
+	void setupTabs();
+	void updateGraphics();
 	bool handleMousePressEvent();
 	bool handleMouseReleaseEvent();
 };

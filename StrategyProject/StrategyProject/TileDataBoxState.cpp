@@ -95,7 +95,7 @@ void TileDataBoxState::update(float delta)
 
 		/*for (std::map<Terrain, sf::Text>::iterator it = _dataText.begin(); it != _dataText.end(); it++)
 		{
-			it->second.setPosition(it->second.getPosition().x + deltaMousePos.x, it->second.getPosition().y + deltaMousePos.y);
+			it->second.movePosition(it->second.getPosition().x + deltaMousePos.x, it->second.getPosition().y + deltaMousePos.y);
 		}*/
 
 		_previousMousePos = currentMousePos;

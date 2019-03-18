@@ -3,6 +3,8 @@
 #include "BoxTab.h"
 #include "Defines.h"
 
+#include <string>
+
 BoxTab::BoxTab(EngineDataRef engineData, DatabaseRef database)
 	: _engine(engineData),
 	_database(database)
@@ -35,15 +37,27 @@ void BoxTab::initTabShape()
 	_tabShape.setSize(sf::Vector2f(_tabLabel.getLocalBounds().width + _tabShape.getOutlineThickness() * 4, _tabLabel.getLocalBounds().height + _tabShape.getOutlineThickness() * 4));
 }
 
-void BoxTab::setPosition(float x, float y)
+void BoxTab::movePosition(float deltaX, float deltaY)
 {
-	_tabShape.setPosition(x, y);
-	_tabLabel.setPosition(x + _tabShape.getOutlineThickness() * 2, y + _tabShape.getOutlineThickness() * 2);
+	_tabShape.setPosition(_tabShape.getPosition().x + deltaX, _tabShape.getPosition().y + deltaY);
+	_tabLabel.setPosition(_tabLabel.getPosition().x + deltaX, _tabLabel.getPosition().y + deltaY);
+	_contentArea.setPosition(_contentArea.getPosition().x + deltaX, _contentArea.getPosition().y + deltaY);
+
+	for (int i = 0; i < _texts.size(); i++)
+	{
+		_texts[i].setPosition(_texts[i].getPosition().x + deltaX, _texts[i].getPosition().y + deltaY);
+	}
+	
 }
 
 void BoxTab::setTabLabel(const sf::String &tabLabel)
 {
 	_tabLabel.setString(tabLabel);
+}
+
+void BoxTab::addText(const sf::Text &text, const std::string &fontKey, const sf::Color &textColor, unsigned int textSize)
+{
+	_texts.push_back(text);
 }
 
 void BoxTab::openTab(bool open)
@@ -66,5 +80,8 @@ void BoxTab::drawTab()
 
 void BoxTab::drawContents()
 {
-
+	for (auto &text : _texts)
+	{
+		_engine->window.draw(text);
+	}
 }
