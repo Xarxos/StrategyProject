@@ -34,7 +34,7 @@ void TileDataBox::initTileData()
 	bedrockMainStoneType.setFillColor(Colors::BOX_TEXT);
 
 	_tabs.at("Bedrock").addText(bedrockMainStoneType);
-	_tabs.at("Bedrock").setTextLocalPosition(0, 50.f, 50.f);
+	_tabs.at("Bedrock").setTextPosition(0, _contentArea.left + 50.f, _contentArea.top + 50.f);
 }
 
 bool TileDataBox::handleInput(sf::Event &event)

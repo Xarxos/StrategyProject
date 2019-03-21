@@ -33,7 +33,7 @@ public:
 	void movePosition(float deltaX, float deltaY);
 	void setContentAreaSize(const sf::Vector2f &size) { _contentArea.setSize(size); }
 	void setContentAreaPosition(float x, float y) { _contentArea.setPosition(x, y); }
-	void setTextLocalPosition(int textIndex, float x, float y) { _texts[textIndex].setPosition(_contentArea.getPosition().x + x, _contentArea.getPosition().y + y); }
+	void setTextPosition(int textIndex, float x, float y) { _texts[textIndex].setPosition(x, y); }
 
 	sf::Vector2f getPosition() const { return _tabShape.getPosition(); }
 	sf::FloatRect getBounds() const { return _tabShape.getGlobalBounds(); }

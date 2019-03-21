@@ -21,6 +21,7 @@ protected:
 
 	sf::RectangleShape _background;
 	sf::Texture _texture;
+	sf::FloatRect _contentArea;
 	sf::Sprite _closeButton;
 
 	std::map<sf::String, BoxTab> _tabs;
