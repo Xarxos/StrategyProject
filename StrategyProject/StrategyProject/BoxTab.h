@@ -17,6 +17,8 @@ private:
 	sf::RectangleShape _tabShape;
 	sf::RectangleShape _contentArea;
 	sf::Text _tabLabel;
+	sf::RectangleShape _scrollBar;
+	sf::RectangleShape _scrollHandle;
 
 	std::vector<sf::Text> _texts;
 	std::vector<sf::Sprite> _sprites;
@@ -26,8 +28,11 @@ public:
 
 	void init();
 
+	void setTabPosition(float x, float y);
+
 	void movePosition(float deltaX, float deltaY);
 	void setContentAreaSize(const sf::Vector2f &size) { _contentArea.setSize(size); }
+	void setContentAreaPosition(float x, float y) { _contentArea.setPosition(x, y); }
 	void setTextLocalPosition(int textIndex, float x, float y) { _texts[textIndex].setPosition(_contentArea.getPosition().x + x, _contentArea.getPosition().y + y); }
 
 	sf::Vector2f getPosition() const { return _tabShape.getPosition(); }

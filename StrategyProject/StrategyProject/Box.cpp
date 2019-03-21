@@ -45,7 +45,7 @@ void Box::updateGraphics()
 	float totalTabWidth(0.f);
 	for (auto &tabLabel : _tabLabels)
 	{
-		_tabs.at(tabLabel).movePosition(_background.getPosition().x + Graphics::BOX_TABS_EDGE_MARGIN + totalTabWidth, _background.getPosition().y + Graphics::BOX_TABS_EDGE_MARGIN);
+		_tabs.at(tabLabel).setTabPosition(_background.getPosition().x + Graphics::BOX_TABS_EDGE_MARGIN + totalTabWidth, _background.getPosition().y + Graphics::BOX_TABS_EDGE_MARGIN);
 		totalTabWidth += _tabs.at(tabLabel).getBounds().width;
 	}
 
@@ -56,7 +56,8 @@ void Box::updateGraphics()
 
 	for (auto &tabLabel : _tabLabels)
 	{
-		_tabs.at(tabLabel).setContentAreaSize(sf::Vector2f(_background.getLocalBounds().width - Graphics::BOX_TABS_EDGE_MARGIN * 2, _background.getLocalBounds().height - Graphics::BOX_TABS_EDGE_MARGIN * 2 - _tabs.at(tabLabel).getBounds().width));
+		_tabs.at(tabLabel).setContentAreaSize(sf::Vector2f(_background.getLocalBounds().width - Graphics::BOX_TABS_EDGE_MARGIN * 2, _background.getLocalBounds().height - Graphics::BOX_TABS_EDGE_MARGIN * 2 - _tabs.at(tabLabel).getBounds().height));
+		_tabs.at(tabLabel).setContentAreaPosition(_background.getPosition().x + Graphics::BOX_TABS_EDGE_MARGIN, _background.getPosition().y + Graphics::BOX_TABS_EDGE_MARGIN + _tabs.at(tabLabel).getBounds().height);
 	}
 
 	_closeButton.setPosition(_background.getPosition().x + _background.getLocalBounds().width - _closeButton.getLocalBounds().width, _background.getPosition().y);

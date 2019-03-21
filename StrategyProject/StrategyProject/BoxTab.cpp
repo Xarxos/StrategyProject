@@ -14,6 +14,9 @@ BoxTab::BoxTab(EngineDataRef engineData, DatabaseRef database)
 
 void BoxTab::init()
 {
+	_contentArea.setOutlineThickness(Graphics::BOX_TAB_OUTLINE_THICKNESS);
+	_contentArea.setOutlineColor(sf::Color::Black);
+
 	initTabLabel();
 
 	initTabShape();
@@ -37,6 +40,12 @@ void BoxTab::initTabShape()
 	_tabShape.setSize(sf::Vector2f(_tabLabel.getLocalBounds().width + _tabShape.getOutlineThickness() * 4, _tabLabel.getLocalBounds().height + _tabShape.getOutlineThickness() * 4));
 }
 
+void BoxTab::setTabPosition(float x, float y)
+{
+	_tabShape.setPosition(x, y);
+	_tabLabel.setPosition(x + _tabShape.getOutlineThickness() * 2, y + _tabShape.getOutlineThickness() * 2);
+}
+
 void BoxTab::movePosition(float deltaX, float deltaY)
 {
 	_tabShape.setPosition(_tabShape.getPosition().x + deltaX, _tabShape.getPosition().y + deltaY);
@@ -47,7 +56,6 @@ void BoxTab::movePosition(float deltaX, float deltaY)
 	{
 		_texts[i].setPosition(_texts[i].getPosition().x + deltaX, _texts[i].getPosition().y + deltaY);
 	}
-	
 }
 
 void BoxTab::setTabLabel(const sf::String &tabLabel)
@@ -76,6 +84,7 @@ void BoxTab::drawTab()
 {
 	_engine->window.draw(_tabShape);
 	_engine->window.draw(_tabLabel);
+	_engine->window.draw(_contentArea);
 }
 
 void BoxTab::drawContents()
