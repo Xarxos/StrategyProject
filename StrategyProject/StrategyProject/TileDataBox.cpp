@@ -59,7 +59,7 @@ void TileDataBox::update(float delta)
 		sf::Vector2i currentMousePos = _engine->input.getMousePosition(_engine->window);
 		sf::Vector2i deltaMousePos = currentMousePos - _previousMousePos;
 
-		_enterButton.setPosition(_enterButton.getPosition().x + deltaMousePos.x, _enterButton.getPosition().y + deltaMousePos.y);
+		_enterButton.move(deltaMousePos.x, deltaMousePos.y);
 	}
 
 	Box::update(delta);

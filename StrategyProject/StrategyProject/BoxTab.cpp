@@ -48,13 +48,9 @@ void BoxTab::setTabPosition(float x, float y)
 
 void BoxTab::movePosition(float deltaX, float deltaY)
 {
-	_tabShape.setPosition(_tabShape.getPosition().x + deltaX, _tabShape.getPosition().y + deltaY);
-	_tabLabel.setPosition(_tabLabel.getPosition().x + deltaX, _tabLabel.getPosition().y + deltaY);
+	_tabShape.move(deltaX, deltaY);
+	_tabLabel.move(deltaX, deltaY);
 
-	/*for (int i = 0; i < _texts.size(); i++)
-	{
-		_texts[i].setPosition(_texts[i].getPosition().x + deltaX, _texts[i].getPosition().y + deltaY);
-	}*/
 }
 
 void BoxTab::setTabLabel(const sf::String &tabLabel)

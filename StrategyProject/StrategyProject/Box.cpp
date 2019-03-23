@@ -194,14 +194,14 @@ void Box::update(float delta)
 		sf::Vector2i currentMousePos = _engine->input.getMousePosition(_engine->window);
 		sf::Vector2i deltaMousePos = currentMousePos - _previousMousePos;
 
-		_background.setPosition(_background.getPosition().x + deltaMousePos.x, _background.getPosition().y + deltaMousePos.y);
-		_closeButton.setPosition(_closeButton.getPosition().x + deltaMousePos.x, _closeButton.getPosition().y + deltaMousePos.y);
+		_background.move(deltaMousePos.x, deltaMousePos.y);
+		_closeButton.move(deltaMousePos.x, deltaMousePos.y);
 
 		_contentArea.left += deltaMousePos.x;
 		_contentArea.top += deltaMousePos.y;
 
-		_scrollBar.setPosition(_scrollBar.getPosition().x + deltaMousePos.x, _scrollBar.getPosition().y + deltaMousePos.y);
-		_scrollHandle.setPosition(_scrollHandle.getPosition().x + deltaMousePos.x, _scrollHandle.getPosition().y + deltaMousePos.y);
+		_scrollBar.move(deltaMousePos.x, deltaMousePos.y);
+		_scrollHandle.move(deltaMousePos.x, deltaMousePos.y);
 
 		_tabContentView.setViewport(sf::FloatRect(_contentArea.left / Define::SCREEN_WIDTH, _contentArea.top / Define::SCREEN_HEIGHT, _contentArea.width / Define::SCREEN_WIDTH, _contentArea.height / Define::SCREEN_HEIGHT));
 
