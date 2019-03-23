@@ -73,7 +73,7 @@ void Box::updateGraphics()
 	_scrollHandle.setOutlineColor(sf::Color::Black);
 	_scrollHandle.setFillColor(Colors::BOX_SCROLL_HANDLE);
 
-	_tabContentView.setCenter(_contentArea.width / 2, _contentArea.height / 2);
+	_tabContentView.setCenter(_contentArea.width / 2, _tabs.at(_openTabKey).getContentTopBounds() + _contentArea.height / 2);
 	_tabContentView.setSize(_contentArea.width, _contentArea.height);
 	_tabContentView.setViewport(sf::FloatRect(_contentArea.left / Define::SCREEN_WIDTH, _contentArea.top / Define::SCREEN_HEIGHT, _contentArea.width / Define::SCREEN_WIDTH, _contentArea.height / Define::SCREEN_HEIGHT));
 
@@ -187,6 +187,11 @@ void Box::update(float delta)
 		}
 
 		_previousMousePos = currentMousePos;
+
+		float relativeScrollPosition = (_scrollHandle.getPosition().y - _scrollBar.getPosition().y) / _scrollBar.getSize().y;
+		float contentBoundsHeight = _tabs.at(_openTabKey).getContentBottomBounds() - _tabs.at(_openTabKey).getContentTopBounds();
+
+		_tabContentView.setCenter(_tabContentView.getCenter().x, _tabs.at(_openTabKey).getContentTopBounds() + relativeScrollPosition * contentBoundsHeight);
 	}
 
 	if (_boxPressed)

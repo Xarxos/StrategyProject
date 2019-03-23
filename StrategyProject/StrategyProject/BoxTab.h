@@ -15,7 +15,8 @@ private:
 	DatabaseRef _database;
 
 	sf::RectangleShape _tabShape;
-	sf::RectangleShape _contentArea;
+	float _contentTopBounds;
+	float _contentBottomBounds;
 	sf::Text _tabLabel;
 
 	std::vector<sf::Text> _texts;
@@ -29,12 +30,12 @@ public:
 	void setTabPosition(float x, float y);
 
 	void movePosition(float deltaX, float deltaY);
-	void setContentAreaSize(const sf::Vector2f &size) { _contentArea.setSize(size); }
-	void setContentAreaPosition(float x, float y) { _contentArea.setPosition(x, y); }
-	void setTextPosition(int textIndex, float x, float y) { _texts[textIndex].setPosition(x, y); }
+	void setTextRelativePosition(int textIndex, float x, float y);
 
 	sf::Vector2f getPosition() const { return _tabShape.getPosition(); }
 	sf::FloatRect getBounds() const { return _tabShape.getGlobalBounds(); }
+	float getContentTopBounds() const { return _contentTopBounds; }
+	float getContentBottomBounds() const { return _contentBottomBounds; }
 
 	void setTabLabel(const sf::String &tabLabel);
 	
@@ -50,4 +51,6 @@ public:
 private:
 	void initTabLabel();
 	void initTabShape();
+
+	void updateContentTotalBounds();
 };

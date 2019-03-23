@@ -14,12 +14,12 @@ BoxTab::BoxTab(EngineDataRef engineData, DatabaseRef database)
 
 void BoxTab::init()
 {
-	_contentArea.setOutlineThickness(Graphics::BOX_TAB_OUTLINE_THICKNESS);
-	_contentArea.setOutlineColor(sf::Color::Black);
-
 	initTabLabel();
 
 	initTabShape();
+
+	_contentTopBounds = 0.f;
+	_contentBottomBounds = Graphics::BOX_DEFAULT_HEIGHT - Graphics::BOX_TABS_EDGE_MARGIN * 2 - _tabShape.getLocalBounds().height;
 }
 
 void BoxTab::initTabLabel()
@@ -63,6 +63,13 @@ void BoxTab::addText(const sf::Text &text, const std::string &fontKey, const sf:
 	_texts.push_back(text);
 }
 
+void BoxTab::setTextRelativePosition(int textIndex, float x, float y)
+{
+	_texts[textIndex].setPosition(x, y);
+
+	updateContentTotalBounds();
+}
+
 void BoxTab::openTab(bool open)
 { 
 	if (open)
@@ -79,7 +86,6 @@ void BoxTab::drawTab()
 {
 	_engine->window.draw(_tabShape);
 	_engine->window.draw(_tabLabel);
-	_engine->window.draw(_contentArea);
 }
 
 void BoxTab::drawContents()
@@ -87,5 +93,34 @@ void BoxTab::drawContents()
 	for (auto &text : _texts)
 	{
 		_engine->window.draw(text);
+	}
+}
+
+void BoxTab::updateContentTotalBounds()
+{
+	for (auto &text : _texts)
+	{
+		if (text.getGlobalBounds().top < _contentTopBounds)
+		{
+			_contentTopBounds = text.getGlobalBounds().top;
+		}
+
+		if (text.getGlobalBounds().top + text.getGlobalBounds().height > _contentBottomBounds)
+		{
+			_contentBottomBounds = text.getGlobalBounds().top + text.getGlobalBounds().height;
+		}
+	}
+
+	for (auto &sprite : _sprites)
+	{
+		if (sprite.getGlobalBounds().top < _contentTopBounds)
+		{
+			_contentTopBounds = sprite.getGlobalBounds().top;
+		}
+
+		if (sprite.getGlobalBounds().top + sprite.getGlobalBounds().height > _contentBottomBounds)
+		{
+			_contentBottomBounds = sprite.getGlobalBounds().top + sprite.getGlobalBounds().height;
+		}
 	}
 }

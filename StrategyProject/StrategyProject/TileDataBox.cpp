@@ -34,7 +34,16 @@ void TileDataBox::initTileData()
 	bedrockMainStoneType.setFillColor(Colors::BOX_TEXT);
 
 	_tabs.at("Bedrock").addText(bedrockMainStoneType);
-	_tabs.at("Bedrock").setTextPosition(0, 50.f, 50.f);
+	_tabs.at("Bedrock").setTextRelativePosition(0, 50.f, 50.f);
+
+	sf::Text testText1;
+	testText1.setString("Baby Doll");
+	testText1.setFont(_engine->assets.getFont("Box Tab Font"));
+	testText1.setCharacterSize(Graphics::BOX_TEXT_SIZE);
+	testText1.setFillColor(Colors::BOX_TEXT);
+
+	_tabs.at("Bedrock").addText(testText1);
+	_tabs.at("Bedrock").setTextRelativePosition(1, 50.f, 250.f);
 }
 
 bool TileDataBox::handleInput(sf::Event &event)
