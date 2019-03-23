@@ -18,10 +18,13 @@ protected:
 	DatabaseRef _database;
 
 	sf::View _view;
+	sf::View _tabContentView;
 
 	sf::RectangleShape _background;
 	sf::Texture _texture;
 	sf::FloatRect _contentArea;
+	sf::RectangleShape _scrollBar;
+	sf::RectangleShape _scrollHandle;
 	sf::Sprite _closeButton;
 
 	std::map<sf::String, BoxTab> _tabs;

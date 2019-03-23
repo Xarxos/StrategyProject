@@ -4,6 +4,6 @@
 TODO
 ----
 
-- Implement Tile Data Box as a derivation of Box probably.
-- Implement functionality for defining and displaying BoxTab contents, also make an implementation for that for Tile Data Box.
+- Add scrollbar as a member of Box-class.
+- Make scrolling functionality for the tab content area view.
 */

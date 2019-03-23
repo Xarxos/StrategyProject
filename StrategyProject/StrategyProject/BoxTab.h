@@ -17,8 +17,6 @@ private:
 	sf::RectangleShape _tabShape;
 	sf::RectangleShape _contentArea;
 	sf::Text _tabLabel;
-	sf::RectangleShape _scrollBar;
-	sf::RectangleShape _scrollHandle;
 
 	std::vector<sf::Text> _texts;
 	std::vector<sf::Sprite> _sprites;

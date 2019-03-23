@@ -61,6 +61,10 @@ void Box::updateGraphics()
 	_contentArea.left = _background.getPosition().x + Graphics::BOX_TABS_EDGE_MARGIN;
 	_contentArea.top = _background.getPosition().y + Graphics::BOX_TABS_EDGE_MARGIN + tabHeight;
 
+	_tabContentView.setCenter(_contentArea.width / 2, _contentArea.height / 2);
+	_tabContentView.setSize(_contentArea.width, _contentArea.height);
+	_tabContentView.setViewport(sf::FloatRect(_contentArea.left / Define::SCREEN_WIDTH, _contentArea.top / Define::SCREEN_HEIGHT, _contentArea.width / Define::SCREEN_WIDTH, _contentArea.height / Define::SCREEN_HEIGHT));
+
 	_closeButton.setPosition(_background.getPosition().x + _background.getLocalBounds().width - _closeButton.getLocalBounds().width, _background.getPosition().y);
 }
 
@@ -147,6 +151,11 @@ void Box::update(float delta)
 		_background.setPosition(_background.getPosition().x + deltaMousePos.x, _background.getPosition().y + deltaMousePos.y);
 		_closeButton.setPosition(_closeButton.getPosition().x + deltaMousePos.x, _closeButton.getPosition().y + deltaMousePos.y);
 
+		_contentArea.left += deltaMousePos.x;
+		_contentArea.top += deltaMousePos.y;
+
+		_tabContentView.setViewport(sf::FloatRect(_contentArea.left / Define::SCREEN_WIDTH, _contentArea.top / Define::SCREEN_HEIGHT, _contentArea.width / Define::SCREEN_WIDTH, _contentArea.height / Define::SCREEN_HEIGHT));
+
 		std::map<sf::String, BoxTab>::iterator it;
 
 		for (it = _tabs.begin(); it != _tabs.end(); it++)
@@ -174,8 +183,10 @@ void Box::draw()
 		tab.second.drawTab();
 	}
 
+	_engine->window.setView(_tabContentView);
 	_tabs.at(_openTabKey).drawContents();
 
+	_engine->window.setView(_view);
 	_engine->window.draw(_closeButton);
 }
 
