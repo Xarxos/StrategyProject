@@ -54,7 +54,7 @@ bool TileDataBox::handleInput(sf::Event &event)
 }
 void TileDataBox::update(float delta)
 {
-	if (_mouseButtonHeld)
+	if (_boxPressed)
 	{
 		sf::Vector2i currentMousePos = _engine->input.getMousePosition(_engine->window);
 		sf::Vector2i deltaMousePos = currentMousePos - _previousMousePos;

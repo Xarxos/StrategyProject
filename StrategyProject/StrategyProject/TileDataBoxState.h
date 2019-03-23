@@ -25,7 +25,7 @@ private:
 
 	sf::View _view;
 
-	bool _mouseButtonHeld;
+	bool _boxPressed;
 	sf::Vector2i _previousMousePos;
 
 public:

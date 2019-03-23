@@ -13,7 +13,7 @@ TileDataBoxState::TileDataBoxState(EngineDataRef engineData, DatabaseRef databas
 	_tileIndex(tileIndex),
 	_tileCoords(tileCoords),
 	_view(sf::Vector2f(Define::WORLD_VIEW_WIDTH / 2, Define::WORLD_VIEW_HEIGHT / 2), sf::Vector2f(Define::WORLD_VIEW_WIDTH, Define::WORLD_VIEW_HEIGHT)),
-	_mouseButtonHeld(false)
+	_boxPressed(false)
 {
 
 }
@@ -62,7 +62,7 @@ bool TileDataBoxState::handleInput(sf::Event &event)
 		if (_engine->input.isSpriteClicked(_background, sf::Mouse::Left, _engine->window))
 		{
 			_moveToTop = true;
-			_mouseButtonHeld = true;
+			_boxPressed = true;
 			_previousMousePos = _engine->input.getMousePosition(_engine->window);
 
 			return true;
@@ -71,9 +71,9 @@ bool TileDataBoxState::handleInput(sf::Event &event)
 
 	if (event.type == sf::Event::MouseButtonReleased)
 	{
-		if (_mouseButtonHeld)
+		if (_boxPressed)
 		{
-			_mouseButtonHeld = false;
+			_boxPressed = false;
 
 			return true;
 		}
@@ -84,7 +84,7 @@ bool TileDataBoxState::handleInput(sf::Event &event)
 
 void TileDataBoxState::update(float delta)
 {
-	if (_mouseButtonHeld)
+	if (_boxPressed)
 	{
 		sf::Vector2i currentMousePos = _engine->input.getMousePosition(_engine->window);
 		sf::Vector2i deltaMousePos = currentMousePos - _previousMousePos;

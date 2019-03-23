@@ -9,7 +9,7 @@ Box::Box(EngineDataRef engineData, DatabaseRef database, const std::initializer_
 	: _engine(engineData),
 	_database(database),
 	_view(sf::Vector2f(Define::WORLD_VIEW_WIDTH / 2, Define::WORLD_VIEW_HEIGHT / 2), sf::Vector2f(Define::WORLD_VIEW_WIDTH, Define::WORLD_VIEW_HEIGHT)),
-	_mouseButtonHeld(false),
+	_boxPressed(false),
 	_openTabKey(""),
 	_tabLabels(tabLabels)
 {
@@ -115,10 +115,18 @@ bool Box::handleMousePressEvent()
 		return true;
 	}
 
+	if (_scrollHandle.getGlobalBounds().contains(sf::Mouse::getPosition(_engine->window).x, sf::Mouse::getPosition(_engine->window).y))
+	{
+		_scrollHandlePressed = true;
+		_previousMousePos = _engine->input.getMousePosition(_engine->window);
+
+		return true;
+	}
+
 	if (_background.getGlobalBounds().contains(sf::Mouse::getPosition(_engine->window).x, sf::Mouse::getPosition(_engine->window).y))
 	{
 		_moveToTop = true;
-		_mouseButtonHeld = true;
+		_boxPressed = true;
 		_previousMousePos = _engine->input.getMousePosition(_engine->window);
 
 		std::map<sf::String, BoxTab>::iterator it;
@@ -143,9 +151,16 @@ bool Box::handleMousePressEvent()
 
 bool Box::handleMouseReleaseEvent()
 {
-	if (_mouseButtonHeld)
+	if (_scrollHandlePressed)
 	{
-		_mouseButtonHeld = false;
+		_scrollHandlePressed = false;
+
+		return true;
+	}
+
+	if (_boxPressed)
+	{
+		_boxPressed = false;
 
 		return true;
 	}
@@ -155,7 +170,26 @@ bool Box::handleMouseReleaseEvent()
 
 void Box::update(float delta)
 {
-	if (_mouseButtonHeld)
+	if (_scrollHandlePressed)
+	{
+		sf::Vector2i currentMousePos = _engine->input.getMousePosition(_engine->window);
+		sf::Vector2i deltaMousePos = currentMousePos - _previousMousePos;
+
+		_scrollHandle.move(0, deltaMousePos.y);
+
+		if (_scrollHandle.getPosition().y < _scrollBar.getPosition().y)
+		{
+			_scrollHandle.setPosition(_scrollHandle.getPosition().x, _scrollBar.getPosition().y);
+		}
+		else if (_scrollHandle.getPosition().y + _scrollHandle.getSize().y > _scrollBar.getPosition().y + _scrollBar.getSize().y)
+		{
+			_scrollHandle.setPosition(_scrollHandle.getPosition().x, _scrollBar.getPosition().y + _scrollBar.getSize().y - _scrollHandle.getSize().y);
+		}
+
+		_previousMousePos = currentMousePos;
+	}
+
+	if (_boxPressed)
 	{
 		sf::Vector2i currentMousePos = _engine->input.getMousePosition(_engine->window);
 		sf::Vector2i deltaMousePos = currentMousePos - _previousMousePos;

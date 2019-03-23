@@ -31,7 +31,8 @@ protected:
 	std::vector<sf::String> _tabLabels;
 	sf::String _openTabKey;
 
-	bool _mouseButtonHeld;
+	bool _boxPressed;
+	bool _scrollHandlePressed;
 	sf::Vector2i _previousMousePos;
 
 public:
