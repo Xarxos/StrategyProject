@@ -61,6 +61,18 @@ void Box::updateGraphics()
 	_contentArea.left = _background.getPosition().x + Graphics::BOX_TABS_EDGE_MARGIN;
 	_contentArea.top = _background.getPosition().y + Graphics::BOX_TABS_EDGE_MARGIN + tabHeight;
 
+	_scrollBar.setSize(sf::Vector2f(Graphics::BOX_SCROLL_BAR_WIDTH, _contentArea.height));
+	_scrollBar.setPosition(_contentArea.left + _contentArea.width - Graphics::BOX_SCROLL_BAR_WIDTH, _contentArea.top);
+	_scrollBar.setOutlineThickness(Graphics::BOX_SCROLL_BAR_OUTLINE_THICKNESS);
+	_scrollBar.setOutlineColor(sf::Color::Black);
+	_scrollBar.setFillColor(Colors::BOX_SCROLL_BAR);
+
+	_scrollHandle.setSize(sf::Vector2f(Graphics::BOX_SCROLL_BAR_WIDTH * 1.5, Graphics::BOX_SCROLL_BAR_WIDTH / 2));
+	_scrollHandle.setPosition(_scrollBar.getPosition().x - Graphics::BOX_SCROLL_BAR_WIDTH * 0.25, _scrollBar.getPosition().y);
+	_scrollHandle.setOutlineThickness(Graphics::BOX_SCROLL_BAR_OUTLINE_THICKNESS);
+	_scrollHandle.setOutlineColor(sf::Color::Black);
+	_scrollHandle.setFillColor(Colors::BOX_SCROLL_HANDLE);
+
 	_tabContentView.setCenter(_contentArea.width / 2, _contentArea.height / 2);
 	_tabContentView.setSize(_contentArea.width, _contentArea.height);
 	_tabContentView.setViewport(sf::FloatRect(_contentArea.left / Define::SCREEN_WIDTH, _contentArea.top / Define::SCREEN_HEIGHT, _contentArea.width / Define::SCREEN_WIDTH, _contentArea.height / Define::SCREEN_HEIGHT));
@@ -154,6 +166,9 @@ void Box::update(float delta)
 		_contentArea.left += deltaMousePos.x;
 		_contentArea.top += deltaMousePos.y;
 
+		_scrollBar.setPosition(_scrollBar.getPosition().x + deltaMousePos.x, _scrollBar.getPosition().y + deltaMousePos.y);
+		_scrollHandle.setPosition(_scrollHandle.getPosition().x + deltaMousePos.x, _scrollHandle.getPosition().y + deltaMousePos.y);
+
 		_tabContentView.setViewport(sf::FloatRect(_contentArea.left / Define::SCREEN_WIDTH, _contentArea.top / Define::SCREEN_HEIGHT, _contentArea.width / Define::SCREEN_WIDTH, _contentArea.height / Define::SCREEN_HEIGHT));
 
 		std::map<sf::String, BoxTab>::iterator it;
@@ -187,6 +202,9 @@ void Box::draw()
 	_tabs.at(_openTabKey).drawContents();
 
 	_engine->window.setView(_view);
+
+	_engine->window.draw(_scrollBar);
+	_engine->window.draw(_scrollHandle);
 	_engine->window.draw(_closeButton);
 }
 

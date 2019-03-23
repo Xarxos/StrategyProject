@@ -94,6 +94,8 @@ namespace Graphics
 	const float BOX_TAB_OUTLINE_THICKNESS(2.f);
 	const float BOX_TABS_EDGE_MARGIN(10.f);
 	const float BOX_DEFAULT_HEIGHT(200.f);
+	const float BOX_SCROLL_BAR_WIDTH(20.f);
+	const float BOX_SCROLL_BAR_OUTLINE_THICKNESS(2.f);
 }
 
 namespace Colors
@@ -111,6 +113,8 @@ namespace Colors
 	const sf::Color BOX_TAB_CLOSED(255, 255, 255, 0);
 	const sf::Color BOX_TAB_OUTLINE(sf::Color::Black);
 	const sf::Color BOX_TEXT(sf::Color::Black);
+	const sf::Color BOX_SCROLL_BAR(125, 125, 125);
+	const sf::Color BOX_SCROLL_HANDLE(95, 95, 95);
 }
 
 namespace Controls
