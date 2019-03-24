@@ -44,6 +44,24 @@ void TileDataBox::initTileData()
 
 	_tabs.at("Bedrock").addText(testText1);
 	_tabs.at("Bedrock").setTextRelativePosition(1, 50.f, 250.f);
+
+	sf::Text testText2;
+	testText1.setString("Baby Doller");
+	testText1.setFont(_engine->assets.getFont("Box Tab Font"));
+	testText1.setCharacterSize(Graphics::BOX_TEXT_SIZE);
+	testText1.setFillColor(Colors::BOX_TEXT);
+
+	_tabs.at("Overview").addText(testText1);
+	_tabs.at("Overview").setTextRelativePosition(0, 5.f, 10.f);
+
+	sf::Text testText3;
+	testText1.setString("Mainstay");
+	testText1.setFont(_engine->assets.getFont("Box Tab Font"));
+	testText1.setCharacterSize(Graphics::BOX_TEXT_SIZE);
+	testText1.setFillColor(Colors::BOX_TEXT);
+
+	_tabs.at("Overview").addText(testText1);
+	_tabs.at("Overview").setTextRelativePosition(1, 25.f, 35.f);
 }
 
 bool TileDataBox::handleInput(sf::Event &event)

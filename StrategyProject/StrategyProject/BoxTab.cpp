@@ -4,6 +4,7 @@
 #include "Defines.h"
 
 #include <string>
+#include <iostream>
 
 BoxTab::BoxTab(EngineDataRef engineData, DatabaseRef database)
 	: _engine(engineData),
@@ -19,7 +20,7 @@ void BoxTab::init()
 	initTabShape();
 
 	_contentTopBounds = 0.f;
-	_contentBottomBounds = Graphics::BOX_DEFAULT_HEIGHT - Graphics::BOX_TABS_EDGE_MARGIN * 2 - _tabShape.getLocalBounds().height;
+	_contentBottomBounds = Graphics::BOX_DEFAULT_HEIGHT - Graphics::BOX_TABS_EDGE_MARGIN * 2 - _tabShape.getSize().y;
 }
 
 void BoxTab::initTabLabel()

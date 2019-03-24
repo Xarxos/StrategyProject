@@ -139,6 +139,11 @@ bool Box::handleMousePressEvent()
 				_openTabKey = it->first;
 				_tabs.at(_openTabKey).openTab(true);
 
+				float relativeScrollPosition = (_scrollHandle.getPosition().y - _scrollBar.getPosition().y) / _scrollBar.getSize().y;
+				float contentViewBoundsHeight = _tabs.at(_openTabKey).getContentBottomBounds() - _tabs.at(_openTabKey).getContentTopBounds() - _contentArea.height / 2;
+
+				_tabContentView.setCenter(_tabContentView.getCenter().x, _tabs.at(_openTabKey).getContentTopBounds() + _contentArea.height / 2 + relativeScrollPosition * contentViewBoundsHeight);
+
 				return true;
 			}
 		}
@@ -189,9 +194,9 @@ void Box::update(float delta)
 		_previousMousePos = currentMousePos;
 
 		float relativeScrollPosition = (_scrollHandle.getPosition().y - _scrollBar.getPosition().y) / _scrollBar.getSize().y;
-		float contentBoundsHeight = _tabs.at(_openTabKey).getContentBottomBounds() - _tabs.at(_openTabKey).getContentTopBounds();
+		float contentViewBoundsHeight = _tabs.at(_openTabKey).getContentBottomBounds() - _tabs.at(_openTabKey).getContentTopBounds() - _contentArea.height;
 
-		_tabContentView.setCenter(_tabContentView.getCenter().x, _tabs.at(_openTabKey).getContentTopBounds() + relativeScrollPosition * contentBoundsHeight);
+		_tabContentView.setCenter(_tabContentView.getCenter().x, _tabs.at(_openTabKey).getContentTopBounds() + _contentArea.height / 2 + relativeScrollPosition * contentViewBoundsHeight);
 	}
 
 	if (_boxPressed)
