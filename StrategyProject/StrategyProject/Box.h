@@ -51,6 +51,10 @@ public:
 private:
 	void setupTabs();
 	void updateGraphics();
+
 	bool handleMousePressEvent();
 	bool handleMouseReleaseEvent();
+
+	void updateScrollBar();
+	void updateContentView();
 };

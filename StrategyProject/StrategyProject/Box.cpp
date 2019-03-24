@@ -139,10 +139,7 @@ bool Box::handleMousePressEvent()
 				_openTabKey = it->first;
 				_tabs.at(_openTabKey).openTab(true);
 
-				float relativeScrollPosition = (_scrollHandle.getPosition().y - _scrollBar.getPosition().y) / _scrollBar.getSize().y;
-				float contentViewBoundsHeight = _tabs.at(_openTabKey).getContentBottomBounds() - _tabs.at(_openTabKey).getContentTopBounds() - _contentArea.height / 2;
-
-				_tabContentView.setCenter(_tabContentView.getCenter().x, _tabs.at(_openTabKey).getContentTopBounds() + _contentArea.height / 2 + relativeScrollPosition * contentViewBoundsHeight);
+				updateContentView();
 
 				return true;
 			}
@@ -177,26 +174,7 @@ void Box::update(float delta)
 {
 	if (_scrollHandlePressed)
 	{
-		sf::Vector2i currentMousePos = _engine->input.getMousePosition(_engine->window);
-		sf::Vector2i deltaMousePos = currentMousePos - _previousMousePos;
-
-		_scrollHandle.move(0, deltaMousePos.y);
-
-		if (_scrollHandle.getPosition().y < _scrollBar.getPosition().y)
-		{
-			_scrollHandle.setPosition(_scrollHandle.getPosition().x, _scrollBar.getPosition().y);
-		}
-		else if (_scrollHandle.getPosition().y + _scrollHandle.getSize().y > _scrollBar.getPosition().y + _scrollBar.getSize().y)
-		{
-			_scrollHandle.setPosition(_scrollHandle.getPosition().x, _scrollBar.getPosition().y + _scrollBar.getSize().y - _scrollHandle.getSize().y);
-		}
-
-		_previousMousePos = currentMousePos;
-
-		float relativeScrollPosition = (_scrollHandle.getPosition().y - _scrollBar.getPosition().y) / _scrollBar.getSize().y;
-		float contentViewBoundsHeight = _tabs.at(_openTabKey).getContentBottomBounds() - _tabs.at(_openTabKey).getContentTopBounds() - _contentArea.height;
-
-		_tabContentView.setCenter(_tabContentView.getCenter().x, _tabs.at(_openTabKey).getContentTopBounds() + _contentArea.height / 2 + relativeScrollPosition * contentViewBoundsHeight);
+		updateScrollBar();
 	}
 
 	if (_boxPressed)
@@ -229,6 +207,35 @@ void Box::update(float delta)
 	{
 		_moveToTop = false;
 	}
+}
+
+void Box::updateScrollBar()
+{
+	sf::Vector2i currentMousePos = _engine->input.getMousePosition(_engine->window);
+	sf::Vector2i deltaMousePos = currentMousePos - _previousMousePos;
+
+	_scrollHandle.move(0, deltaMousePos.y);
+
+	if (_scrollHandle.getPosition().y < _scrollBar.getPosition().y)
+	{
+		_scrollHandle.setPosition(_scrollHandle.getPosition().x, _scrollBar.getPosition().y);
+	}
+	else if (_scrollHandle.getPosition().y + _scrollHandle.getSize().y > _scrollBar.getPosition().y + _scrollBar.getSize().y)
+	{
+		_scrollHandle.setPosition(_scrollHandle.getPosition().x, _scrollBar.getPosition().y + _scrollBar.getSize().y - _scrollHandle.getSize().y);
+	}
+
+	_previousMousePos = currentMousePos;
+
+	updateContentView();
+}
+
+void Box::updateContentView()
+{
+	float relativeScrollPosition = (_scrollHandle.getPosition().y - _scrollBar.getPosition().y) / _scrollBar.getSize().y;
+	float contentViewBoundsHeight = _tabs.at(_openTabKey).getContentBottomBounds() - _tabs.at(_openTabKey).getContentTopBounds() - _contentArea.height;
+
+	_tabContentView.setCenter(_tabContentView.getCenter().x, _tabs.at(_openTabKey).getContentTopBounds() + _contentArea.height / 2 + relativeScrollPosition * contentViewBoundsHeight);
 }
 
 void Box::draw()
