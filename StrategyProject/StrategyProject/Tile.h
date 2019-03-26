@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "Bedrock.h"
+#include "Property.h"
 
 struct Tile
 {

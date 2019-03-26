@@ -7,6 +7,8 @@
 struct Deposit
 {
 	StoneTypeRef stoneType;
+	bool stoneTypeKnown;
+
 	Property<double> bedrockDepth;
 	Property<double> size;
 };
@@ -14,5 +16,7 @@ struct Deposit
 struct Bedrock
 {
 	StoneTypeRef mainStoneType;
+	bool mainStoneTypeKnown;
+
 	std::vector<Deposit> deposits;
 };

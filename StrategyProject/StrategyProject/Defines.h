@@ -131,3 +131,30 @@ namespace Controls
 	const sf::Keyboard::Key WORLD_MAP_MODE_MOUNTAINS(sf::Keyboard::Num4);
 	const sf::Keyboard::Key WORLD_MAP_MODE_FOREST(sf::Keyboard::Num5);
 }
+
+namespace WorldGenerator
+{
+	const int TILES_PER_REGION(16);
+	const int NUM_OF_REGIONS(9);
+	const int NUM_OF_MINERAL_TYPES(10);
+	const int NUM_OF_STONE_TYPES(10);
+
+	const int MIN_MINERALS_PER_STONE(2);
+	const int MAX_MINERALS_PER_STONE(5);
+	const int MIN_DEPOSITS_PER_TILE(0);
+	const int MAX_DEPOSITS_PER_TILE(5);
+
+	const double MAX_MINERAL_DENSITY(1000.0);
+	const double MIN_MINERAL_DENSITY(10.0);
+	const double MAX_MINERAL_SOFTNESS(1000.0);
+	const double MIN_MINERAL_SOFTNESS(10.0);
+	const double MAX_MINERAL_DURABILITY(1000.0);
+	const double MIN_MINERAL_DURABILITY(10.0);
+	const double MAX_MINERAL_HEAT_CONDUCTIVITY(1000.0);
+	const double MIN_MINERAL_HEAT_CONDUCTIVITY(10.0);
+
+	const double MAX_DEPOSIT_DEPTH(100.0);
+	const double MIN_DEPOSIT_DEPTH(0.0);
+	const double MAX_DEPOSIT_SIZE(1000.0);
+	const double MIN_DEPOSIT_SIZE(10.0);
+}

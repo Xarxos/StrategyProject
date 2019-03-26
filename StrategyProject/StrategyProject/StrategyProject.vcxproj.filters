@@ -123,6 +123,9 @@
     <ClInclude Include="TileDataBox.h">
       <Filter>Game\Misc</Filter>
     </ClInclude>
+    <ClInclude Include="GeneralFunctions.h">
+      <Filter>Engine\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -175,6 +178,9 @@
     </ClCompile>
     <ClCompile Include="TileDataBox.cpp">
       <Filter>Game\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneralFunctions.cpp">
+      <Filter>Engine\Source</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

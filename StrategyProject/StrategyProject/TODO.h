@@ -4,6 +4,7 @@
 TODO
 ----
 
-- Add scrollbar as a member of Box-class.
-- Make scrolling functionality for the tab content area view.
+- Implement actual Bedrock data for every tile within one region.
+- Make it so that you can enter that region from the world map.
+- Implement specific tile data boxes for each of those tiles that can properly display their Bedrock data.
 */

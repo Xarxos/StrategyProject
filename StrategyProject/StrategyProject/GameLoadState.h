@@ -22,4 +22,14 @@ public:
 	virtual void handleInput() override;
 	virtual void update(float delta) override;
 	virtual void draw() override;
+
+private:
+	void loadMineralTypeData();
+	void loadStoneTypeData();
+	void calculateStoneProperties(int stoneTypeIndex);
+	void loadRegionData();
+	void loadTileData(int regionIndex);
+	void calculateRegionData(int regionIndex);
+
+	void printData();
 };
