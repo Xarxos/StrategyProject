@@ -8,6 +8,9 @@
 
 int main()
 {
+	srand(static_cast<unsigned int>(time(0)));
+	rand();
+
 	Game(Define::SCREEN_WIDTH, Define::SCREEN_HEIGHT, Define::GAME_TITLE);
 
     return 0;

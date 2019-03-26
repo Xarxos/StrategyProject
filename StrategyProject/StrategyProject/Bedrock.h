@@ -2,6 +2,7 @@
 
 #include "Stone.h"
 #include "Property.h"
+
 #include <vector>
 
 struct Deposit

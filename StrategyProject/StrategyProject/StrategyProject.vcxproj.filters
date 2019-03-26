@@ -126,6 +126,9 @@
     <ClInclude Include="GeneralFunctions.h">
       <Filter>Engine\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="RegionDataBox.h">
+      <Filter>Game\Misc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -181,6 +184,9 @@
     </ClCompile>
     <ClCompile Include="GeneralFunctions.cpp">
       <Filter>Engine\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="RegionDataBox.cpp">
+      <Filter>Game\Misc</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -23,6 +23,8 @@ void GameLoadState::loadMineralTypeData()
 	for (int i = 0; i < WorldGenerator::NUM_OF_MINERAL_TYPES; i++)
 	{
 		_database->mineralTypes.push_back(std::make_shared<MineralType>());
+		_database->mineralTypes[i]->name = generateName();
+
 		_database->mineralTypes[i]->density.actualValue = GFunctions::getRandomDouble(WorldGenerator::MIN_MINERAL_DENSITY, WorldGenerator::MAX_MINERAL_DENSITY);
 		_database->mineralTypes[i]->softness.actualValue = GFunctions::getRandomDouble(WorldGenerator::MIN_MINERAL_SOFTNESS, WorldGenerator::MAX_MINERAL_SOFTNESS);
 		_database->mineralTypes[i]->durability.actualValue = GFunctions::getRandomDouble(WorldGenerator::MIN_MINERAL_DURABILITY, WorldGenerator::MAX_MINERAL_DURABILITY);
@@ -35,6 +37,7 @@ void GameLoadState::loadStoneTypeData()
 	for (int i = 0; i < WorldGenerator::NUM_OF_STONE_TYPES; i++)
 	{
 		_database->stoneTypes.push_back(std::make_shared<StoneType>());
+		_database->stoneTypes[i]->name = generateName();
 
 		int numOfMinerals = GFunctions::getRandomInt(WorldGenerator::MIN_MINERALS_PER_STONE, WorldGenerator::MAX_MINERALS_PER_STONE);
 		_database->stoneTypes[i]->minerals.resize(numOfMinerals);
@@ -96,14 +99,14 @@ void GameLoadState::loadTileData(int regionIndex)
 {
 	for (int tileIndex = 0; tileIndex < WorldGenerator::TILES_PER_REGION; tileIndex++)
 	{
-		_database->regions[regionIndex].tiles[tileIndex].bedrock.mainStoneTypeIndex = GFunctions::getRandomInt(0, WorldGenerator::NUM_OF_STONE_TYPES);
+		_database->regions[regionIndex].tiles[tileIndex].bedrock.mainStoneTypeIndex = GFunctions::getRandomInt(0, WorldGenerator::NUM_OF_STONE_TYPES - 1);
 
 		int numOfDeposits = GFunctions::getRandomInt(WorldGenerator::MIN_DEPOSITS_PER_TILE, WorldGenerator::MAX_DEPOSITS_PER_TILE);
 		_database->regions[regionIndex].tiles[tileIndex].bedrock.deposits.resize(numOfDeposits);
 
 		for (auto &deposit : _database->regions[regionIndex].tiles[tileIndex].bedrock.deposits)
 		{
-			deposit.stoneTypeIndex = GFunctions::getRandomInt(0, WorldGenerator::NUM_OF_STONE_TYPES);
+			deposit.stoneTypeIndex = GFunctions::getRandomInt(0, WorldGenerator::NUM_OF_STONE_TYPES - 1);
 			deposit.bedrockDepth.actualValue = GFunctions::getRandomDouble(WorldGenerator::MIN_DEPOSIT_DEPTH, WorldGenerator::MAX_DEPOSIT_DEPTH);
 			deposit.size.actualValue = GFunctions::getRandomDouble(WorldGenerator::MIN_DEPOSIT_SIZE, WorldGenerator::MAX_DEPOSIT_SIZE);
 		}
@@ -120,7 +123,7 @@ void GameLoadState::printData()
 	std::cout << "Mineral Types\n-------------\n";
 	for (int i = 0; i < WorldGenerator::NUM_OF_MINERAL_TYPES; i++)
 	{
-		std::cout << i << ":\n";
+		std::cout << i << ": " << std::string(_database->mineralTypes[i]->name) << "\n";
 		std::cout << "\tDensity: " << _database->mineralTypes[i]->density.actualValue << "\n";
 		std::cout << "\tSoftness: " << _database->mineralTypes[i]->softness.actualValue << "\n";
 		std::cout << "\tDurability: " << _database->mineralTypes[i]->durability.actualValue << "\n";
@@ -132,12 +135,12 @@ void GameLoadState::printData()
 	std::cout << "Stone Types\n-----------\n";
 	for (int i = 0; i < WorldGenerator::NUM_OF_STONE_TYPES; i++)
 	{
-		std::cout << i << ":\n";
+		std::cout << i << ": " << std::string(_database->stoneTypes[i]->name) << "\n";
 		std::cout << "\tMinerals:\n";
 		for (int m = 0; m < _database->stoneTypes[i]->minerals.size(); m++)
 		{
 			std::cout << "\t" << m << ":\n";
-			std::cout << "\t\tType: " << _database->stoneTypes[i]->minerals[m].typeIndex << "\n";
+			std::cout << "\t\tType: " << std::string(_database->mineralTypes[_database->stoneTypes[i]->minerals[m].typeIndex]->name) << "\n";
 			std::cout << "\t\tConcentration: " << _database->stoneTypes[i]->minerals[m].concentration.actualValue << "\n";
  		}
 
@@ -155,19 +158,43 @@ void GameLoadState::printData()
 		for (int tileIndex = 0; tileIndex < WorldGenerator::TILES_PER_REGION; tileIndex++)
 		{
 			std::cout << "Region " << regionIndex << ", Tile " << tileIndex << ":\n";
-			std::cout << "\tMain Stone Type: " << _database->regions[regionIndex].tiles[tileIndex].bedrock.mainStoneTypeIndex << "\n";
+			std::cout << "\tMain Stone Type: " << std::string(_database->stoneTypes[_database->regions[regionIndex].tiles[tileIndex].bedrock.mainStoneTypeIndex]->name)  << "\n";
 
 			std::cout << "\tDeposits:\n";
 			int loopCount(0);
 			for (auto &deposit : _database->regions[regionIndex].tiles[tileIndex].bedrock.deposits)
 			{
 				std::cout << "\t" << loopCount++ << ":\n";
-				std::cout << "\t\tStone Type: " << deposit.stoneTypeIndex << "\n";
+				std::cout << "\t\tStone Type: " << std::string(_database->stoneTypes[deposit.stoneTypeIndex]->name) << "\n";
 				std::cout << "\t\tBedrock Depth: " << deposit.bedrockDepth.actualValue << "\n";
 				std::cout << "\t\tSize: " << deposit.size.actualValue << "\n";
 			}
 		}
 	}
+}
+
+std::string GameLoadState::generateName()
+{
+	std::vector<std::string> startBits =
+	{
+		"Ar", "Pu", "Ol", "Me", "Ne", "Ti", "Al", "We", "Ru", "So", "Ke", "Qua", "Xe", "Li"
+	};
+
+	std::vector<std::string> middleBits =
+	{
+		"mi", "wa", "xa", "lo", "om", "un", "es", "by", "op", "ze", "ez", "que", "cu", "el"
+	};
+
+	std::vector<std::string> endBits =
+	{
+		"tite", "nite", "ite"
+	};
+
+	std::string name(startBits.at(GFunctions::getRandomInt(0, startBits.size() - 1)));
+	name.append(middleBits.at(GFunctions::getRandomInt(0, middleBits.size() - 1)));
+	name.append(endBits.at(GFunctions::getRandomInt(0, endBits.size() - 1)));
+
+	return name;
 }
 
 void GameLoadState::handleInput()

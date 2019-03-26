@@ -32,4 +32,6 @@ private:
 	void calculateRegionData(int regionIndex);
 
 	void printData();
+
+	std::string generateName();
 };

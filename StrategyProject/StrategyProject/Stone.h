@@ -8,6 +8,8 @@
 
 struct StoneType
 {
+	sf::String name = "";
+
 	std::vector<Mineral> minerals;
 
 	Property<double> density;

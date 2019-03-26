@@ -175,6 +175,7 @@
     <ClInclude Include="MainMenuState.h" />
     <ClInclude Include="Mineral.h" />
     <ClInclude Include="Property.h" />
+    <ClInclude Include="RegionDataBox.h" />
     <ClInclude Include="RegionMap.h" />
     <ClInclude Include="SplashState.h" />
     <ClInclude Include="State.h" />
@@ -199,6 +200,7 @@
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="MainMenuState.cpp" />
+    <ClCompile Include="RegionDataBox.cpp" />
     <ClCompile Include="RegionMap.cpp" />
     <ClCompile Include="SplashState.cpp" />
     <ClCompile Include="StateMachine.cpp" />

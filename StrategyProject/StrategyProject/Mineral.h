@@ -5,7 +5,7 @@
 
 struct MineralType
 {
-	std::string name = "";
+	sf::String name = "";
 
 	Property<double> density;
 	Property<double> softness;
