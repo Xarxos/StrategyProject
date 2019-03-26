@@ -23,10 +23,10 @@ void GameLoadState::loadMineralTypeData()
 	for (int i = 0; i < WorldGenerator::NUM_OF_MINERAL_TYPES; i++)
 	{
 		_database->mineralTypes.push_back(std::make_shared<MineralType>());
-		_database->mineralTypes[i]->density.actualValue = getRandomDouble(WorldGenerator::MIN_MINERAL_DENSITY, WorldGenerator::MAX_MINERAL_DENSITY);
-		_database->mineralTypes[i]->softness.actualValue = getRandomDouble(WorldGenerator::MIN_MINERAL_SOFTNESS, WorldGenerator::MAX_MINERAL_SOFTNESS);
-		_database->mineralTypes[i]->durability.actualValue = getRandomDouble(WorldGenerator::MIN_MINERAL_DURABILITY, WorldGenerator::MAX_MINERAL_DURABILITY);
-		_database->mineralTypes[i]->heatConductivity.actualValue = getRandomDouble(WorldGenerator::MIN_MINERAL_HEAT_CONDUCTIVITY, WorldGenerator::MAX_MINERAL_HEAT_CONDUCTIVITY);
+		_database->mineralTypes[i]->density.actualValue = GFunctions::getRandomDouble(WorldGenerator::MIN_MINERAL_DENSITY, WorldGenerator::MAX_MINERAL_DENSITY);
+		_database->mineralTypes[i]->softness.actualValue = GFunctions::getRandomDouble(WorldGenerator::MIN_MINERAL_SOFTNESS, WorldGenerator::MAX_MINERAL_SOFTNESS);
+		_database->mineralTypes[i]->durability.actualValue = GFunctions::getRandomDouble(WorldGenerator::MIN_MINERAL_DURABILITY, WorldGenerator::MAX_MINERAL_DURABILITY);
+		_database->mineralTypes[i]->heatConductivity.actualValue = GFunctions::getRandomDouble(WorldGenerator::MIN_MINERAL_HEAT_CONDUCTIVITY, WorldGenerator::MAX_MINERAL_HEAT_CONDUCTIVITY);
 	}
 }
 
@@ -36,7 +36,7 @@ void GameLoadState::loadStoneTypeData()
 	{
 		_database->stoneTypes.push_back(std::make_shared<StoneType>());
 
-		int numOfMinerals = getRandomInt(WorldGenerator::MIN_MINERALS_PER_STONE, WorldGenerator::MAX_MINERALS_PER_STONE);
+		int numOfMinerals = GFunctions::getRandomInt(WorldGenerator::MIN_MINERALS_PER_STONE, WorldGenerator::MAX_MINERALS_PER_STONE);
 		_database->stoneTypes[i]->minerals.resize(numOfMinerals);
 
 		std::vector<double> mineralAmounts(numOfMinerals);
@@ -44,13 +44,13 @@ void GameLoadState::loadStoneTypeData()
 
 		for (int m = 0; m < numOfMinerals; m++)
 		{
-			mineralAmounts[m] = getRandomDouble(0.1, 100.0);
+			mineralAmounts[m] = GFunctions::getRandomDouble(0.1, 100.0);
 			totalMineralAmount += mineralAmounts[m];
 		}
 
 		for (int m = 0; m < numOfMinerals; m++)
 		{
-			_database->stoneTypes[i]->minerals[m].typeIndex = getRandomInt(0, _database->mineralTypes.size() - 1);
+			_database->stoneTypes[i]->minerals[m].typeIndex = GFunctions::getRandomInt(0, _database->mineralTypes.size() - 1);
 
 			double currentMineralConcentration = mineralAmounts[m] / totalMineralAmount;
 			_database->stoneTypes[i]->minerals[m].concentration.actualValue = currentMineralConcentration;
@@ -96,16 +96,16 @@ void GameLoadState::loadTileData(int regionIndex)
 {
 	for (int tileIndex = 0; tileIndex < WorldGenerator::TILES_PER_REGION; tileIndex++)
 	{
-		_database->regions[regionIndex].tiles[tileIndex].bedrock.mainStoneTypeIndex = getRandomInt(0, WorldGenerator::NUM_OF_STONE_TYPES);
+		_database->regions[regionIndex].tiles[tileIndex].bedrock.mainStoneTypeIndex = GFunctions::getRandomInt(0, WorldGenerator::NUM_OF_STONE_TYPES);
 
-		int numOfDeposits = getRandomInt(WorldGenerator::MIN_DEPOSITS_PER_TILE, WorldGenerator::MAX_DEPOSITS_PER_TILE);
+		int numOfDeposits = GFunctions::getRandomInt(WorldGenerator::MIN_DEPOSITS_PER_TILE, WorldGenerator::MAX_DEPOSITS_PER_TILE);
 		_database->regions[regionIndex].tiles[tileIndex].bedrock.deposits.resize(numOfDeposits);
 
 		for (auto &deposit : _database->regions[regionIndex].tiles[tileIndex].bedrock.deposits)
 		{
-			deposit.stoneTypeIndex = getRandomInt(0, WorldGenerator::NUM_OF_STONE_TYPES);
-			deposit.bedrockDepth.actualValue = getRandomDouble(WorldGenerator::MIN_DEPOSIT_DEPTH, WorldGenerator::MAX_DEPOSIT_DEPTH);
-			deposit.size.actualValue = getRandomDouble(WorldGenerator::MIN_DEPOSIT_SIZE, WorldGenerator::MAX_DEPOSIT_SIZE);
+			deposit.stoneTypeIndex = GFunctions::getRandomInt(0, WorldGenerator::NUM_OF_STONE_TYPES);
+			deposit.bedrockDepth.actualValue = GFunctions::getRandomDouble(WorldGenerator::MIN_DEPOSIT_DEPTH, WorldGenerator::MAX_DEPOSIT_DEPTH);
+			deposit.size.actualValue = GFunctions::getRandomDouble(WorldGenerator::MIN_DEPOSIT_SIZE, WorldGenerator::MAX_DEPOSIT_SIZE);
 		}
 	}
 }
