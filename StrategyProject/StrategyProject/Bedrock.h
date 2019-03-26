@@ -6,7 +6,7 @@
 
 struct Deposit
 {
-	StoneTypeRef stoneType;
+	int stoneTypeIndex;
 	bool stoneTypeKnown;
 
 	Property<double> bedrockDepth;
@@ -15,7 +15,7 @@ struct Deposit
 
 struct Bedrock
 {
-	StoneTypeRef mainStoneType;
+	int mainStoneTypeIndex;
 	bool mainStoneTypeKnown;
 
 	std::vector<Deposit> deposits;

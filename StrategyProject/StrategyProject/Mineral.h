@@ -17,7 +17,7 @@ typedef std::shared_ptr<MineralType> MineralTypeRef;
 
 struct Mineral
 {
-	MineralTypeRef type;
+	int typeIndex;
 	Property<double> concentration;
 };
 

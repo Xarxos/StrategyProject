@@ -14,6 +14,8 @@ void GameLoadState::init()
 	loadMineralTypeData();
 	loadStoneTypeData();
 	loadRegionData();
+
+	printData();
 }
 
 void GameLoadState::loadMineralTypeData()
@@ -48,7 +50,7 @@ void GameLoadState::loadStoneTypeData()
 
 		for (int m = 0; m < numOfMinerals; m++)
 		{
-			_database->stoneTypes[i]->minerals[m].type = _database->mineralTypes[getRandomInt(0, _database->mineralTypes.size() - 1)];
+			_database->stoneTypes[i]->minerals[m].typeIndex = getRandomInt(0, _database->mineralTypes.size() - 1);
 
 			double currentMineralConcentration = mineralAmounts[m] / totalMineralAmount;
 			_database->stoneTypes[i]->minerals[m].concentration.actualValue = currentMineralConcentration;
@@ -67,16 +69,16 @@ void GameLoadState::calculateStoneProperties(int stoneTypeIndex)
 
 	for (auto &mineral : _database->stoneTypes[stoneTypeIndex]->minerals)
 	{
-		totalMineralDensity += mineral.type->density.actualValue * mineral.concentration.actualValue;
-		totalMineralSoftness += mineral.type->softness.actualValue * mineral.concentration.actualValue;
-		totalMineralDurability += mineral.type->durability.actualValue * mineral.concentration.actualValue;
-		totalMineralHeatConductivity += mineral.type->heatConductivity.actualValue * mineral.concentration.actualValue;
+		totalMineralDensity += _database->mineralTypes[mineral.typeIndex]->density.actualValue * mineral.concentration.actualValue;
+		totalMineralSoftness += _database->mineralTypes[mineral.typeIndex]->softness.actualValue * mineral.concentration.actualValue;
+		totalMineralDurability += _database->mineralTypes[mineral.typeIndex]->durability.actualValue * mineral.concentration.actualValue;
+		totalMineralHeatConductivity += _database->mineralTypes[mineral.typeIndex]->heatConductivity.actualValue * mineral.concentration.actualValue;
 	}
 
-	_database->stoneTypes[stoneTypeIndex]->density.actualValue = totalMineralDensity / _database->stoneTypes[stoneTypeIndex]->minerals.size();
-	_database->stoneTypes[stoneTypeIndex]->softness.actualValue = totalMineralSoftness / _database->stoneTypes[stoneTypeIndex]->minerals.size();
-	_database->stoneTypes[stoneTypeIndex]->durability.actualValue = totalMineralDurability / _database->stoneTypes[stoneTypeIndex]->minerals.size();
-	_database->stoneTypes[stoneTypeIndex]->heatConductivity.actualValue = totalMineralHeatConductivity / _database->stoneTypes[stoneTypeIndex]->minerals.size();
+	_database->stoneTypes[stoneTypeIndex]->density.actualValue = totalMineralDensity;
+	_database->stoneTypes[stoneTypeIndex]->softness.actualValue = totalMineralSoftness;
+	_database->stoneTypes[stoneTypeIndex]->durability.actualValue = totalMineralDurability;
+	_database->stoneTypes[stoneTypeIndex]->heatConductivity.actualValue = totalMineralHeatConductivity;
 }
 
 void GameLoadState::loadRegionData()
@@ -94,14 +96,14 @@ void GameLoadState::loadTileData(int regionIndex)
 {
 	for (int tileIndex = 0; tileIndex < WorldGenerator::TILES_PER_REGION; tileIndex++)
 	{
-		_database->regions[regionIndex].tiles[tileIndex].bedrock.mainStoneType = _database->stoneTypes[getRandomInt(0, WorldGenerator::NUM_OF_STONE_TYPES)];
+		_database->regions[regionIndex].tiles[tileIndex].bedrock.mainStoneTypeIndex = getRandomInt(0, WorldGenerator::NUM_OF_STONE_TYPES);
 
 		int numOfDeposits = getRandomInt(WorldGenerator::MIN_DEPOSITS_PER_TILE, WorldGenerator::MAX_DEPOSITS_PER_TILE);
 		_database->regions[regionIndex].tiles[tileIndex].bedrock.deposits.resize(numOfDeposits);
 
 		for (auto &deposit : _database->regions[regionIndex].tiles[tileIndex].bedrock.deposits)
 		{
-			deposit.stoneType = _database->stoneTypes[getRandomInt(0, WorldGenerator::NUM_OF_STONE_TYPES)];
+			deposit.stoneTypeIndex = getRandomInt(0, WorldGenerator::NUM_OF_STONE_TYPES);
 			deposit.bedrockDepth.actualValue = getRandomDouble(WorldGenerator::MIN_DEPOSIT_DEPTH, WorldGenerator::MAX_DEPOSIT_DEPTH);
 			deposit.size.actualValue = getRandomDouble(WorldGenerator::MIN_DEPOSIT_SIZE, WorldGenerator::MAX_DEPOSIT_SIZE);
 		}
@@ -125,6 +127,8 @@ void GameLoadState::printData()
 		std::cout << "\tHeat Conductivity: " << _database->mineralTypes[i]->heatConductivity.actualValue << "\n";
 	}
 
+	std::cout << "\n";
+
 	std::cout << "Stone Types\n-----------\n";
 	for (int i = 0; i < WorldGenerator::NUM_OF_STONE_TYPES; i++)
 	{
@@ -132,14 +136,37 @@ void GameLoadState::printData()
 		std::cout << "\tMinerals:\n";
 		for (int m = 0; m < _database->stoneTypes[i]->minerals.size(); m++)
 		{
-			std::cout << m << ":\n";
-			_database->stoneTypes[i]->mi
-		}
-		std::cout << _database->stoneTypes[i]->minerals
+			std::cout << "\t" << m << ":\n";
+			std::cout << "\t\tType: " << _database->stoneTypes[i]->minerals[m].typeIndex << "\n";
+			std::cout << "\t\tConcentration: " << _database->stoneTypes[i]->minerals[m].concentration.actualValue << "\n";
+ 		}
+
 		std::cout << "\tDensity: " << _database->stoneTypes[i]->density.actualValue << "\n";
 		std::cout << "\tSoftness: " << _database->stoneTypes[i]->softness.actualValue << "\n";
 		std::cout << "\tDurability: " << _database->stoneTypes[i]->durability.actualValue << "\n";
 		std::cout << "\tHeat Conductivity: " << _database->stoneTypes[i]->heatConductivity.actualValue << "\n";
+	}
+
+	std::cout << "\n";
+
+	std::cout << "Bedrocks\n--------\n";
+	for (int regionIndex = 0; regionIndex < WorldGenerator::NUM_OF_REGIONS; regionIndex++)
+	{
+		for (int tileIndex = 0; tileIndex < WorldGenerator::TILES_PER_REGION; tileIndex++)
+		{
+			std::cout << "Region " << regionIndex << ", Tile " << tileIndex << ":\n";
+			std::cout << "\tMain Stone Type: " << _database->regions[regionIndex].tiles[tileIndex].bedrock.mainStoneTypeIndex << "\n";
+
+			std::cout << "\tDeposits:\n";
+			int loopCount(0);
+			for (auto &deposit : _database->regions[regionIndex].tiles[tileIndex].bedrock.deposits)
+			{
+				std::cout << "\t" << loopCount++ << ":\n";
+				std::cout << "\t\tStone Type: " << deposit.stoneTypeIndex << "\n";
+				std::cout << "\t\tBedrock Depth: " << deposit.bedrockDepth.actualValue << "\n";
+				std::cout << "\t\tSize: " << deposit.size.actualValue << "\n";
+			}
+		}
 	}
 }
 
