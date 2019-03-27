@@ -24,6 +24,8 @@ void RegionDataBox::init()
 
 	_enterButton.setPosition(_background.getPosition().x + _background.getLocalBounds().width - _enterButton.getLocalBounds().width, _background.getPosition().y + _background.getLocalBounds().height - _enterButton.getLocalBounds().height);
 
+	_engine->machine.getActiveState()->getSubStates();
+
 	initRegionData();
 }
 

@@ -28,8 +28,6 @@ private:
 	sf::View _mainView;
 	sf::View _miniMapView;
 
-	std::list<subStateRef> _subStates;
-
 public:
 	WorldMap(EngineDataRef engineData, DatabaseRef database);
 
