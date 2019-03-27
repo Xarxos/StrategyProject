@@ -29,7 +29,7 @@ void BoxTab::initTabLabel()
 
 	_tabLabel.setFont(_engine->assets.getFont("Box Tab Font"));
 	_tabLabel.setFillColor(Colors::BOX_TEXT);
-	_tabLabel.setCharacterSize(Graphics::BOX_TEXT_SIZE);
+	_tabLabel.setCharacterSize(Graphics::BOX_TAB_LABEL_TEXT_SIZE);
 	_tabLabel.setOrigin(_tabLabel.getLocalBounds().left, _tabLabel.getLocalBounds().top);
 }
 

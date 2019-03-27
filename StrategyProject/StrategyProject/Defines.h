@@ -83,17 +83,24 @@ namespace Filepath
 
 	const std::string BOX_BACKGROUND("Resources/Textures/TileDataBoxBackground.png");
 	const std::string BOX_SELECTED("Resources/Textures/TileDataBoxSelected.png");
-	const std::string BOX_FONT("Resources/Fonts/ARBONNIE.ttf");
+	const std::string BOX_FONT("Resources/Fonts/arial.ttf");
 	const std::string BOX_CLOSE_BUTTON("Resources/Textures/DataBoxCloseButton.png");
 	const std::string TILE_DATA_BOX_ENTER_BUTTON("Resources/Textures/DataBoxEnterButton.png");
 }
 
 namespace Graphics
 {
-	const unsigned int BOX_TEXT_SIZE(30);
+	const unsigned int BOX_HEADLINE_TEXT_SIZE(20);
+	const unsigned int BOX_TEXT_SIZE(10);
+	const unsigned int BOX_TAB_LABEL_TEXT_SIZE(30);
+	const sf::Text::Style BOX_HEADLINE_TEXT_STYLE(sf::Text::Bold);
+	
+
 	const float BOX_TAB_OUTLINE_THICKNESS(2.f);
 	const float BOX_TABS_EDGE_MARGIN(10.f);
+
 	const float BOX_DEFAULT_HEIGHT(200.f);
+	const float BOX_MIN_WIDTH(500.f);
 	const float BOX_SCROLL_BAR_WIDTH(20.f);
 	const float BOX_SCROLL_BAR_OUTLINE_THICKNESS(2.f);
 }

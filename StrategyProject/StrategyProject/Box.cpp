@@ -54,7 +54,16 @@ void Box::updateGraphics()
 	_openTabKey = _tabLabels[0];
 	_tabs.at(_openTabKey).openTab(true);
 
-	_background.setSize(sf::Vector2f(totalTabWidth + _closeButton.getLocalBounds().width + Graphics::BOX_TABS_EDGE_MARGIN * 2, Graphics::BOX_DEFAULT_HEIGHT));
+	float calculatedBoxWidth = totalTabWidth + _closeButton.getLocalBounds().width + Graphics::BOX_TABS_EDGE_MARGIN * 2;
+
+	if (calculatedBoxWidth < Graphics::BOX_MIN_WIDTH)
+	{
+		_background.setSize(sf::Vector2f(Graphics::BOX_MIN_WIDTH, Graphics::BOX_DEFAULT_HEIGHT));
+	}
+	else
+	{
+		_background.setSize(sf::Vector2f(calculatedBoxWidth, Graphics::BOX_DEFAULT_HEIGHT));
+	}
 
 	_contentArea.width = _background.getLocalBounds().width - Graphics::BOX_TABS_EDGE_MARGIN * 2;
 	_contentArea.height = _background.getLocalBounds().height - Graphics::BOX_TABS_EDGE_MARGIN * 2 - tabHeight;

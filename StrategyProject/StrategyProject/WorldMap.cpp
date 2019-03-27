@@ -8,6 +8,7 @@
 #include "HUD.h"
 #include "Box.h"
 #include "TileDataBox.h"
+#include "RegionDataBox.h"
 
 WorldMap::WorldMap(EngineDataRef engineData, DatabaseRef database)
 	: _engine(engineData),
@@ -127,13 +128,13 @@ void WorldMap::handleMousePressEvent(sf::Event &event)
 	if (event.mouseButton.button == sf::Mouse::Left)
 	{
 		sf::Vector2i worldMouse(_engine->window.mapPixelToCoords(sf::Mouse::getPosition(_engine->window), _mainView).x, _engine->window.mapPixelToCoords(sf::Mouse::getPosition(_engine->window), _mainView).y);
-		sf::Vector2i tileClicked(coordsToTile(worldMouse).x, coordsToTile(worldMouse).y);
+		sf::Vector2i regionClicked(coordsToTile(worldMouse).x, coordsToTile(worldMouse).y);
 
-		if (tileClicked.x != -1)
+		if (regionClicked.x != -1)
 		{
-			int tileClickedIndex = _tileMatrix[tileClicked.y][tileClicked.x];
+			int regionClickedIndex = _tileMatrix[regionClicked.y][regionClicked.x];
 
-			_subStates.push_back(std::move(subStateRef(new TileDataBox(_engine, _database, tileClickedIndex, tileClicked))));
+			_subStates.push_back(std::move(subStateRef(new RegionDataBox(_engine, _database, regionClickedIndex, regionClicked))));
 			_subStates.back()->init();
 		}
 	}

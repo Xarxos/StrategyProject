@@ -27,41 +27,16 @@ void RegionDataBox::init()
 
 void RegionDataBox::initRegionData()
 {
-	sf::Text bedrockMainStoneType;
-	bedrockMainStoneType.setString("Zagite");
-	bedrockMainStoneType.setFont(_engine->assets.getFont("Box Tab Font"));
-	bedrockMainStoneType.setCharacterSize(Graphics::BOX_TEXT_SIZE);
-	bedrockMainStoneType.setFillColor(Colors::BOX_TEXT);
+	sf::String bedrockMainStoneTypesHeadlineStr = "Main Stone Types In This Region";
+	sf::Text bedrockMainStoneTypesHeadline;
+	bedrockMainStoneTypesHeadline.setString(bedrockMainStoneTypesHeadlineStr);
+	bedrockMainStoneTypesHeadline.setStyle(Graphics::BOX_HEADLINE_TEXT_STYLE);
+	bedrockMainStoneTypesHeadline.setFont(_engine->assets.getFont("Box Tab Font"));
+	bedrockMainStoneTypesHeadline.setCharacterSize(Graphics::BOX_HEADLINE_TEXT_SIZE);
+	bedrockMainStoneTypesHeadline.setFillColor(Colors::BOX_TEXT);
 
-	_tabs.at("Bedrock").addText(bedrockMainStoneType);
-	_tabs.at("Bedrock").setTextRelativePosition(0, 50.f, 50.f);
-
-	sf::Text testText1;
-	testText1.setString("Baby Doll");
-	testText1.setFont(_engine->assets.getFont("Box Tab Font"));
-	testText1.setCharacterSize(Graphics::BOX_TEXT_SIZE);
-	testText1.setFillColor(Colors::BOX_TEXT);
-
-	_tabs.at("Bedrock").addText(testText1);
-	_tabs.at("Bedrock").setTextRelativePosition(1, 50.f, 250.f);
-
-	sf::Text testText2;
-	testText1.setString("Baby Doller");
-	testText1.setFont(_engine->assets.getFont("Box Tab Font"));
-	testText1.setCharacterSize(Graphics::BOX_TEXT_SIZE);
-	testText1.setFillColor(Colors::BOX_TEXT);
-
-	_tabs.at("Overview").addText(testText1);
-	_tabs.at("Overview").setTextRelativePosition(0, 5.f, 10.f);
-
-	sf::Text testText3;
-	testText1.setString("Mainstay");
-	testText1.setFont(_engine->assets.getFont("Box Tab Font"));
-	testText1.setCharacterSize(Graphics::BOX_TEXT_SIZE);
-	testText1.setFillColor(Colors::BOX_TEXT);
-
-	_tabs.at("Overview").addText(testText1);
-	_tabs.at("Overview").setTextRelativePosition(1, 25.f, 35.f);
+	_tabs.at("Bedrock").addText(bedrockMainStoneTypesHeadline);
+	_tabs.at("Bedrock").setTextRelativePosition(0, 10.f, 0.f);
 }
 
 bool RegionDataBox::handleInput(sf::Event &event)
