@@ -4,6 +4,8 @@
 #include "SFML\Graphics.hpp"
 #include "RegionDataBox.h"
 
+#include <set>
+
 RegionDataBox::RegionDataBox(EngineDataRef engineData, DatabaseRef database, int regionIndex, sf::Vector2i regionCoords)
 	: Box(engineData, database, { "Overview", "Bedrock" }),
 	_regionIndex(regionIndex),
@@ -37,6 +39,29 @@ void RegionDataBox::initRegionData()
 
 	_tabs.at("Bedrock").addText(bedrockMainStoneTypesHeadline);
 	_tabs.at("Bedrock").setTextRelativePosition(0, 10.f, 0.f);
+
+	std::set<int> mainStoneTypeIndexes;
+
+	for (const auto &tile : _database->regions.at(_regionIndex).tiles)
+	{
+		mainStoneTypeIndexes.insert(tile.bedrock.mainStoneTypeIndex);
+	}
+
+	int loopCount(0);
+
+	for (const auto &mainStoneTypeIndex : mainStoneTypeIndexes)
+	{
+		sf::String mainStoneTypeName = _database->stoneTypes.at(mainStoneTypeIndex)->name;
+		sf::Text mainStoneType;
+		mainStoneType.setString(mainStoneTypeName);
+		mainStoneType.setFont(_engine->assets.getFont("Box Tab Font"));
+		mainStoneType.setCharacterSize(Graphics::BOX_TEXT_SIZE);
+		mainStoneType.setFillColor(Colors::BOX_TEXT);
+
+		_tabs.at("Bedrock").addText(mainStoneType);
+		_tabs.at("Bedrock").setTextRelativePosition(loopCount + 1, 10.f, Graphics::BOX_HEADLINE_TEXT_SIZE + Graphics::BOX_TEXT_SIZE * loopCount);
+		loopCount++;
+	}
 }
 
 bool RegionDataBox::handleInput(sf::Event &event)

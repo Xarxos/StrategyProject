@@ -14,7 +14,7 @@ RegionMap::RegionMap(EngineDataRef engineData, DatabaseRef database)
 	_database(database),
 	_tileMatrix(Define::REGION_SIZE_IN_TILES_Y, std::vector<int>(Define::REGION_SIZE_IN_TILES_X)),
 	_vertices(sf::Quads, Define::REGION_SIZE_IN_TILES_X * Define::REGION_SIZE_IN_TILES_Y * 4),
-	_HUD(engineData),
+	_HUD(engineData, database),
 	_mainView(sf::Vector2f(Define::REGION_VIEW_WIDTH / 2, Define::REGION_VIEW_HEIGHT / 2), sf::Vector2f(Define::REGION_VIEW_WIDTH, Define::REGION_VIEW_HEIGHT)),
 	_miniMapView(sf::Vector2f(Define::REGION_SIZE_IN_TILES_X * Define::REGION_TILE_SIZE / 2, Define::REGION_SIZE_IN_TILES_Y * Define::REGION_TILE_SIZE / 2), sf::Vector2f(Define::REGION_SIZE_IN_TILES_X * Define::REGION_TILE_SIZE, Define::REGION_SIZE_IN_TILES_Y * Define::REGION_TILE_SIZE)),
 	_selectedTile(sf::Vector2f(Define::REGION_TILE_SIZE, Define::REGION_TILE_SIZE)),

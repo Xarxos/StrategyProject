@@ -79,7 +79,8 @@ namespace Filepath
 	const std::string REGION1_MAP_BACKGROUND("Resources/Textures/Maps/31.png");
 	const std::string REGION1_MAP_BACKGROUND_GRAYSCALE("Resources/Textures/Maps/31.png");
 
-	const std::string HUD_BACKGROUND("Resources/Textures/HUDBackground.png");
+	const std::string HUD_TOP_SHELF("Resources/Textures/HUDTopShelf.png");
+	const std::string DATABASE_BUTTON("Resources/Textures/DatabaseButton.png");
 
 	const std::string BOX_BACKGROUND("Resources/Textures/TileDataBoxBackground.png");
 	const std::string BOX_SELECTED("Resources/Textures/TileDataBoxSelected.png");
@@ -91,10 +92,10 @@ namespace Filepath
 namespace Graphics
 {
 	const unsigned int BOX_HEADLINE_TEXT_SIZE(20);
-	const unsigned int BOX_TEXT_SIZE(10);
+	const unsigned int BOX_TEXT_SIZE(15);
 	const unsigned int BOX_TAB_LABEL_TEXT_SIZE(30);
 	const sf::Text::Style BOX_HEADLINE_TEXT_STYLE(sf::Text::Bold);
-	
+	const float BOX_TEXT_DEFAULT_X_OFFSET(10.f);
 
 	const float BOX_TAB_OUTLINE_THICKNESS(2.f);
 	const float BOX_TABS_EDGE_MARGIN(10.f);
@@ -103,6 +104,8 @@ namespace Graphics
 	const float BOX_MIN_WIDTH(500.f);
 	const float BOX_SCROLL_BAR_WIDTH(20.f);
 	const float BOX_SCROLL_BAR_OUTLINE_THICKNESS(2.f);
+
+	const sf::Vector2f HUD_DATABASE_BUTTON_POSITION(30.f, 30.f);
 }
 
 namespace Colors

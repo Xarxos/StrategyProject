@@ -48,6 +48,7 @@ private:
 	void handleKeyPressEvent(sf::Event &event);
 	void handleRealTimeKeyPressInput();
 
+	void updateHUD(float delta);
 	void updateSubStates(float delta);
 	void checkTileSelection();
 	void correctCameraView();

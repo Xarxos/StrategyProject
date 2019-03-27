@@ -9,13 +9,14 @@
 #include "Box.h"
 #include "TileDataBox.h"
 #include "RegionDataBox.h"
+#include "DatabaseBox.h"
 
 WorldMap::WorldMap(EngineDataRef engineData, DatabaseRef database)
 	: _engine(engineData),
 	_database(database),
 	_tileMatrix(Define::WORLD_SIZE_IN_TILES_Y, std::vector<int>(Define::WORLD_SIZE_IN_TILES_X)),
 	_vertices(sf::Quads, Define::WORLD_SIZE_IN_TILES_X * Define::WORLD_SIZE_IN_TILES_Y * 4),
-	_HUD(engineData),
+	_HUD(engineData, database),
 	_mainView(sf::Vector2f(Define::WORLD_VIEW_WIDTH / 2, Define::WORLD_VIEW_HEIGHT / 2), sf::Vector2f(Define::WORLD_VIEW_WIDTH, Define::WORLD_VIEW_HEIGHT)),
 	_miniMapView(sf::Vector2f(Define::WORLD_SIZE_IN_TILES_X * Define::TILE_SIZE / 2, Define::WORLD_SIZE_IN_TILES_Y * Define::TILE_SIZE / 2), sf::Vector2f(Define::WORLD_SIZE_IN_TILES_X * Define::TILE_SIZE, Define::WORLD_SIZE_IN_TILES_Y * Define::TILE_SIZE)),
 	_selectedTile(sf::Vector2f(Define::TILE_SIZE, Define::TILE_SIZE)),
@@ -95,7 +96,7 @@ void WorldMap::handleInput()
 		{
 			eventHandled = (*rit)->handleInput(event);
 		}
-
+		
 		if (!eventHandled)
 		{
 			if (event.type == sf::Event::Closed)
@@ -127,18 +128,30 @@ void WorldMap::handleMousePressEvent(sf::Event &event)
 {
 	if (event.mouseButton.button == sf::Mouse::Left)
 	{
-		sf::Vector2i worldMouse(_engine->window.mapPixelToCoords(sf::Mouse::getPosition(_engine->window), _mainView).x, _engine->window.mapPixelToCoords(sf::Mouse::getPosition(_engine->window), _mainView).y);
-		sf::Vector2i regionClicked(coordsToTile(worldMouse).x, coordsToTile(worldMouse).y);
-
-		if (regionClicked.x != -1)
+		if (_HUD.getBounds().contains(sf::Mouse::getPosition(_engine->window).x, sf::Mouse::getPosition(_engine->window).y))
 		{
-			int regionClickedIndex = _tileMatrix[regionClicked.y][regionClicked.x];
+			if (_HUD.clickedButton() == HUDButton::Database)
+			{
+				_subStates.push_back(std::move(subStateRef(new DatabaseBox(_engine, _database))));
+				_subStates.back()->init();
+			}
+		}
+		else
+		{
+			sf::Vector2i worldMouse(_engine->window.mapPixelToCoords(sf::Mouse::getPosition(_engine->window), _mainView).x, _engine->window.mapPixelToCoords(sf::Mouse::getPosition(_engine->window), _mainView).y);
+			sf::Vector2i regionClicked(coordsToTile(worldMouse).x, coordsToTile(worldMouse).y);
 
-			_subStates.push_back(std::move(subStateRef(new RegionDataBox(_engine, _database, regionClickedIndex, regionClicked))));
-			_subStates.back()->init();
+			if (regionClicked.x != -1)
+			{
+				int regionClickedIndex = _tileMatrix[regionClicked.y][regionClicked.x];
+
+				_subStates.push_back(std::move(subStateRef(new RegionDataBox(_engine, _database, regionClickedIndex, regionClicked))));
+				_subStates.back()->init();
+			}
 		}
 	}
 }
+
 void WorldMap::handleMouseScrollEvent(sf::Event &event)
 {
 	if (event.mouseWheelScroll.delta >= 0)
@@ -212,6 +225,11 @@ void WorldMap::update(float delta)
 	checkTileSelection();
 
 	correctCameraView();
+}
+
+void WorldMap::updateHUD(float delta)
+{
+
 }
 
 void WorldMap::updateSubStates(float delta)
