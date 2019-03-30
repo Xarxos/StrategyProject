@@ -135,6 +135,9 @@
     <ClInclude Include="MineralBox.h">
       <Filter>Game\Misc</Filter>
     </ClInclude>
+    <ClInclude Include="StoneBox.h">
+      <Filter>Game\Misc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -198,6 +201,9 @@
       <Filter>Game\Misc</Filter>
     </ClCompile>
     <ClCompile Include="MineralBox.cpp">
+      <Filter>Game\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="StoneBox.cpp">
       <Filter>Game\Misc</Filter>
     </ClCompile>
   </ItemGroup>

@@ -26,6 +26,7 @@ public:
 	virtual void resume() {}
 
 	void setRemoveStatus(bool removeStatus) { _remove = removeStatus; }
+	void setMoveToTopStatus(bool moveToTopStatus) { _moveToTop = moveToTopStatus; }
 	bool remove() { return _remove; }
 	bool moveToTop() { return _moveToTop; }
 	//void disableMoveToTope() { _moveToTop = false; }

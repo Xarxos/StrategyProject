@@ -118,6 +118,7 @@ bool BoxTab::handleInput(sf::Vector2i contentViewMousePosition)
 			if (!linkTargetAlreadyOpen)
 			{
 				_engine->machine.getActiveState()->getSubStates().push_back(link.target);
+				link.target->setMoveToTopStatus(true);
 			}
 
 			return true;

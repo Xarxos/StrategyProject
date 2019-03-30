@@ -66,8 +66,8 @@ void Box::updateGraphics()
 		_background.setSize(sf::Vector2f(calculatedBoxWidth, Graphics::BOX_DEFAULT_HEIGHT));
 	}
 
-	_contentArea.width = _background.getLocalBounds().width - Graphics::BOX_TABS_EDGE_MARGIN * 2;
-	_contentArea.height = _background.getLocalBounds().height - Graphics::BOX_TABS_EDGE_MARGIN * 2 - tabHeight;
+	_contentArea.width = _background.getSize().x - Graphics::BOX_TABS_EDGE_MARGIN * 2;
+	_contentArea.height = _background.getSize().y - Graphics::BOX_TABS_EDGE_MARGIN * 2 - tabHeight;
 	_contentArea.left = _background.getPosition().x + Graphics::BOX_TABS_EDGE_MARGIN;
 	_contentArea.top = _background.getPosition().y + Graphics::BOX_TABS_EDGE_MARGIN + tabHeight;
 
@@ -144,14 +144,6 @@ bool Box::handleMousePressEvent()
 
 		for (it = _tabs.begin(); it != _tabs.end(); it++)
 		{
-			sf::Vector2i contentViewMousePosition(_engine->window.mapPixelToCoords(sf::Mouse::getPosition(_engine->window), _tabContentView).x, _engine->window.mapPixelToCoords(sf::Mouse::getPosition(_engine->window), _tabContentView).y);
-			bool inputHandled = it->second.handleInput(contentViewMousePosition);
-
-			if (inputHandled)
-			{
-				return true;
-			}
-
 			if (it->second.getBounds().contains(sf::Mouse::getPosition(_engine->window).x, sf::Mouse::getPosition(_engine->window).y))
 			{
 				_tabs.at(_openTabKey).openTab(false);
@@ -162,6 +154,15 @@ bool Box::handleMousePressEvent()
 
 				return true;
 			}
+		}
+
+		sf::Vector2i contentViewMousePosition(_engine->window.mapPixelToCoords(sf::Mouse::getPosition(_engine->window), _tabContentView).x, _engine->window.mapPixelToCoords(sf::Mouse::getPosition(_engine->window), _tabContentView).y);
+		bool inputHandled = _tabs.at(_openTabKey).handleInput(contentViewMousePosition);
+
+		if (inputHandled)
+		{
+			_moveToTop = false;
+			return true;
 		}
 
 		return true;

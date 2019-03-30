@@ -2,6 +2,7 @@
 #include "DatabaseBox.h"
 #include "Defines.h"
 #include "MineralBox.h"
+#include "StoneBox.h"
 
 #include <vector>
 #include <iostream>
@@ -31,8 +32,23 @@ void DatabaseBox::init()
 		_tabs.at("Minerals").setTextRelativePosition(i, Graphics::BOX_TEXT_DEFAULT_X_OFFSET, Graphics::BOX_TEXT_SIZE * i);
 
 		subStateRef mineralBox = std::make_shared<MineralBox>(_engine, _database, i);
-		//mineralBox->init();
 		_tabs.at("Minerals").makeLink(_tabs.at("Minerals").getTextBounds(i), mineralBox);
+	}
+
+	for (int i = 0; i < _database->stoneTypes.size(); i++)
+	{
+		sf::String stoneString = _database->stoneTypes.at(i)->name;
+		sf::Text stone;
+		stone.setString(stoneString);
+		stone.setFont(_engine->assets.getFont("Box Tab Font"));
+		stone.setCharacterSize(Graphics::BOX_TEXT_SIZE);
+		stone.setFillColor(Colors::BOX_TEXT);
+
+		_tabs.at("Stones").addText(stone);
+		_tabs.at("Stones").setTextRelativePosition(i, Graphics::BOX_TEXT_DEFAULT_X_OFFSET, Graphics::BOX_TEXT_SIZE * i);
+
+		subStateRef stoneBox = std::make_shared<StoneBox>(_engine, _database, i);
+		_tabs.at("Stones").makeLink(_tabs.at("Stones").getTextBounds(i), stoneBox);
 	}
 	
 }

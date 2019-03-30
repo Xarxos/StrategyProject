@@ -91,8 +91,8 @@ namespace Filepath
 
 namespace Graphics
 {
-	const unsigned int BOX_HEADLINE_TEXT_SIZE(20);
-	const unsigned int BOX_TEXT_SIZE(15);
+	const unsigned int BOX_HEADLINE_TEXT_SIZE(30);
+	const unsigned int BOX_TEXT_SIZE(25);
 	const unsigned int BOX_TAB_LABEL_TEXT_SIZE(30);
 	const sf::Text::Style BOX_HEADLINE_TEXT_STYLE(sf::Text::Bold);
 	const float BOX_TEXT_DEFAULT_X_OFFSET(10.f);
