@@ -8,9 +8,9 @@
 
 MineralBox::MineralBox(EngineDataRef engineData, DatabaseRef database, int mineralTypeIndex)
 	: _mineralType(database->mineralTypes.at(mineralTypeIndex)),
-	Box(engineData, database, { _mineralType->name })
+	Box(engineData, database, { "" })
 {
-
+	overwriteTabs({ _mineralType->name });
 }
 
 void MineralBox::init()

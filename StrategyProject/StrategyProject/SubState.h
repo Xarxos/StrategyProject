@@ -30,4 +30,4 @@ public:
 	//void disableMoveToTope() { _moveToTop = false; }
 };
 
-typedef std::unique_ptr<SubState> subStateRef;
+typedef std::shared_ptr<SubState> subStateRef;

@@ -71,13 +71,7 @@ void BoxTab::makeLink(sf::FloatRect boundingBox, subStateRef linkedSubState)
 {
 	_subStateLinks.push_back(SubStateLink());
 	_subStateLinks.back().boundingBox = boundingBox;
-	_subStateLinks.back().target = std::move(linkedSubState);
-}
-
-template <typename T>
-void BoxTab::addLink(sf::FloatRect boundingBox, T linkedSubStateData, subStateRef linkedSubStatePointer)
-{
-
+	_subStateLinks.back().target = linkedSubState;
 }
 
 void BoxTab::setTextRelativePosition(int textIndex, float x, float y)
@@ -85,6 +79,11 @@ void BoxTab::setTextRelativePosition(int textIndex, float x, float y)
 	_texts[textIndex].setPosition(x, y);
 
 	updateContentTotalBounds();
+}
+
+sf::FloatRect BoxTab::getTextBounds(int textIndex)
+{
+	return _texts.at(textIndex).getGlobalBounds();
 }
 
 void BoxTab::openTab(bool open)
@@ -99,16 +98,13 @@ void BoxTab::openTab(bool open)
 	}
 }
 
-bool BoxTab::handleInput()
+bool BoxTab::handleInput(sf::Vector2i contentViewMousePosition)
 {
 	for (auto &link : _subStateLinks)
 	{
-		if (link.boundingBox.contains(sf::Mouse::getPosition(_engine->window).x, sf::Mouse::getPosition(_engine->window).y))
+		if (link.boundingBox.contains(contentViewMousePosition.x, contentViewMousePosition.y))
 		{
-			MineralBox boxy(_engine, _database, 0);
-			//decltype(*link.target) mineralbox(_engine, _database, 0);
-			subStateRef blob = std::move(subStateRef(new std::remove_pointer<decltype(dynamic_castlink.target.get())>::type(link.target)));
-			_engine->machine.getActiveState()->getSubStates().push_back(std::move(link.target));
+			_engine->machine.getActiveState()->getSubStates().push_back(link.target);
 			_engine->machine.getActiveState()->getSubStates().back()->init();
 
 			return true;

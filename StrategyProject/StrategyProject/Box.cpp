@@ -10,6 +10,7 @@ Box::Box(EngineDataRef engineData, DatabaseRef database, const std::initializer_
 	_database(database),
 	_view(sf::Vector2f(Define::WORLD_VIEW_WIDTH / 2, Define::WORLD_VIEW_HEIGHT / 2), sf::Vector2f(Define::WORLD_VIEW_WIDTH, Define::WORLD_VIEW_HEIGHT)),
 	_boxPressed(false),
+	_scrollHandlePressed(false),
 	_openTabKey(""),
 	_tabLabels(tabLabels)
 {
@@ -142,7 +143,8 @@ bool Box::handleMousePressEvent()
 
 		for (it = _tabs.begin(); it != _tabs.end(); it++)
 		{
-			bool inputHandled = it->second.handleInput();
+			sf::Vector2i contentViewMousePosition(_engine->window.mapPixelToCoords(sf::Mouse::getPosition(_engine->window), _tabContentView).x, _engine->window.mapPixelToCoords(sf::Mouse::getPosition(_engine->window), _tabContentView).y);
+			bool inputHandled = it->second.handleInput(contentViewMousePosition);
 
 			if (inputHandled)
 			{

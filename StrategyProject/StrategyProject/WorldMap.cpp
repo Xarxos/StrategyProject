@@ -145,7 +145,7 @@ void WorldMap::handleMousePressEvent(sf::Event &event)
 			{
 				int regionClickedIndex = _tileMatrix[regionClicked.y][regionClicked.x];
 
-				_subStates.push_back(std::move(subStateRef(new RegionDataBox(_engine, _database, regionClickedIndex, regionClicked))));
+				_subStates.push_back(std::make_shared<RegionDataBox>(_engine, _database, regionClickedIndex, regionClicked));
 				_subStates.back()->init();
 			}
 		}
@@ -244,9 +244,9 @@ void WorldMap::updateSubStates(float delta)
 		}
 		else if ((*rit)->moveToTop() && rit != _subStates.rbegin())
 		{
-			subStateRef temp = std::move(*rit);
+			subStateRef temp = *rit;
 			rit = decltype(rit)(_subStates.erase(std::next(rit).base()));
-			_subStates.push_back(std::move(temp));
+			_subStates.push_back(temp);
 			_subStates.back()->update(delta);
 		}
 		else

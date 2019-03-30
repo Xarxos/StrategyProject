@@ -15,14 +15,6 @@ struct SubStateLink
 	subStateRef target;
 };
 
-template <T>
-struct SubStateLin
-{
-	sf::FloatRect boundingBox;
-	T targetData;
-	subStateRef targetPointer;
-};
-
 class BoxTab
 {
 private:
@@ -38,7 +30,6 @@ private:
 	std::vector<sf::Sprite> _sprites;
 
 	std::vector<SubStateLink> _subStateLinks;
-	std::vector<SubStateLin> _subStateLins;
 
 public:
 	BoxTab(EngineDataRef engineData, DatabaseRef database);
@@ -49,6 +40,7 @@ public:
 
 	void movePosition(float deltaX, float deltaY);
 	void setTextRelativePosition(int textIndex, float x, float y);
+	sf::FloatRect getTextBounds(int textIndex);
 
 	sf::Vector2f getPosition() const { return _tabShape.getPosition(); }
 	sf::FloatRect getBounds() const { return _tabShape.getGlobalBounds(); }
@@ -60,13 +52,10 @@ public:
 	void addText(const sf::Text &text, const std::string &fontKey = "Box Tab Font", const sf::Color &textColor = Colors::BOX_TEXT, unsigned int textSize = Graphics::BOX_TEXT_SIZE);
 	void addSprite(const sf::Sprite &sprite);
 	void makeLink(sf::FloatRect boundingBox, subStateRef linkedSubState);
-	
-	template <typename T>
-	void addLink(sf::FloatRect boundingBox, T linkedSubStateData, subStateRef linkedSubStatePointer);
 
 	void openTab(bool open);
 
-	bool handleInput();
+	bool handleInput(sf::Vector2i contentViewMousePosition);
 
 	void drawTab();
 	void drawContents();

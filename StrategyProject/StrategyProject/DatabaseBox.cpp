@@ -29,8 +29,8 @@ void DatabaseBox::init()
 
 		_tabs.at("Minerals").addText(mineral);
 		_tabs.at("Minerals").setTextRelativePosition(i, Graphics::BOX_TEXT_DEFAULT_X_OFFSET, Graphics::BOX_TEXT_SIZE * i);
-
-		_tabs.at("Minerals").makeLink(mineral.getGlobalBounds(), subStateRef(new MineralBox(_engine, _database, i)));
+		subStateRef minBox = std::make_shared<MineralBox>(_engine, _database, i);
+		_tabs.at("Minerals").makeLink(_tabs.at("Minerals").getTextBounds(i), minBox);
 	}
 	
 }
