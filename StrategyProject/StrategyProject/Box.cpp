@@ -127,6 +127,7 @@ bool Box::handleMousePressEvent()
 
 	if (_scrollHandle.getGlobalBounds().contains(sf::Mouse::getPosition(_engine->window).x, sf::Mouse::getPosition(_engine->window).y))
 	{
+		_moveToTop = true;
 		_scrollHandlePressed = true;
 		_previousMousePos = _engine->input.getMousePosition(_engine->window);
 

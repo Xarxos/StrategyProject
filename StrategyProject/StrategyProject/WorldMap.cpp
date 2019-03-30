@@ -240,6 +240,7 @@ void WorldMap::updateSubStates(float delta)
 	{
 		if ((*rit)->remove())
 		{
+			(*rit)->setRemoveStatus(false);
 			rit = decltype(rit)(_subStates.erase(std::next(rit).base()));
 		}
 		else if ((*rit)->moveToTop() && rit != _subStates.rbegin())

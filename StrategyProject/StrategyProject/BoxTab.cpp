@@ -72,6 +72,7 @@ void BoxTab::makeLink(sf::FloatRect boundingBox, subStateRef linkedSubState)
 	_subStateLinks.push_back(SubStateLink());
 	_subStateLinks.back().boundingBox = boundingBox;
 	_subStateLinks.back().target = linkedSubState;
+	linkedSubState->init();
 }
 
 void BoxTab::setTextRelativePosition(int textIndex, float x, float y)
@@ -104,8 +105,20 @@ bool BoxTab::handleInput(sf::Vector2i contentViewMousePosition)
 	{
 		if (link.boundingBox.contains(contentViewMousePosition.x, contentViewMousePosition.y))
 		{
-			_engine->machine.getActiveState()->getSubStates().push_back(link.target);
-			_engine->machine.getActiveState()->getSubStates().back()->init();
+			bool linkTargetAlreadyOpen(false);
+			for (auto &subState : _engine->machine.getActiveState()->getSubStates())
+			{
+				if (subState == link.target)
+				{
+					linkTargetAlreadyOpen = true;
+					break;
+				}
+			}
+
+			if (!linkTargetAlreadyOpen)
+			{
+				_engine->machine.getActiveState()->getSubStates().push_back(link.target);
+			}
 
 			return true;
 		}

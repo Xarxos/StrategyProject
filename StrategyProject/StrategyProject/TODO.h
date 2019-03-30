@@ -15,5 +15,7 @@ TODO
 - Actually, consider cleaning up a few classes here and there, like break out functions, restructure stuff, or something.
 
 - Consider if input checks for the HUD should go before input checks for the substates in WorldMap.
-- Maybe make a link-thing that can turn any sprite/shape/text into a button which takes you to some place or another... you know, opens a specific box or something.
+
+- Fix bug where clicking a mineral link in DatabaseBox multiple times kinda stacks multiple MineralBoxes on each other in a strange way.
+- Also fix the bug where clicking a mineral link in DatabaseBox, then closing it, prevents opening the same box again until a new DatabaseBox has been opened.
 */

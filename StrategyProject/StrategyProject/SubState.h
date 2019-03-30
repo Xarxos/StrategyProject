@@ -11,7 +11,7 @@ protected:
 
 public:
 	SubState()
-		: _remove(false)
+		: _remove(false), _moveToTop(false)
 	{
 	
 	}
@@ -25,6 +25,7 @@ public:
 	virtual void pause() {}
 	virtual void resume() {}
 
+	void setRemoveStatus(bool removeStatus) { _remove = removeStatus; }
 	bool remove() { return _remove; }
 	bool moveToTop() { return _moveToTop; }
 	//void disableMoveToTope() { _moveToTop = false; }
