@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "DatabaseBox.h"
 #include "Defines.h"
+#include "MineralBox.h"
 
 #include <vector>
 #include <iostream>
@@ -28,6 +29,8 @@ void DatabaseBox::init()
 
 		_tabs.at("Minerals").addText(mineral);
 		_tabs.at("Minerals").setTextRelativePosition(i, Graphics::BOX_TEXT_DEFAULT_X_OFFSET, Graphics::BOX_TEXT_SIZE * i);
+
+		_tabs.at("Minerals").makeLink(mineral.getGlobalBounds(), subStateRef(new MineralBox(_engine, _database, i)));
 	}
 	
 }

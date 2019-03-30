@@ -2,9 +2,12 @@
 #include "SFML\Graphics.hpp"
 #include "BoxTab.h"
 #include "Defines.h"
+#include "MineralBox.h"
+#include "SubState.h"
 
 #include <string>
 #include <iostream>
+#include <type_traits>
 
 BoxTab::BoxTab(EngineDataRef engineData, DatabaseRef database)
 	: _engine(engineData),
@@ -64,6 +67,19 @@ void BoxTab::addText(const sf::Text &text, const std::string &fontKey, const sf:
 	_texts.push_back(text);
 }
 
+void BoxTab::makeLink(sf::FloatRect boundingBox, subStateRef linkedSubState)
+{
+	_subStateLinks.push_back(SubStateLink());
+	_subStateLinks.back().boundingBox = boundingBox;
+	_subStateLinks.back().target = std::move(linkedSubState);
+}
+
+template <typename T>
+void BoxTab::addLink(sf::FloatRect boundingBox, T linkedSubStateData, subStateRef linkedSubStatePointer)
+{
+
+}
+
 void BoxTab::setTextRelativePosition(int textIndex, float x, float y)
 {
 	_texts[textIndex].setPosition(x, y);
@@ -81,6 +97,25 @@ void BoxTab::openTab(bool open)
 	{
 		_tabShape.setFillColor(Colors::BOX_TAB_CLOSED);
 	}
+}
+
+bool BoxTab::handleInput()
+{
+	for (auto &link : _subStateLinks)
+	{
+		if (link.boundingBox.contains(sf::Mouse::getPosition(_engine->window).x, sf::Mouse::getPosition(_engine->window).y))
+		{
+			MineralBox boxy(_engine, _database, 0);
+			//decltype(*link.target) mineralbox(_engine, _database, 0);
+			subStateRef blob = std::move(subStateRef(new std::remove_pointer<decltype(dynamic_castlink.target.get())>::type(link.target)));
+			_engine->machine.getActiveState()->getSubStates().push_back(std::move(link.target));
+			_engine->machine.getActiveState()->getSubStates().back()->init();
+
+			return true;
+		}
+	}
+
+	return false;
 }
 
 void BoxTab::drawTab()

@@ -142,6 +142,13 @@ bool Box::handleMousePressEvent()
 
 		for (it = _tabs.begin(); it != _tabs.end(); it++)
 		{
+			bool inputHandled = it->second.handleInput();
+
+			if (inputHandled)
+			{
+				return true;
+			}
+
 			if (it->second.getBounds().contains(sf::Mouse::getPosition(_engine->window).x, sf::Mouse::getPosition(_engine->window).y))
 			{
 				_tabs.at(_openTabKey).openTab(false);
